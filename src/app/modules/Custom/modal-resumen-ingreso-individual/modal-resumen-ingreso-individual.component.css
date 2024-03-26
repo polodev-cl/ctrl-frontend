@@ -1,0 +1,80 @@
+.custom-modal {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Usa el 100% del ancho del viewport */
+  height: 100%;
+  /* Usa el 100% del alto del viewport */
+  justify-content: center;
+  /* Centra horizontalmente el contenido del modal */
+  align-items: center;
+  /* Centra verticalmente el contenido del modal */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Fondo semi-transparente */
+  backdrop-filter: blur(10px);
+}
+
+.custom-modal-content {
+  background-color: #fefefe;
+
+  transform: translateY(0%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  min-width: 60%;
+  height: auto;
+}
+
+/* Ajusta el botón de cerrar modal si es necesario */
+.custom-modal .close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.btn {
+  font-size: 14px;
+  border: 1px solid;
+  cursor: pointer;
+
+}
+
+
+.btn-outline {
+  background-color: transparent;
+  color: #393939;
+  /* El color del texto */
+  font-weight: 500;
+  border-color: #FFA500;
+  /* El color del borde */
+}
+
+.modal-footer {
+  text-align: center;
+  border-top: none;
+  box-shadow: none;
+
+}
+
+.hr-titulo {
+  width: 100%;
+}
+
+.search-button {
+  border: none;
+  border-radius: 100px;
+  background-color: #34AA4E;
+  color: white;
+  font-family: 'Roboto';
+}
+
+.search-button:hover {
+  background-color: #2C8C40; /* Un verde más oscuro para el efecto hover */
+  border-color: #2C8C40; /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
+}

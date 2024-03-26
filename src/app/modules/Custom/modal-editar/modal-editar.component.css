@@ -1,0 +1,108 @@
+.custom-modal {
+    display: flex;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+  }
+  
+  .custom-modal-content {
+    background-color: #fefefe;
+    padding: 2rem; /* Ajusta el padding para que sea uniforme y no muy grande */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 70%; /* Esto dependerá del ancho que desees, pero 50% es un buen punto de partida */
+    max-width: 800px; /* También puedes establecer un max-width para evitar que sea muy grande en pantallas anchas */
+    border-radius: 1rem; /* Esto dará los bordes redondeados */
+    transform: translateY(0%);
+    position: fixed;
+  }
+  
+  .form-select {
+    margin: 0.5rem 0; /* Esto reduce el margen alrededor de los select */
+    width: 100%; /* Los select ocuparán el ancho disponible en su contenedor */
+  }
+  
+  /* Ajusta el botón de cerrar modal si es necesario */
+  .custom-modal .close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between; /* Esto asegura que los botones estén separados y a cada extremo */
+    margin-top: 1.5rem; /* Esto añade un poco de espacio antes de los botones */
+  }
+  
+  .btn {
+    padding: 0.5rem 1.5rem; /* Esto controla el tamaño de los botones */
+    border-radius: 100px;
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    color: #393939; /* El color del texto */
+    font-weight: 500;
+    border-color: #FFA500; /* El color del borde */
+  }
+  
+  .btn-primary {
+    background-color: #388CD9; /* El color de fondo */
+    color: white; /* El color del texto */
+    font-weight: 500;
+    border-color: #388CD9; /* El color del borde */
+  }
+  .btn-primary:hover {
+    background-color: #3072BF; /* Un azul más oscuro para el hover */
+    border-color: #3072BF; /* Asegúrate de que el color del borde también cambie para mantener la consistencia */
+}
+  
+  /* Ajusta el ancho de los botones si es necesario */
+  .btn-outline, .btn-primary {
+    flex: 1; /* Esto hará que ambos botones tengan la misma anchura */
+    margin: 0 3vw; /* Asegura un poco de espacio entre los botones */
+  }
+  
+  
+  
+  .color-select {
+    background-color: #EAEAEA;
+    font-size: 1rem; /* Aumenta el tamaño de la fuente */
+   
+    max-width: 300px; /* Establece un ancho máximo para los select */
+    margin: auto; /* Centra los selectores si el modal es muy ancho */
+  }
+  .close {
+    position: absolute;
+    top: -5rem; /* Ajusta la distancia desde la parte superior para bajar el botón un poco */
+    right: 5rem; /* Ajusta la distancia desde la parte derecha */
+    font-size: 1.25rem; /* Ajusta el tamaño de la 'X' */
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  .form-group {
+    margin-bottom: 3rem; /* Ajusta según sea necesario */
+    
+ 
+  }
+  
+  @media (max-width: 768px) {
+    .custom-modal-content {
+      width: 80%; /* En dispositivos móviles, puede que quieras que el modal sea un poco más ancho para usar mejor el espacio */
+      padding: 1.5rem; /* Y tal vez menos padding */
+    }
+  }

@@ -1,0 +1,12 @@
+.equipo-button{
+    background: transparent; /* Estados/avanzar */
+    color: #388CD9;
+    border: 1px solid #388CD9;
+}
+
+
+.equipo-button:hover{
+    background-color: #f8f7f7;
+    color: #3072BF;
+    border: 1px solid #3072BF;
+}

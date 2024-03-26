@@ -1,0 +1,81 @@
+.search-button {
+    border: none;
+    border-radius: 100px;
+    background-color: #34AA4E;
+    color: white;
+    font-family: 'Roboto';
+}
+
+.search-button:hover {
+  background-color: #2C8C40; /* Un verde más oscuro para el efecto hover */
+  border-color: #2C8C40; /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
+}
+
+.large-checkbox {
+    width: 1.5em;
+    /* You can adjust the size as needed */
+    height: 1.5em;
+    /* You can adjust the size as needed */
+}
+
+.large-label {
+    font-size: 1.25em;
+    /* Adjust label text size as needed */
+    /* Optional: increase the click area for the label */
+    padding: 0.25em 0.5em;
+    display: inline-block;
+}
+
+.color-select {
+    background-color: #EAEAEA;
+}
+
+
+.color-input-label {
+    background-color: #EAEAEA;
+}
+
+
+.color-input-label::after {
+    background-color: #EAEAEA;
+}
+
+.form-floating::after {
+   display: none;
+  }
+  
+
+
+  /* Estilos para los inputs de PrimeNG */
+.p-inputtext {
+    border: none !important; /* Elimina los bordes */
+    box-shadow: none !important; /* Elimina el sombreado al enfocar */
+    color: black !important; /* Texto en negro */
+    
+  }
+  
+  /* Estilo para el label flotante de PrimeNG */
+  .p-float-label .p-inputtext:not(:placeholder-shown) + label,
+  .p-float-label .p-inputtext:focus + label {
+    color: black !important; /* Texto en negro para el label */
+    background-color: transparent;
+  }
+  
+  /* Es posible que también necesites ajustar los estilos del label cuando no está flotando */
+  .p-float-label label {
+    color: grey !important; /* Texto en gris para el label cuando no está flotante */
+  }
+  
+  /* Asegúrate de que el label se muestre correctamente cuando el input está vacío */
+  .p-float-label .p-inputtext::placeholder {
+    color: transparent;
+  }
+  
+  /* Ajusta el color del label al enfocar y llenar el input */
+  .p-float-label .p-inputtext:focus::placeholder {
+    color: black !important;
+  }
+  
+.color-label{
+    color: black !important;
+}

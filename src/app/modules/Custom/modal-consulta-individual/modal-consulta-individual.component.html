@@ -1,0 +1,30 @@
+<div class="custom-modal">
+  <div class="custom-modal-content rounded-3 text-center">
+    <h4 class="my-2">Consulta individual</h4>
+    <div *ngIf="tipoConsulta === 'usuario'">
+      <div>Usuario / rut</div>
+      <div class="form-group mt-3">
+        <input class="input-color" id="usuarioInput" type="text" pInputText placeholder="Ingresar usuario o rut" />
+      </div>
+    </div>
+    <div *ngIf="tipoConsulta === 'agencia'">
+      <div>Agencia / DPC</div>
+      <div class="form-group mt-3">
+        <input class="input-color" id="agenciaInput" type="text" pInputText placeholder="Ingresar agencia o DPC" />
+      </div>
+    </div>
+    <div *ngIf="tipoConsulta === 'inventario'">
+      <div>Número de inventario</div>
+      <div class="form-group mt-3">
+        <input class="input-color" id="inventarioInput" type="text" pInputText placeholder="Ingresar N° de inventario" />
+      </div>
+    </div>
+    <div class="button-group d-flex justify-content-between mt-5 mb-3">
+      <button class="btn btn-outline" (click)="cerrarModal()">Volver</button>
+      <button class="btn btn-primary" (click)="buscar()">
+        <img src="../../../../assets/image/search.svg" class="imagen">
+        Buscar
+      </button>
+    </div>
+  </div>
+</div>

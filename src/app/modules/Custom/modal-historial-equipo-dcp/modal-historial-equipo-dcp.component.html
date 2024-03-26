@@ -1,0 +1,20 @@
+<p>modal-historial-equipo-dcp works!</p>
+<div class="custom-modal">
+  <div class="custom-modal-content rounded-3 text-center">
+    <h4 class="my-2">Historial del equipo</h4>
+    <p class="my-3">Agencia / DCP</p>
+    <hr />
+
+    <div>
+      <app-tablas-historial-equipo
+        [activaDataSource]="activaDataSource"
+      ></app-tablas-historial-equipo>
+    </div>
+
+    <div class="text-start">
+      <button class="btn btn-outline mt-5" (click)="cerrarModal()">
+        Volver
+      </button>
+    </div>
+  </div>
+</div>

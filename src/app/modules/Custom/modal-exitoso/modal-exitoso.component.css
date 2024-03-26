@@ -1,0 +1,52 @@
+.custom-modal {
+  display: flex; /* Usa flexbox para centrar el contenido del modal */
+  position: fixed; /* Posición fija respecto al viewport */
+  z-index: 2000; /* Asegura que el modal esté por encima de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Usa el 100% del ancho del viewport */
+  height: 100%; /* Usa el 100% del alto del viewport */
+  justify-content: center; /* Centra horizontalmente el contenido del modal */
+  align-items: center; /* Centra verticalmente el contenido del modal */
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+  backdrop-filter: blur(10px);
+}
+
+.custom-modal-content {
+  background-color: #fefefe;
+  padding: 0.9375rem 7.525rem;
+  border: 1px solid #34AA4E;
+  transform: translateY(0%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* Ajusta el ancho y la altura del contenido del modal según necesites */
+  width: auto; /* O un ancho fijo si es necesario */
+  height: auto; /* O una altura fija si es necesario */
+}
+
+/* Ajusta el botón de cerrar modal si es necesario */
+.custom-modal .close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.btn {
+  font-size: 14px; /* Ajusta el tamaño de la fuente si es necesario */
+  border-radius: 20px; /* Los bordes redondeados según la imagen */
+  border: 1px solid; /* El borde sólido */
+  cursor: pointer;
+  width: 9vw; /* Podrías cambiar esto a un porcentaje si quieres especificar un ancho */
+ 
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #393939; /* El color del texto */
+  font-weight: 500;
+  border-color: #FFA500; /* El color del borde */
+}

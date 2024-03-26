@@ -1,0 +1,119 @@
+<nav
+  class="navbar navbar-light bg-light navbar-expand-lg sticky-top navbar-shadow-box"
+>
+  <div class="container-md">
+    <app-modal-exitoso
+  *ngIf="mostrarModalExito"
+  [titulo]="tituloModalExito"
+  [mensajeModal]="mensajeModalExito"
+  (cerrar)="cerrarModalExito()"
+></app-modal-exitoso>
+    <a class="navbar-brand" href="home">
+      <img
+        src="../../../assets/image/Logo.svg"
+        alt="User Icon"
+        width="100"
+        height="40"
+        class="d-inline-block align-text-top user-logo"
+      />
+    </a>
+<button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarCollapse"
+    >
+      <ul class="navbar-nav">
+        <li class="d-none d-lg-block">
+          <p-divider layout="vertical"></p-divider>
+        </li>
+        <li class="navbar-item d-lg-block d-none">
+          <p class="nav-link text-end">Perfil</p>
+          <ul class="navbar-nav">
+            <li class="navbar-item">
+              <p class="nav-link text-end">Hola, Juan Perez</p>
+            </li>
+          </ul>
+        </li>
+        <!-- Mostrar solo "Perfil" en pantallas pequeñas -->
+        <li class="navbar-item">
+          <a href="#" class="nav-link d-lg-none">Perfil Juan Perez</a>
+        </li>
+        <li
+          class="navbar-item d-flex justify-content-center align-items-center"
+        >
+          <img
+            src="../../../assets/image/user.png"
+            alt="User Icon"
+            class="user-icon"
+          />
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-md mb-5">
+  <div class="frame mt-3" id="frame_middletop">
+    <div class="row">
+      <div class="col mb-3">
+        <h2 class="consultation-title">
+          <img
+            src="../../../assets/image/logo-amarillo.jpg"
+            height="16"
+            class=""
+          />
+         Equipos duplicados
+        </h2>
+
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li
+              class="breadcrumb-item"
+              *ngFor="let crumb of breadcrumbs; let last = last"
+              [class.active]="last"
+            >
+              <a *ngIf="!last" [routerLink]="crumb.link">{{ crumb.text }}</a>
+              <span *ngIf="last">{{ crumb.text }}</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col">
+        <div class="container-fluid tabla">
+          <app-tabla-equipos-duplicados [data]="datos"></app-tabla-equipos-duplicados>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-5">
+      <div class="col-12">
+        <div class="d-flex justify-content-between">
+          <button
+            pButton
+            routerLink="/home"
+            type="button"
+            label="Volver"
+            class="back-button px-5 py-2"
+          ></button>
+
+          <button
+            pButton
+            type="button"
+            label="Reemplazar"
+            class="search-button px-5 py-2"
+            (click)="abrirModalExito()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

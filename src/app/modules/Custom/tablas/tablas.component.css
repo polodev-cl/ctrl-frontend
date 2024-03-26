@@ -1,0 +1,24 @@
+.color-headers{
+    background-color: #388CD9 !important;
+  }
+
+  .first-header {
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0; /* Se elimina el redondeo inferior izquierdo */
+  }
+  
+  .last-header {
+    border-top-right-radius: 0.75rem;
+    border-bottom-right-radius: 0; /* Se elimina el redondeo inferior derecho */
+  }
+  
+    
+  .custom-borders {
+    border-bottom-left-radius: 0.75rem;
+    border-top-left-radius: 0; 
+    border-bottom-right-radius: 0.75rem;
+    border-top-right-radius: 0; /* Se elimina el redondeo inferior derecho */
+  }
+  
+  
+

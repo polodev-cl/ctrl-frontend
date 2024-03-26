@@ -1,0 +1,49 @@
+.container-fluid {
+    padding: 0 20px !important;
+}
+
+.d-flex li {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+
+}
+
+.profile-text {
+    text-align: right;
+}
+
+.user-icon {
+    /* margin-right: 1rem; */
+}
+
+.navbar-nav .text-end {
+    margin: 0 .5rem;
+    padding: 0 .5rem;
+}
+
+.navbar-shadow-box {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card-shadow-box {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    /* Añade una sombra suave */
+}
+
+.tiempo-garantia {
+    background-color: #D9D9D9 !important;
+    color: #000000;
+
+
+}
+
+.historial-button {
+    background: #388CD9; /* Estados/avanzar */
+    border-radius: 100px;
+
+  }
+  .historial-button:hover {
+    background-color: #3072BF; /* Un azul más oscuro para el hover */
+    border-color: #3072BF; /* Asegúrate de que el color del borde también cambie para mantener la consistencia */
+}

@@ -37,10 +37,13 @@ justify-content: center;
 margin-right: 10px;
 /* Añade estilos adicionales aquí */
 }
-
 .uploaded-file-info {
-display: block; /* Use block to stack children vertically */
-margin-top: 10px; /* Spacing from the upload box */
+display: flex;
+flex-direction: column; /* Stack children vertically */
+align-items: center; /* Center children horizontally */
+justify-content: center; /* Center children vertically if there's space */
+text-align: center; /* Center text */
+margin-top: 10px; /* Spacing from the progress bar */
 }
 
 .progress-icons {
@@ -70,8 +73,7 @@ padding: 0; /* Remove padding if any */
 .file-details {
 margin-top: 5px; /* Spacing between icons and text details */
 display: block; /* Stack file name and size vertically */
-text-align: center; /* Align text to the left */
-color: #2C6FD5;
+text-align: left; /* Align text to the left */
 }
 
 
@@ -201,6 +203,3 @@ margin-right: 10px;
   cursor: default;
 }
 
-.btn-fixed-width {
-  width: 150px; /* Ajusta este valor según necesites */
-}

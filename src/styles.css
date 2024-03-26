@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+.container {
+  transform: scale(0.9); 
+}
+
+  .p-inputtext {
+    border: none;
+    background-color: #21212114;
+    border-radius: 5px 5px 0 0;
+    transition: box-shadow 0.1s, border-radius 0.1s;
+
+  }
+
+  .p-inputtext:hover,
+  .p-inputtext:focus {
+    box-shadow: 0 0 0 1px #B1B1B1;
+    outline: none;
+    border-radius: 0;
+
+  }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

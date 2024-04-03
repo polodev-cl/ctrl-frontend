@@ -1,7 +1,9 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import * as XLSX from 'xlsx';
+
+// Asegúrate de que tu interfaz Consulta esté
 
 interface Consulta {
   inventario: number;
@@ -34,7 +36,25 @@ export class TablasComponent  implements AfterViewInit {
     // Agrega más usuarios según sea necesario
   ]);
 
+ 
   
+  @Output() exportRequest = new EventEmitter<void>();
+
+triggerExport() {
+  this.exportRequest.emit();
+}
+
+exportToExcel(): void {
+  console.log(this.dataSource.data); // Verifica los datos en la consola
+
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource.data);
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
+  XLSX.writeFile(wb, 'Reporte.xlsx');
+}
+
+
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   

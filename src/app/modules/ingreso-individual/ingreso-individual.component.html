@@ -97,15 +97,16 @@
   </div>
   <div class="row mt-5 mb-3">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <div class="card flex flex-wrap gap-3 p-fluid">
+      <div class="card flex flex-wrap gap-3 p-fluid border-0">
         <div class="flex-auto">
           <span class="p-float-label">
             <p-calendar
               [showIcon]="true"
               inputId="fecha_ingreso"
               dateFormat="dd/mm/yy"
+              [iconDisplay]="'input'"
             ></p-calendar>
-            <label class="color-label" for="fecha_ingreso"
+            <label class="" for="fecha_ingreso"
               >Fecha de ingreso</label
             >
           </span>
@@ -236,19 +237,36 @@
   </div>
   <div class="row mb-3">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option selected>MAC</option>
-        <option>Máquina 2</option>
-        <option>Máquina 3</option>
-        <option>Máquina 4</option>
-      </select>
-    </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="ip" type="text" pInputText />
-        <label for="ip">IP</label>
+        <input
+          [(ngModel)]="macAddress"
+          (keyup)="onMacInput($event)"
+          type="text"
+          pInputText
+          class="w-100 rounded"
+        />
+
+        <label for="mac">MAC (XX:XX:XX:XX:XX:XX)</label>
       </span>
     </div>
+
+    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+      <span class="p-float-label">
+        <input
+          class="w-100 rounded"
+          id="ip"
+          [(ngModel)]="ipAddress"
+          pInputText
+          (ngModelChange)="validateIP()"
+          type="text"
+        />
+        <label for="ip">IP (XXX.XXX.XXX.XXX o IPv6)</label>
+      </span>
+      <div *ngIf="isValidIP === false" class="text-danger">
+        Dirección IP no válida
+      </div>
+    </div>
+
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
         <input class="w-100 rounded" id="maquina" type="text" pInputText />
@@ -265,10 +283,23 @@
     </div>
 
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <span class="p-float-label">
-        <input class="w-100 rounded" id="ram" type="text" pInputText />
+      <div class="p-float-label position-relative">
+        <input class="w-100 rounded" id="ram" pInputText type="text" />
         <label for="ram">RAM</label>
-      </span>
+        <div
+          class="position-absolute"
+          style="
+            top: 0;
+            right: 10px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            pointer-events: none;
+          "
+        >
+          GB
+        </div>
+      </div>
     </div>
 
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
@@ -281,13 +312,24 @@
   </div>
   <div class="row mb-3">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>DDL / TBK</option>
-        <option>Máquina 2</option>
-        <option>Máquina 3</option>
-        <option>Máquina 4</option>
-      </select>
+      <span class="p-float-label">
+        <input
+          [(ngModel)]="ddlTbk"
+          (keyup)="onDDLTBKInput()"
+          appLimitInput
+          pInputText
+          type="text"
+          class="w-100 rounded"
+          id="ddlTbk"
+        />
+
+        <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
+      </span>
+      <div *ngIf="isValidDDLTBK === false" class="text-danger">
+        Formato DDL/TBK no válido
+      </div>
     </div>
+
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
         <input class="w-100 rounded" id="serie" type="text" pInputText />

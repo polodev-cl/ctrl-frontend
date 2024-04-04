@@ -7,19 +7,17 @@
 }
 
 .search-button:hover {
-    background-color: #2C8C40; /* Un verde más oscuro para el efecto hover */
-    border-color: #2C8C40; /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
+    background-color: #2C8C40; 
+    border-color: #2C8C40;
 }
 
 .color-select {
     background-color: #EAEAEA;
 }
 
-
 .color-input-label {
     background-color: #EAEAEA;
 }
-
 
 .color-input-label::after {
     background-color: #EAEAEA;
@@ -29,17 +27,10 @@
     display: none;
 }
 
-
-
-/* Estilos para los inputs de PrimeNG */
 .p-inputtext {
     border: none !important;
-    /* Elimina los bordes */
     box-shadow: none !important;
-    /* Elimina el sombreado al enfocar */
     color: black !important;
-    /* Texto en negro */
-
 }
 
 /* Estilo para el label flotante de PrimeNG */

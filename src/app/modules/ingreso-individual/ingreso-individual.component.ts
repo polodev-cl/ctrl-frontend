@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AgencyService } from './AgencyService';
 import { SOService, SOVersion } from './SOService';
+import {
+  checkIpAddress,
+  formatMAC,
+  formatAndValidateDDLTBK,
+} from '../../utils/utils';
 
 interface Option {
   value: string;
@@ -79,6 +84,16 @@ export class IngresoIndividualComponent implements OnInit {
     this.selectedNemonico = '';
   }
 
+  ddlTbk: string = '';
+  isValidDDLTBK: boolean | null = null;
+
+  onDDLTBKInput(): void {
+    const { formatted, isValid } = formatAndValidateDDLTBK(this.ddlTbk);
+    this.ddlTbk = formatted;
+    this.isValidDDLTBK = isValid;
+  }
+  
+
   loadSOData(): void {
     this.soService.getSOData().subscribe((datos) => {
       this.sistemasOperativos = datos;
@@ -91,6 +106,17 @@ export class IngresoIndividualComponent implements OnInit {
     );
     this.versionesFiltradas = soSeleccionado ? soSeleccionado.versiones : [];
     this.selectedVersion = '';
+  }
+
+  macAddress: string = '';
+  ipAddress: string = '';
+  isValidIP: boolean | null = null;
+  validateIP(): void {
+    this.isValidIP = checkIpAddress(this.ipAddress);
+  }
+
+  onMacInput(event: any): void {
+    this.macAddress = formatMAC(this.macAddress);
   }
 
   tituloModalExito: string = '';

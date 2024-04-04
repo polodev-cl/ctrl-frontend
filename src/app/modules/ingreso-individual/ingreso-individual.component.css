@@ -54,32 +54,46 @@
     
   }
   
-  /* Estilo para el label flotante de PrimeNG */
-  .p-float-label .p-inputtext:not(:placeholder-shown) + label,
-  .p-float-label .p-inputtext:focus + label {
-    color: black !important; /* Texto en negro para el label */
-    background-color: transparent;
-  }
-  
-  /* Es posible que también necesites ajustar los estilos del label cuando no está flotando */
-  .p-float-label label {
-    color: grey !important; /* Texto en gris para el label cuando no está flotante */
-  }
-  
-  /* Asegúrate de que el label se muestre correctamente cuando el input está vacío */
-  .p-float-label .p-inputtext::placeholder {
-    color: transparent;
-  }
-  
-  /* Ajusta el color del label al enfocar y llenar el input */
-  .p-float-label .p-inputtext:focus::placeholder {
+/* Estilo para el label cuando el input asociado está enfocado o lleno */
+.p-float-label .p-inputtext:not(:placeholder-shown) + label,
+.p-float-label .p-inputtext:focus + label,
+.p-float-label p-calendar + label {
     color: black !important;
-  }
-  
-.color-label{
+    background-color: transparent;
+}
+
+/* Estilo base para el label */
+.p-float-label label {
+    color: grey !important;
+    background-color: transparent; /* Asegura que el fondo sea transparente */
+}
+
+/* Estilo para el placeholder del input */
+.p-float-label .p-inputtext::placeholder {
+    color: transparent;
+}
+
+/* Estilo para el placeholder cuando el input está enfocado */
+.p-float-label .p-inputtext:focus::placeholder {
     color: black !important;
 }
 
+.color-label {
+    color: black !important;
+}
+
+
 input[type=number]{
   -moz-appearance: textfield;
+}
+
+.p-calendar .p-inputtext {
+  border: none !important;
+}
+
+/* Opcional: Si también deseas quitar el borde/estilos del botón del calendario */
+.p-calendar .p-button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
 }

@@ -106,9 +106,7 @@
               dateFormat="dd/mm/yy"
               [iconDisplay]="'input'"
             ></p-calendar>
-            <label class="" for="fecha_ingreso"
-              >Fecha de ingreso</label
-            >
+            <label class="" for="fecha_ingreso">Fecha de ingreso</label>
           </span>
         </div>
       </div>
@@ -200,13 +198,11 @@
       </select>
     </div>
 
-
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <select
         [(ngModel)]="selectedVersion"
-        
         [disabled]="versionesFiltradas.length === 0"
-        [ngClass]="{'disabled-select': versionesFiltradas.length === 0}"
+        [ngClass]="{ 'disabled-select': versionesFiltradas.length === 0 }"
         class="form-select py-3 color-select"
       >
         <option value="" disabled>Versión</option>
@@ -226,13 +222,25 @@
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="marca" type="text" pInputText autocomplete="on" />
+        <input
+          class="w-100 rounded"
+          id="marca"
+          type="text"
+          pInputText
+          autocomplete="on"
+        />
         <label for="marca">Marca</label>
       </span>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="modelo" type="text" pInputText autocomplete="on" />
+        <input
+          class="w-100 rounded"
+          id="modelo"
+          type="text"
+          pInputText
+          autocomplete="on"
+        />
         <label for="modelo">Modelo</label>
       </span>
     </div>
@@ -247,9 +255,11 @@
           pInputText
           class="w-100 rounded"
         />
-
         <label for="mac">MAC (XX:XX:XX:XX:XX:XX)</label>
       </span>
+      <div *ngIf="isValidMAC === false" class="text-danger">
+        Dirección MAC no válida
+      </div>
     </div>
 
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
@@ -258,12 +268,12 @@
           class="w-100 rounded"
           id="ip"
           [(ngModel)]="ipAddress"
-          pInputText
-          appLimitInput
-          (ngModelChange)="validateIP()"
+          (keyup)="limitAndValidateIP()"
           type="text"
+          pInputText
         />
-        <label for="ip">IP (XXX.XXX.XXX.XXX o IPv6)</label>
+
+        <label for="ip">IP (IPV4 o IPv6)</label>
       </span>
       <div *ngIf="isValidIP === false" class="text-danger">
         Dirección IP no válida
@@ -280,7 +290,13 @@
   <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="procesador" type="text" pInputText autocomplete="on" />
+        <input
+          class="w-100 rounded"
+          id="procesador"
+          type="text"
+          pInputText
+          autocomplete="on"
+        />
         <label for="procesador">Procesador</label>
       </span>
     </div>
@@ -341,7 +357,13 @@
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="encargado" type="text" pInputText autocomplete="on" />
+        <input
+          class="w-100 rounded"
+          id="encargado"
+          type="text"
+          pInputText
+          autocomplete="on"
+        />
         <label for="encargado">Encargado Agencia</label>
       </span>
     </div>

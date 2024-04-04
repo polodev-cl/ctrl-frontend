@@ -3,7 +3,7 @@ import { AgencyService } from './AgencyService';
 import { SOService, SOVersion } from './SOService';
 import {
   checkIpAddress,
-  formatMAC,
+  formatAndValidateMAC,
   formatAndValidateDDLTBK,
 } from '../../utils/utils';
 
@@ -92,7 +92,6 @@ export class IngresoIndividualComponent implements OnInit {
     this.ddlTbk = formatted;
     this.isValidDDLTBK = isValid;
   }
-  
 
   loadSOData(): void {
     this.soService.getSOData().subscribe((datos) => {
@@ -111,12 +110,22 @@ export class IngresoIndividualComponent implements OnInit {
   macAddress: string = '';
   ipAddress: string = '';
   isValidIP: boolean | null = null;
-  validateIP(): void {
+  limitAndValidateIP(): void {
+    if (this.ipAddress && this.ipAddress.length > 39) {
+      this.ipAddress = this.ipAddress.substring(0, 39);
+    }
+
     this.isValidIP = checkIpAddress(this.ipAddress);
   }
 
-  onMacInput(event: any): void {
-    this.macAddress = formatMAC(this.macAddress);
+  isValidMAC: boolean | null = null;
+
+  onMacInput(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+    const { formattedMAC, isValid } = formatAndValidateMAC(value);
+    this.macAddress = formattedMAC;
+    this.isValidMAC = isValid;
   }
 
   tituloModalExito: string = '';

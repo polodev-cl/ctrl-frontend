@@ -1,9 +1,10 @@
 .custom-input-icon {
     position: absolute;
-    right: 15px; /* Ajusta la posición horizontal del icono según sea necesario */
+    right: .87rem; /* Ajusta la posición horizontal del icono según sea necesario */
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    z-index: 10;
   }
   
 

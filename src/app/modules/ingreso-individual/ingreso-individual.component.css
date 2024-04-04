@@ -106,8 +106,9 @@ input[type=number] {
 
 .disabled-select,
 .form-select:disabled {
-    background-color: #e9ecef;
+    background-color: #f8f8f8;
     color: #6c757d;
+    border: none;
 
  
 }

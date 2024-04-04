@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AgencyService } from './AgencyService'; // Asegúrate de tener la ruta correcta
+import { AgencyService } from './AgencyService';
+import { SOService, SOVersion } from './SOService';
 
 interface Option {
   value: string;
@@ -14,62 +15,82 @@ interface Agency {
   nemonicos: Option[];
 }
 
-
-
 @Component({
   selector: 'app-ingreso-individual',
   templateUrl: './ingreso-individual.component.html',
-  styleUrls: ['./ingreso-individual.component.css']
+  styleUrls: ['./ingreso-individual.component.css'],
 })
 export class IngresoIndividualComponent implements OnInit {
-
   breadcrumbs = [
     { text: 'Home', link: '/home' },
     { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
 
   agencies: Agency[] = [];
-  selectedAgency?: Agency; // Si estás utilizando ngValue para seleccionar objetos completos.
-  
-  // Definición de las propiedades faltantes:
-  selectedDCP: string = ''; // Asegúrate de que esta propiedad esté definida.
-  selectedEmpresa: string = ''; // Propiedad para la empresa seleccionada.
-  selectedNemonico: string = ''; // Propiedad para el nemónico seleccionado.
+  selectedAgency?: Agency;
+
+  selectedDCP: string = '';
+  selectedEmpresa: string = '';
+  selectedNemonico: string = '';
+
+  sistemasOperativos: SOVersion[] = [];
+  selectedSO: string = '';
+  versionesFiltradas: string[] = [];
+  selectedVersion: string = '';
 
   empresaOptions: Option[] = [];
   dcpOptions: Option[] = [];
   nemonicoOptions: Option[] = [];
 
-  constructor(private agencyService: AgencyService) {}
+  constructor(
+    private soService: SOService,
+    private agencyService: AgencyService
+  ) {}
 
   ngOnInit() {
     this.loadAgencies();
+    this.loadSOData();
   }
+
   loadAgencies(): void {
-    this.agencyService.getAgencies().subscribe(agencies => {
+    this.agencyService.getAgencies().subscribe((agencies) => {
       this.agencies = agencies; // Corrige esta línea
     });
   }
-  
+
   onAgencyChange(): void {
     if (this.selectedAgency) {
-      // Asignar las opciones basadas en la agencia seleccionada
       this.empresaOptions = this.selectedAgency.empresas;
       this.dcpOptions = this.selectedAgency.dcps;
       this.nemonicoOptions = this.selectedAgency.nemonicos;
-  
-      // Seleccionar automáticamente el primer valor de cada lista, si existe
-      this.selectedEmpresa = this.empresaOptions.length > 0 ? this.empresaOptions[0].value : '';
-      this.selectedDCP = this.dcpOptions.length > 0 ? this.dcpOptions[0].value : '';
-      this.selectedNemonico = this.nemonicoOptions.length > 0 ? this.nemonicoOptions[0].value : '';
+
+      this.selectedEmpresa =
+        this.empresaOptions.length > 0 ? this.empresaOptions[0].value : '';
+      this.selectedDCP =
+        this.dcpOptions.length > 0 ? this.dcpOptions[0].value : '';
+      this.selectedNemonico =
+        this.nemonicoOptions.length > 0 ? this.nemonicoOptions[0].value : '';
     }
   }
-  
 
   resetSelections(): void {
     this.selectedDCP = '';
     this.selectedEmpresa = '';
     this.selectedNemonico = '';
+  }
+
+  loadSOData(): void {
+    this.soService.getSOData().subscribe((datos) => {
+      this.sistemasOperativos = datos;
+    });
+  }
+
+  onSOChange(): void {
+    const soSeleccionado = this.sistemasOperativos.find(
+      (so) => so.so === this.selectedSO
+    );
+    this.versionesFiltradas = soSeleccionado ? soSeleccionado.versiones : [];
+    this.selectedVersion = '';
   }
 
   tituloModalExito: string = '';

@@ -185,20 +185,31 @@
         <option>Equipo 4</option>
       </select>
     </div>
+    <!-- Sistema Operativo Select -->
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Sistema operativo</option>
-        <option>Ejemplo 2</option>
-        <option>Ejemplo 3</option>
-        <option>Ejemplo 4</option>
+      <select
+        [(ngModel)]="selectedSO"
+        (change)="onSOChange()"
+        class="form-select py-3 color-select"
+      >
+        <option value="" disabled>Seleccione un sistema operativo</option>
+        <option *ngFor="let so of sistemasOperativos" [value]="so.so">
+          {{ so.so }}
+        </option>
       </select>
     </div>
+
+    <!-- Versión Select, se actualiza basado en el SO seleccionado -->
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Versión</option>
-        <option>Versión 2</option>
-        <option>Versión 3</option>
-        <option>Versión 4</option>
+      <select
+        [(ngModel)]="selectedVersion"
+        [disabled]="versionesFiltradas.length === 0"
+        class="form-select py-3 color-select"
+      >
+        <option value="" disabled>Seleccione una versión</option>
+        <option *ngFor="let version of versionesFiltradas" [value]="version">
+          {{ version }}
+        </option>
       </select>
     </div>
   </div>

@@ -3,18 +3,19 @@
 >
   <div class="container-md">
     <app-modal-resumen-ingreso-individual
-*ngIf="mostrarModalResumenIngresoIndividual"
-(cerrar)="cerrarModalResumenIngresoIndividual()"
-(exito)="abrirModalExito()">
->
-</app-modal-resumen-ingreso-individual>
-<app-modal-exitoso
-  *ngIf="mostrarModalExito"
-  [titulo]="tituloModalExito"
-  [mensajeModal]="mensajeModalExito"
-  (cerrar)="cerrarModalExito()"> 
-  
-</app-modal-exitoso>
+      *ngIf="mostrarModalResumenIngresoIndividual"
+      (cerrar)="cerrarModalResumenIngresoIndividual()"
+      (exito)="abrirModalExito()"
+    >
+      >
+    </app-modal-resumen-ingreso-individual>
+    <app-modal-exitoso
+      *ngIf="mostrarModalExito"
+      [titulo]="tituloModalExito"
+      [mensajeModal]="mensajeModalExito"
+      (cerrar)="cerrarModalExito()"
+    >
+    </app-modal-exitoso>
 
     <a class="navbar-brand" href="home">
       <img
@@ -25,7 +26,7 @@
         class="d-inline-block align-text-top user-logo"
       />
     </a>
-<button
+    <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
@@ -112,46 +113,65 @@
       </div>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Agencia</option>
-        <option>Agencia 1</option>
-        <option>Agencia 2</option>
-        <option>Agencia 3</option>
-        <!-- Otras opciones -->
-      </select>
-    </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>DCP</option>
-        <option>DCP 2</option>
-        <option>DCP 3</option>
-        <option>DCP 4</option>
-        <!-- Otras opciones -->
-      </select>
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Empresa</option>
-        <option>Empresa 2</option>
-        <option>Empresa 3</option>
-        <option>Empresa 4</option>
-        <!-- Otras opciones -->
-      </select>
-    </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Nemónico</option>
-        <option>Nemónico 2</option>
-        <option>Nemónico 3</option>
-        <option>Nemónico 4</option>
-        <!-- Otras opciones -->
+      <select
+        [(ngModel)]="selectedAgency"
+        (change)="onAgencyChange()"
+        class="form-select py-3 color-select"
+      >
+        <option [ngValue]="undefined" disabled>Seleccione una agencia</option>
+        <option *ngFor="let agency of agencies" [ngValue]="agency">
+          {{ agency.name }}
+        </option>
       </select>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="inventario" type="text" pInputText />
+        <input
+          class="w-100 rounded"
+          [(ngModel)]="selectedDCP"
+          id="dcp"
+          type="text"
+          placeholder="DCP"
+          disabled
+          pInputText
+        />
+        <label for="dcp">DCP</label>
+      </span>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+      <span class="p-float-label">
+        <input
+          class="w-100 rounded"
+          [(ngModel)]="selectedEmpresa"
+          id="empresa"
+          type="text"
+          placeholder="Empresa"
+          disabled
+          pInputText
+        />
+        <label for="empresa">Empresa</label>
+      </span>
+    </div>
+    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+      <span class="p-float-label">
+        <input
+          class="w-100 rounded"
+          [(ngModel)]="selectedNemonico"
+          id="nemonico"
+          type="text"
+          placeholder="Nemonico"
+          disabled
+          pInputText
+        />
+        <label for="nemonico">Nemonico</label>
+      </span>
+    </div>
+
+    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="inventario" type="Number" pInputText />
         <label for="inventario">N° Inventario</label>
       </span>
     </div>
@@ -163,16 +183,14 @@
         <option>Equipo 2</option>
         <option>Equipo 3</option>
         <option>Equipo 4</option>
-        <!-- Otras opciones -->
       </select>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Sistem operativo</option>
+        <option value="" selected disabled>Sistema operativo</option>
         <option>Ejemplo 2</option>
         <option>Ejemplo 3</option>
         <option>Ejemplo 4</option>
-        <!-- Otras opciones -->
       </select>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
@@ -181,7 +199,6 @@
         <option>Versión 2</option>
         <option>Versión 3</option>
         <option>Versión 4</option>
-        <!-- Otras opciones -->
       </select>
     </div>
   </div>
@@ -189,23 +206,21 @@
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <select class="form-select py-3 color-select">
         <option value="" selected disabled>Uso</option>
-        <option>Uso 2</option>
-        <option>Uso 3</option>
-        <option>Uso 4</option>
-        <!-- Otras opciones -->
+        <option>Administrativo</option>
+        <option>Caja</option>
       </select>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-        <span class="p-float-label">
-            <input class="w-100 rounded" id="marca" type="text" pInputText />
-            <label for="marca">Marca</label>
-          </span>
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="marca" type="text" pInputText />
+        <label for="marca">Marca</label>
+      </span>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-        <span class="p-float-label">
-            <input class="w-100 rounded" id="modelo" type="text" pInputText />
-            <label for="modelo">Modelo</label>
-          </span>
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="modelo" type="text" pInputText />
+        <label for="modelo">Modelo</label>
+      </span>
     </div>
   </div>
   <div class="row mb-3">
@@ -215,7 +230,6 @@
         <option>Máquina 2</option>
         <option>Máquina 3</option>
         <option>Máquina 4</option>
-        <!-- Otras opciones -->
       </select>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
@@ -225,13 +239,10 @@
       </span>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Nombre Máquina</option>
-        <option>Máquina 2</option>
-        <option>Máquina 3</option>
-        <option>Máquina 4</option>
-        <!-- Otras opciones -->
-      </select>
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="maquina" type="text" pInputText />
+        <label for="maquina">Nombre Máquina </label>
+      </span>
     </div>
   </div>
   <div class="row mb-3">
@@ -243,7 +254,6 @@
     </div>
 
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <!-- Contenedor del Float Label de PrimeNG -->
       <span class="p-float-label">
         <input class="w-100 rounded" id="ram" type="text" pInputText />
         <label for="ram">RAM</label>
@@ -255,8 +265,6 @@
         <option value="" selected disabled>SSD / HDD</option>
         <option>SSD</option>
         <option>HDD</option>
-
-        <!-- Otras opciones -->
       </select>
     </div>
   </div>
@@ -267,75 +275,33 @@
         <option>Máquina 2</option>
         <option>Máquina 3</option>
         <option>Máquina 4</option>
-        <!-- Otras opciones -->
       </select>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-        <span class="p-float-label">
-            <input class="w-100 rounded" id="sync" type="text" pInputText />
-            <label for="sync">Código sync IR </label>
-          </span>
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="serie" type="text" pInputText />
+        <label for="serie">Número de Serie </label>
+      </span>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-        <span class="p-float-label">
-            <input class="w-100 rounded" id="serie" type="text" pInputText />
-            <label for="serie">Número de Serie </label>
-          </span>
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="encargado" type="text" pInputText />
+        <label for="encargado">Encargado Agencia</label>
+      </span>
     </div>
   </div>
   <div class="row mb-3">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-        <span class="p-float-label">
-            <input class="w-100 rounded" id="encargado" type="text" pInputText />
-            <label for="encargado">Encargado Agencia</label>
-          </span>
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="ubicacion" type="text" pInputText />
+        <label for="ubicacion">Ubicación</label>
+      </span>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Ubicación</option>
-        <option>Ubicación 2</option>
-        <option>Ubicación 3</option>
-        <option>Ubicación 4</option>
-        <!-- Otras opciones -->
-      </select>
-    </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Garantía</option>
-        <option>Garantía 2</option>
-        <option>Máquina 3</option>
-        <option>Máquina 4</option>
-        <!-- Otras opciones -->
-      </select>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="d-flex align-items-center">
-        <div class="form-check me-3 align-items-center">
-          <input
-            class="form-check-input large-checkbox"
-            type="checkbox"
-            value=""
-            id="activoCheckbox"
-          />
-          <label class="form-check-label large-label" for="activoCheckbox">
-            Activo
-          </label>
-        </div>
-
-        <div class="form-check ms-3">
-          <input
-            class="form-check-input large-checkbox"
-            type="checkbox"
-            value=""
-            id="cajaCheckbox"
-          />
-          <label class="form-check-label large-label" for="cajaCheckbox">
-            Caja
-          </label>
-        </div>
-      </div>
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="garantia" type="Number" pInputText />
+        <label for="garantia">Garantía</label>
+      </span>
     </div>
   </div>
 

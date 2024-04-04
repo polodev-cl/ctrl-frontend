@@ -79,3 +79,7 @@
 .color-label{
     color: black !important;
 }
+
+input[type=number]{
+  -moz-appearance: textfield;
+}

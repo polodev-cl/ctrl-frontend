@@ -1,33 +1,90 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AgencyService } from './AgencyService'; // Asegúrate de tener la ruta correcta
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Agency {
+  id: string;
+  name: string;
+  empresas: Option[];
+  dcps: Option[];
+  nemonicos: Option[];
+}
+
+
 
 @Component({
   selector: 'app-ingreso-individual',
   templateUrl: './ingreso-individual.component.html',
-  styleUrl: './ingreso-individual.component.css'
+  styleUrls: ['./ingreso-individual.component.css']
 })
-export class IngresoIndividualComponent {
-  breadcrumbs = [
+export class IngresoIndividualComponent implements OnInit {
 
+  breadcrumbs = [
     { text: 'Home', link: '/home' },
-    { text: 'Ingreso individual', link: '/ingreso-individual' }
-  
+    { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
 
-  tituloModalExito: string = ''; 
-  mensajeModalExito: string = ''; 
+  agencies: Agency[] = [];
+  selectedAgency?: Agency; // Si estás utilizando ngValue para seleccionar objetos completos.
+  
+  // Definición de las propiedades faltantes:
+  selectedDCP: string = ''; // Asegúrate de que esta propiedad esté definida.
+  selectedEmpresa: string = ''; // Propiedad para la empresa seleccionada.
+  selectedNemonico: string = ''; // Propiedad para el nemónico seleccionado.
 
-  mostrarModalExito: boolean = false; 
+  empresaOptions: Option[] = [];
+  dcpOptions: Option[] = [];
+  nemonicoOptions: Option[] = [];
+
+  constructor(private agencyService: AgencyService) {}
+
+  ngOnInit() {
+    this.loadAgencies();
+  }
+  loadAgencies(): void {
+    this.agencyService.getAgencies().subscribe(agencies => {
+      this.agencies = agencies; // Corrige esta línea
+    });
+  }
+  
+  onAgencyChange(): void {
+    if (this.selectedAgency) {
+      // Asignar las opciones basadas en la agencia seleccionada
+      this.empresaOptions = this.selectedAgency.empresas;
+      this.dcpOptions = this.selectedAgency.dcps;
+      this.nemonicoOptions = this.selectedAgency.nemonicos;
+  
+      // Seleccionar automáticamente el primer valor de cada lista, si existe
+      this.selectedEmpresa = this.empresaOptions.length > 0 ? this.empresaOptions[0].value : '';
+      this.selectedDCP = this.dcpOptions.length > 0 ? this.dcpOptions[0].value : '';
+      this.selectedNemonico = this.nemonicoOptions.length > 0 ? this.nemonicoOptions[0].value : '';
+    }
+  }
+  
+
+  resetSelections(): void {
+    this.selectedDCP = '';
+    this.selectedEmpresa = '';
+    this.selectedNemonico = '';
+  }
+
+  tituloModalExito: string = '';
+  mensajeModalExito: string = '';
+
+  mostrarModalExito: boolean = false;
   mostrarModalResumenIngresoIndividual: boolean = false;
+
   abrirModalExito(): void {
-    this.mostrarModalResumenIngresoIndividual = false; // Cierra el modal actual
+    this.mostrarModalResumenIngresoIndividual = false;
     this.tituloModalExito = 'Ingreso Individual';
     this.mensajeModalExito = 'El ingreso individual se ha realizado con éxito.';
-    // Configura y abre el modal de éxito
     this.mostrarModalExito = true;
-    // Aquí puedes configurar el mensaje y título del modal de éxito si es necesario
   }
- 
-  //consulta masiva
+
   abrirModalResumenIngresoIndividual(): void {
     this.mostrarModalResumenIngresoIndividual = true;
   }

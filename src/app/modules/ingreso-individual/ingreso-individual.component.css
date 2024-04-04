@@ -7,8 +7,10 @@
 }
 
 .search-button:hover {
-  background-color: #2C8C40; /* Un verde más oscuro para el efecto hover */
-  border-color: #2C8C40; /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
+    background-color: #2C8C40;
+    /* Un verde más oscuro para el efecto hover */
+    border-color: #2C8C40;
+    /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
 }
 
 .large-checkbox {
@@ -41,23 +43,26 @@
 }
 
 .form-floating::after {
-   display: none;
-  }
-  
+    display: none;
+}
 
 
-  /* Estilos para los inputs de PrimeNG */
+
+/* Estilos para los inputs de PrimeNG */
 .p-inputtext {
-    border: none !important; /* Elimina los bordes */
-    box-shadow: none !important; /* Elimina el sombreado al enfocar */
-    color: black !important; /* Texto en negro */
-    
-  }
-  
+    border: none !important;
+    /* Elimina los bordes */
+    box-shadow: none !important;
+    /* Elimina el sombreado al enfocar */
+    color: black !important;
+    /* Texto en negro */
+
+}
+
 /* Estilo para el label cuando el input asociado está enfocado o lleno */
-.p-float-label .p-inputtext:not(:placeholder-shown) + label,
-.p-float-label .p-inputtext:focus + label,
-.p-float-label p-calendar + label {
+.p-float-label .p-inputtext:not(:placeholder-shown)+label,
+.p-float-label .p-inputtext:focus+label,
+.p-float-label p-calendar+label {
     color: black !important;
     background-color: transparent;
 }
@@ -65,7 +70,8 @@
 /* Estilo base para el label */
 .p-float-label label {
     color: grey !important;
-    background-color: transparent; /* Asegura que el fondo sea transparente */
+    background-color: transparent;
+    /* Asegura que el fondo sea transparente */
 }
 
 /* Estilo para el placeholder del input */
@@ -83,17 +89,26 @@
 }
 
 
-input[type=number]{
-  -moz-appearance: textfield;
+input[type=number] {
+    -moz-appearance: textfield;
 }
 
 .p-calendar .p-inputtext {
-  border: none !important;
+    border: none !important;
 }
 
-/* Opcional: Si también deseas quitar el borde/estilos del botón del calendario */
+
 .p-calendar .p-button {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
 }
+
+.disabled-select,
+.form-select:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+
+ 
+}
+

@@ -119,7 +119,7 @@
         (change)="onAgencyChange()"
         class="form-select py-3 color-select"
       >
-        <option [ngValue]="undefined" disabled>Seleccione una agencia</option>
+        <option [ngValue]="undefined" disabled>Agencia</option>
         <option *ngFor="let agency of agencies" [ngValue]="agency">
           {{ agency.name }}
         </option>
@@ -140,7 +140,7 @@
       </span>
     </div>
   </div>
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
         <input
@@ -162,11 +162,11 @@
           [(ngModel)]="selectedNemonico"
           id="nemonico"
           type="text"
-          placeholder="Nemonico"
+          placeholder="Nemónico"
           disabled
           pInputText
         />
-        <label for="nemonico">Nemonico</label>
+        <label for="nemonico">Nemónico</label>
       </span>
     </div>
 
@@ -177,7 +177,7 @@
       </span>
     </div>
   </div>
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <select class="form-select py-3 color-select">
         <option value="" selected disabled>Tipo Equipo</option>
@@ -186,35 +186,37 @@
         <option>Equipo 4</option>
       </select>
     </div>
-    <!-- Sistema Operativo Select -->
+
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <select
         [(ngModel)]="selectedSO"
         (change)="onSOChange()"
         class="form-select py-3 color-select"
       >
-        <option value="" disabled>Seleccione un sistema operativo</option>
+        <option value="" disabled>Sistema Operativo</option>
         <option *ngFor="let so of sistemasOperativos" [value]="so.so">
           {{ so.so }}
         </option>
       </select>
     </div>
 
-    <!-- Versión Select, se actualiza basado en el SO seleccionado -->
+
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <select
         [(ngModel)]="selectedVersion"
+        
         [disabled]="versionesFiltradas.length === 0"
+        [ngClass]="{'disabled-select': versionesFiltradas.length === 0}"
         class="form-select py-3 color-select"
       >
-        <option value="" disabled>Seleccione una versión</option>
+        <option value="" disabled>Versión</option>
         <option *ngFor="let version of versionesFiltradas" [value]="version">
           {{ version }}
         </option>
       </select>
     </div>
   </div>
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <select class="form-select py-3 color-select">
         <option value="" selected disabled>Uso</option>
@@ -224,18 +226,18 @@
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="marca" type="text" pInputText />
+        <input class="w-100 rounded" id="marca" type="text" pInputText autocomplete="on" />
         <label for="marca">Marca</label>
       </span>
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="modelo" type="text" pInputText />
+        <input class="w-100 rounded" id="modelo" type="text" pInputText autocomplete="on" />
         <label for="modelo">Modelo</label>
       </span>
     </div>
   </div>
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
         <input
@@ -257,6 +259,7 @@
           id="ip"
           [(ngModel)]="ipAddress"
           pInputText
+          appLimitInput
           (ngModelChange)="validateIP()"
           type="text"
         />
@@ -274,10 +277,10 @@
       </span>
     </div>
   </div>
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="procesador" type="text" pInputText />
+        <input class="w-100 rounded" id="procesador" type="text" pInputText autocomplete="on" />
         <label for="procesador">Procesador</label>
       </span>
     </div>
@@ -310,7 +313,7 @@
       </select>
     </div>
   </div>
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
         <input
@@ -338,12 +341,12 @@
     </div>
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="encargado" type="text" pInputText />
+        <input class="w-100 rounded" id="encargado" type="text" pInputText autocomplete="on" />
         <label for="encargado">Encargado Agencia</label>
       </span>
     </div>
   </div>
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-md-4 mt-4 mb-5 mt-md-0">
       <span class="p-float-label">
         <input class="w-100 rounded" id="ubicacion" type="text" pInputText />
@@ -364,7 +367,7 @@
     </div>
   </div>
 
-  <div class="row my-5">
+  <div class="row mt-3 mb-5">
     <div class="col-12">
       <div class="d-flex justify-content-between">
         <button

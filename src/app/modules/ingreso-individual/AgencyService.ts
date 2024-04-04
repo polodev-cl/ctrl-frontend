@@ -9,34 +9,69 @@ interface Option {
 interface Agency {
   id: string;
   name: string;
-  empresas: Option[];
   dcps: Option[];
   nemonicos: Option[];
 }
 
+interface Empresa {
+  id: string;
+  name: string;
+  agencias: Agency[];
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AgencyService {
-  private agencies: Agency[] = [
+  private empresas: Empresa[] = [
     {
       id: '1',
-      name: 'Agencia 1',
-      empresas: [{ value: 'Empresa1', label: 'Empresa 1' }],
-      dcps: [{ value: 'DCP1', label: 'DCP 1' }],
-      nemonicos: [{ value: 'Nemónico1', label: 'Nemónico 1' }],
+      name: 'Starken',
+      agencias: [
+        {
+          id: '1',
+          name: 'Concepción Centro',
+          dcps: [{ value: 'DCPStarkenConcepcion', label: 'DCP Starken Concepción Centro' }],
+          nemonicos: [{ value: 'NemonicoStarkenConcepcion', label: 'Nemónico Starken Concepción Centro' }],
+        },
+        {
+          id: '2',
+          name: 'Talcahuano',
+          dcps: [{ value: 'DCPStarkenTalcahuano', label: 'DCP Starken Talcahuano' }],
+          nemonicos: [{ value: 'NemonicoStarkenTalcahuano', label: 'Nemónico Starken Talcahuano' }],
+        },
+        // Puedes añadir más agencias de Starken si es necesario
+      ],
     },
     {
-        id: '2',
-        name: 'Agencia 2',
-        empresas: [{ value: 'Empresa2', label: 'Empresa 2' }],
-        dcps: [{ value: 'DCP2', label: 'DCP 2' }],
-        nemonicos: [{ value: 'Nemónico2', label: 'Nemónico 2' }],
-      },
-
+      id: '2',
+      name: 'Chilexpress',
+      agencias: [
+        {
+          id: '3',
+          name: 'Barros Arana',
+          dcps: [{ value: 'DCPChilexpressBarrosArana', label: 'DCP Chilexpress Barros Arana' }],
+          nemonicos: [{ value: 'NemonicoChilexpressBarrosArana', label: 'Nemónico Chilexpress Barros Arana' }],
+        },
+        {
+          id: '4',
+          name: 'Mall Plaza del Trébol',
+          dcps: [{ value: 'DCPChilexpressPlazaTrebol', label: 'DCP Chilexpress Mall Plaza del Trébol' }],
+          nemonicos: [{ value: 'NemonicoChilexpressPlazaTrebol', label: 'Nemónico Chilexpress Mall Plaza del Trébol' }],
+        },
+        // Puedes añadir más agencias de Chilexpress si es necesario
+      ],
+    },
+    // Añade más empresas y sus agencias si es necesario
   ];
+  
 
-  getAgencies(): Observable<Agency[]> {
-    return of(this.agencies);
+  getEmpresas(): Observable<Empresa[]> {
+    return of(this.empresas);
+  }
+
+  getAgenciasPorEmpresa(idEmpresa: string): Observable<Agency[]> {
+    const empresa = this.empresas.find((empresa) => empresa.id === idEmpresa);
+    return of(empresa ? empresa.agencias : []);
   }
 }

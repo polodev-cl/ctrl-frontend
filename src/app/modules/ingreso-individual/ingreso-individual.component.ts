@@ -15,9 +15,14 @@ interface Option {
 interface Agency {
   id: string;
   name: string;
-  empresas: Option[];
   dcps: Option[];
   nemonicos: Option[];
+}
+
+interface Empresa {
+  id: string;
+  name: string;
+  agencias: Agency[];
 }
 
 @Component({
@@ -31,11 +36,15 @@ export class IngresoIndividualComponent implements OnInit {
     { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
 
+  selectedEmpresa: string | undefined = undefined;
+  empresaOptions: Option[] = [];
+
   agencies: Agency[] = [];
   selectedAgency?: Agency;
 
+  dcpOptions: Option[] = [];
+  nemonicoOptions: Option[] = [];
   selectedDCP: string = '';
-  selectedEmpresa: string = '';
   selectedNemonico: string = '';
 
   sistemasOperativos: SOVersion[] = [];
@@ -43,34 +52,46 @@ export class IngresoIndividualComponent implements OnInit {
   versionesFiltradas: string[] = [];
   selectedVersion: string = '';
 
-  empresaOptions: Option[] = [];
-  dcpOptions: Option[] = [];
-  nemonicoOptions: Option[] = [];
-
   constructor(
     private soService: SOService,
     private agencyService: AgencyService
   ) {}
 
   ngOnInit() {
-    this.loadAgencies();
+    this.loadEmpresas();
     this.loadSOData();
   }
 
-  loadAgencies(): void {
-    this.agencyService.getAgencies().subscribe((agencies) => {
-      this.agencies = agencies; // Corrige esta línea
+  loadEmpresas(): void {
+    this.agencyService.getEmpresas().subscribe((empresas) => {
+      this.empresaOptions = empresas.map((empresa) => ({
+        value: empresa.id,
+        label: empresa.name,
+      }));
     });
+  }
+
+  onEmpresaChange(): void {
+    if (this.selectedEmpresa) {
+      this.agencyService
+        .getAgenciasPorEmpresa(this.selectedEmpresa)
+        .subscribe((agencias) => {
+          this.agencies = agencias;
+          this.selectedAgency = undefined; // Resetear la agencia seleccionada
+          // También deberías resetear las opciones de DCP y nemonico aquí, ya que la agencia anterior ya no es válida
+          this.dcpOptions = [];
+          this.nemonicoOptions = [];
+          this.selectedDCP = '';
+          this.selectedNemonico = '';
+        });
+    }
   }
 
   onAgencyChange(): void {
     if (this.selectedAgency) {
-      this.empresaOptions = this.selectedAgency.empresas;
       this.dcpOptions = this.selectedAgency.dcps;
       this.nemonicoOptions = this.selectedAgency.nemonicos;
-
-      this.selectedEmpresa =
-        this.empresaOptions.length > 0 ? this.empresaOptions[0].value : '';
+      // Aquí también podrías resetear o establecer por defecto los valores seleccionados para DCP y nemonico
       this.selectedDCP =
         this.dcpOptions.length > 0 ? this.dcpOptions[0].value : '';
       this.selectedNemonico =

@@ -9,7 +9,7 @@ interface Option {
 interface Agency {
   id: string;
   name: string;
-  dcps: Option[];
+  dpcs: Option[];
   nemonicos: Option[];
 }
 
@@ -31,13 +31,13 @@ export class AgencyService {
         {
           id: '1',
           name: 'Concepción Centro',
-          dcps: [{ value: 'DCPStarkenConcepcion', label: 'DCP Starken Concepción Centro' }],
+          dpcs: [{ value: 'DPCStarkenConcepcion', label: 'DPC Starken Concepción Centro' }],
           nemonicos: [{ value: 'NemonicoStarkenConcepcion', label: 'Nemónico Starken Concepción Centro' }],
         },
         {
           id: '2',
           name: 'Talcahuano',
-          dcps: [{ value: 'DCPStarkenTalcahuano', label: 'DCP Starken Talcahuano' }],
+          dpcs: [{ value: 'DPCStarkenTalcahuano', label: 'DPC Starken Talcahuano' }],
           nemonicos: [{ value: 'NemonicoStarkenTalcahuano', label: 'Nemónico Starken Talcahuano' }],
         },
         // Puedes añadir más agencias de Starken si es necesario
@@ -50,13 +50,13 @@ export class AgencyService {
         {
           id: '3',
           name: 'Barros Arana',
-          dcps: [{ value: 'DCPChilexpressBarrosArana', label: 'DCP Chilexpress Barros Arana' }],
+          dpcs: [{ value: 'DPCChilexpressBarrosArana', label: 'DPC Chilexpress Barros Arana' }],
           nemonicos: [{ value: 'NemonicoChilexpressBarrosArana', label: 'Nemónico Chilexpress Barros Arana' }],
         },
         {
           id: '4',
           name: 'Mall Plaza del Trébol',
-          dcps: [{ value: 'DCPChilexpressPlazaTrebol', label: 'DCP Chilexpress Mall Plaza del Trébol' }],
+          dpcs: [{ value: 'DPCChilexpressPlazaTrebol', label: 'DPC Chilexpress Mall Plaza del Trébol' }],
           nemonicos: [{ value: 'NemonicoChilexpressPlazaTrebol', label: 'Nemónico Chilexpress Mall Plaza del Trébol' }],
         },
         // Puedes añadir más agencias de Chilexpress si es necesario

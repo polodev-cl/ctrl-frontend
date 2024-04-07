@@ -15,7 +15,7 @@ interface Option {
 interface Agency {
   id: string;
   name: string;
-  dcps: Option[];
+  dpcs: Option[];
   nemonicos: Option[];
 }
 
@@ -42,9 +42,9 @@ export class IngresoIndividualComponent implements OnInit {
   agencies: Agency[] = [];
   selectedAgency?: Agency;
 
-  dcpOptions: Option[] = [];
+  dpcOptions: Option[] = [];
   nemonicoOptions: Option[] = [];
-  selectedDCP: string = '';
+  selectedDPC: string = '';
   selectedNemonico: string = '';
 
   sistemasOperativos: SOVersion[] = [];
@@ -79,9 +79,9 @@ export class IngresoIndividualComponent implements OnInit {
           this.agencies = agencias;
           this.selectedAgency = undefined; // Resetear la agencia seleccionada
           // También deberías resetear las opciones de DCP y nemonico aquí, ya que la agencia anterior ya no es válida
-          this.dcpOptions = [];
+          this.dpcOptions = [];
           this.nemonicoOptions = [];
-          this.selectedDCP = '';
+          this.selectedDPC = '';
           this.selectedNemonico = '';
         });
     }
@@ -89,18 +89,18 @@ export class IngresoIndividualComponent implements OnInit {
 
   onAgencyChange(): void {
     if (this.selectedAgency) {
-      this.dcpOptions = this.selectedAgency.dcps;
+      this.dpcOptions = this.selectedAgency.dpcs;
       this.nemonicoOptions = this.selectedAgency.nemonicos;
       // Aquí también podrías resetear o establecer por defecto los valores seleccionados para DCP y nemonico
-      this.selectedDCP =
-        this.dcpOptions.length > 0 ? this.dcpOptions[0].value : '';
+      this.selectedDPC =
+        this.dpcOptions.length > 0 ? this.dpcOptions[0].value : '';
       this.selectedNemonico =
         this.nemonicoOptions.length > 0 ? this.nemonicoOptions[0].value : '';
     }
   }
 
   resetSelections(): void {
-    this.selectedDCP = '';
+    this.selectedDPC = '';
     this.selectedEmpresa = '';
     this.selectedNemonico = '';
   }

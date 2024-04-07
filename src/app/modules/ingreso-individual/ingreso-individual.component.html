@@ -95,8 +95,9 @@
       </div>
     </div>
   </div>
-  <div class="row mt-5 mb-3">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+
+  <div class="grid-container gap-3">
+    <div class="grid-item my-3">
       <div class="card flex flex-wrap gap-3 p-fluid border-0">
         <div class="flex-auto">
           <span class="p-float-label">
@@ -111,41 +112,62 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select [(ngModel)]="selectedEmpresa" (change)="onEmpresaChange()" class="form-select py-3 color-select">
-          <option [ngValue]="undefined" disabled>Empresa</option>
-          <option *ngFor="let empresa of empresaOptions" [ngValue]="empresa.value">
-              {{ empresa.label }}
-          </option>
-      </select>
-  </div>
-  
-  <div class="col-md-4 mt-4 mb-5 mt-md-0">
-      <select [(ngModel)]="selectedAgency" (change)="onAgencyChange()" class="form-select py-3 color-select" [disabled]="!selectedEmpresa">
-          <option [ngValue]="undefined" disabled>Agencia</option>
-          <option *ngFor="let agency of agencies" [ngValue]="agency">
-              {{ agency.name }}
-          </option>
-      </select>
-  </div>
-  
-  </div>
-  <div class="row">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
-          [(ngModel)]="selectedDCP"
-          id="dcp"
+          id="modelo"
           type="text"
-          placeholder="DCP"
+          pInputText
+          autocomplete="on"
+        />
+        <label for="modelo">Rut (12345678-9)</label>
+      </span>
+    </div>
+    <div class="grid-item my-3">
+      <select
+        [(ngModel)]="selectedEmpresa"
+        (change)="onEmpresaChange()"
+        class="form-select py-3 color-select"
+      >
+        <option [ngValue]="undefined" disabled>Empresa</option>
+        <option
+          *ngFor="let empresa of empresaOptions"
+          [ngValue]="empresa.value"
+        >
+          {{ empresa.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="grid-item my-3">
+      <select
+        [(ngModel)]="selectedAgency"
+        (change)="onAgencyChange()"
+        class="form-select py-3 color-select"
+        [disabled]="!selectedEmpresa"
+      >
+        <option [ngValue]="undefined" disabled>Agencia</option>
+        <option *ngFor="let agency of agencies" [ngValue]="agency">
+          {{ agency.name }}
+        </option>
+      </select>
+    </div>
+    <div class="grid-item my-3">
+      <span class="p-float-label">
+        <input
+          class="w-100 rounded"
+          [(ngModel)]="selectedDPC"
+          id="dpc"
+          type="text"
+          placeholder="DPC"
           disabled
           pInputText
         />
-        <label for="dcp">DCP</label>
+        <label for="dpc">DPC</label>
       </span>
     </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
@@ -159,16 +181,13 @@
         <label for="nemonico">Nemónico</label>
       </span>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="inventario" type="Number" pInputText />
         <label for="inventario">N° Inventario</label>
       </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <select class="form-select py-3 color-select">
         <option value="" selected disabled>Tipo Equipo</option>
         <option>Equipo 2</option>
@@ -176,8 +195,7 @@
         <option>Equipo 4</option>
       </select>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <select
         [(ngModel)]="selectedSO"
         (change)="onSOChange()"
@@ -189,8 +207,7 @@
         </option>
       </select>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <select
         [(ngModel)]="selectedVersion"
         [disabled]="versionesFiltradas.length === 0"
@@ -203,16 +220,14 @@
         </option>
       </select>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <select class="form-select py-3 color-select">
         <option value="" selected disabled>Uso</option>
         <option>Administrativo</option>
         <option>Caja</option>
       </select>
     </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
@@ -224,7 +239,7 @@
         <label for="marca">Marca</label>
       </span>
     </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
@@ -236,9 +251,7 @@
         <label for="modelo">Modelo</label>
       </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           [(ngModel)]="macAddress"
@@ -253,8 +266,7 @@
         Dirección MAC no válida
       </div>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
@@ -271,16 +283,13 @@
         Dirección IP no válida
       </div>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="maquina" type="text" pInputText />
         <label for="maquina">Nombre Máquina </label>
       </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
@@ -292,8 +301,7 @@
         <label for="procesador">Procesador</label>
       </span>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <div class="p-float-label position-relative">
         <input class="w-100 rounded" id="ram" pInputText type="text" />
         <label for="ram">RAM</label>
@@ -312,17 +320,14 @@
         </div>
       </div>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <select class="form-select py-3 color-select">
         <option value="" selected disabled>SSD / HDD</option>
         <option>SSD</option>
         <option>HDD</option>
       </select>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           [(ngModel)]="ddlTbk"
@@ -340,14 +345,13 @@
         Formato DDL/TBK no válido
       </div>
     </div>
-
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="serie" type="text" pInputText />
         <label for="serie">Número de Serie </label>
       </span>
     </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
@@ -359,18 +363,28 @@
         <label for="encargado">Encargado Agencia</label>
       </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="ubicacion" type="text" pInputText />
         <label for="ubicacion">Ubicación</label>
       </span>
     </div>
-    <div class="col-md-4 mt-4 mb-5 mt-md-0">
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="garantia" type="Number" pInputText />
         <label for="garantia">Garantía</label>
+      </span>
+    </div>
+    <div class="grid-item my-3">
+      <span class="p-float-label">
+        <input
+          class="w-100 rounded"
+          id="encargado"
+          type="text"
+          pInputText
+          autocomplete="on"
+        />
+        <label for="encargado">Orden de compra</label>
       </span>
     </div>
   </div>

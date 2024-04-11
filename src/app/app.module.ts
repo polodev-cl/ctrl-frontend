@@ -50,7 +50,8 @@ import { ModalDuplicadoComponent } from './modules/Custom/modal-duplicado/modal-
 import { IngresarUsuarioComponent } from './modules/ingresar-usuario/ingresar-usuario.component';
 import { ModalHistorialEquipoDcpComponent } from './modules/Custom/modal-historial-equipo-dcp/modal-historial-equipo-dcp.component';
 import { ModalHistorialEquipoInventarioComponent } from './modules/Custom/modal-historial-equipo-inventario/modal-historial-equipo-inventario.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { UserProfileComponent } from './user-profile/user-profile.component'; 
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { ModalHistorialEquipoInventarioComponent } from './modules/Custom/modal-
     ModalDuplicadoComponent,
     IngresarUsuarioComponent,
     ModalHistorialEquipoDcpComponent,
-    ModalHistorialEquipoInventarioComponent
+    ModalHistorialEquipoInventarioComponent,
+    UserProfileComponent
     
     
   ],
@@ -111,7 +113,8 @@ import { ModalHistorialEquipoInventarioComponent } from './modules/Custom/modal-
     TableModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    HttpClientModule
   ],
   providers: [
     provideAnimationsAsync(),

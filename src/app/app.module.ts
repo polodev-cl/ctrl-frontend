@@ -52,6 +52,8 @@ import { ModalHistorialEquipoDcpComponent } from './modules/Custom/modal-histori
 import { ModalHistorialEquipoInventarioComponent } from './modules/Custom/modal-historial-equipo-inventario/modal-historial-equipo-inventario.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserProfileComponent } from './user-profile/user-profile.component'; 
+import { RutFormatterDirective } from './directives/rut-formatter.directive';
+
 
 @NgModule({
   declarations: [
@@ -87,7 +89,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     IngresarUsuarioComponent,
     ModalHistorialEquipoDcpComponent,
     ModalHistorialEquipoInventarioComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    RutFormatterDirective
     
     
   ],

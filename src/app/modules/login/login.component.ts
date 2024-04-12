@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Hub } from '@aws-amplify/core';
-
+//falto instalar npm
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

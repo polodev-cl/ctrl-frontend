@@ -1,12 +1,10 @@
 <amplify-authenticator>
-  <div class="container fluid my-5">
-    <ng-template
-      amplifySlot="authenticated"
-      let-user="user"
-      let-signOut="signOut"
-    >
-      <h1>Welcome {{ user.username }}!</h1>
-      <button (click)="signOut()">Sign Out</button>
-    </ng-template>
-  </div>
+  <ng-template
+    amplifySlot="authenticated"
+    let-user="user"
+    let-signOut="signOut"
+  >
+    <h1>Welcome {{ user.username }}!</h1>
+    <button (click)="signOut()">Sign Out</button>
+  </ng-template>
 </amplify-authenticator>

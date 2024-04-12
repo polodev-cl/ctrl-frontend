@@ -1,27 +1,24 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Importar Router
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Hub } from '@aws-amplify/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  usuario: string = '';
-  password: string = '';
-  showPassword: boolean = false;
-  errorLogin: boolean = false;
+export class LoginComponent implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) {} // Inyectar Router
-
-  validarLogin() {
-    if (this.usuario === '123' && this.password === '123') {
-      console.log('Login correcto');
-      this.router.navigate(['/home']); // Usar el método navigate para redirigir
-      this.errorLogin = false;
-    } else {
-      console.log('Error en el login');
-      this.errorLogin = true;
-    }
+  ngOnInit() {
+    Hub.listen('auth', (data) => {
+      const { payload } = data;
+      console.log('Event received:', data.payload.event); 
+      if (payload.event === 'signedIn') {  // Changed from 'signIn' to 'signedIn'
+        this.router.navigate(['/home'], { replaceUrl: true });
+      } else if (payload.event === 'signInWithRedirect_failure') {
+        // Handle the sign-in failure scenario, if necessary
+      }
+    });
   }
 }

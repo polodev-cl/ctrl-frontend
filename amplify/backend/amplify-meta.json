@@ -1,0 +1,58 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifyrepo-dev-ca8e9-authRole",
+      "UnauthRoleArn": "arn:aws:iam::392917811439:role/amplify-amplifyrepo-dev-ca8e9-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::392917811439:role/amplify-amplifyrepo-dev-ca8e9-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplifyrepo-dev-ca8e9-deployment",
+      "UnauthRoleName": "amplify-amplifyrepo-dev-ca8e9-unauthRole",
+      "StackName": "amplify-amplifyrepo-dev-ca8e9",
+      "StackId": "arn:aws:cloudformation:us-east-1:392917811439:stack/amplify-amplifyrepo-dev-ca8e9/6b368eb0-f84a-11ee-92b9-0eecf40ee501",
+      "AmplifyAppId": "d3gozat4pwqowr"
+    }
+  },
+  "auth": {
+    "amplifyrepo64f422ad": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifyrepo-dev-ca8e9-deployment/amplify-cfn-templates/auth/amplifyrepo64f422ad-cloudformation-template.json",
+        "logicalId": "authamplifyrepo64f422ad"
+      },
+      "lastPushTimeStamp": "2024-04-11T22:06:32.813Z",
+      "output": {
+        "UserPoolId": "us-east-1_foHRlMORo",
+        "AppClientIDWeb": "v84o0h1v2q4afh2dcj70685u9",
+        "AppClientID": "uqk773j1o6g935fsaspaml5c6",
+        "IdentityPoolId": "us-east-1:dec82a8c-496f-47d0-9cff-942103b5287e",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:392917811439:userpool/us-east-1_foHRlMORo",
+        "IdentityPoolName": "amplifyrepo64f422ad_identitypool_64f422ad__dev",
+        "UserPoolName": "amplifyrepo64f422ad_userpool_64f422ad"
+      },
+      "lastPushDirHash": "/TKelaj51TPvXfBdWjS5k66hBTQ="
+    }
+  }
+}

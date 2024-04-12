@@ -40,6 +40,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/app/modules/login/login.component.css",
+              "node_modules/@aws-amplify/ui-angular/theme.css",
               "src/app/modules/forgot-password/forgot-password.component.css",
               "src/app/modules/data-usuario-rut/data-usuario-rut.component.css"
             ],

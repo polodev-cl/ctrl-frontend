@@ -53,6 +53,7 @@ import { ModalHistorialEquipoInventarioComponent } from './modules/Custom/modal-
 import { HttpClientModule } from '@angular/common/http';
 import { UserProfileComponent } from './user-profile/user-profile.component'; 
 import { RutFormatterDirective } from './directives/rut-formatter.directive';
+import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 
 
 @NgModule({
@@ -117,7 +118,8 @@ import { RutFormatterDirective } from './directives/rut-formatter.directive';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    HttpClientModule
+    HttpClientModule,
+    AmplifyAuthenticatorModule
   ],
   providers: [
     provideAnimationsAsync(),

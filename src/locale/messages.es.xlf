@@ -1,0 +1,8 @@
+<trans-unit id="welcomeMessage" datatype="html">
+  <source>Welcome <x id="INTERPOLATION" equiv-text="{{ user.username }}"/>!</source>
+  <target>Bienvenido <x id="INTERPOLATION" equiv-text="{{ user.username }}"/>!</target>
+</trans-unit>
+<trans-unit id="signOutButton" datatype="html">
+  <source>Sign Out</source>
+  <target>Cerrar sesión</target>
+</trans-unit>

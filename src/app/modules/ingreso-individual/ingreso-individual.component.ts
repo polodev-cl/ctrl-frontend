@@ -83,9 +83,9 @@ export class IngresoIndividualComponent implements OnInit {
     if (this.selectedEmpresa) {
       this.agencyService.getAgenciasPorEmpresa(this.selectedEmpresa).subscribe(agencias => {
         this.agencies = agencias;
-        this.selectedAgency = undefined;  // Restablece la agencia seleccionada
-        this.dpcOptions = [];             // Limpia las opciones de DPC
-        this.nemonicoOptions = [];        // Limpia las opciones de nemonico
+        this.selectedAgency = undefined;
+        this.dpcOptions = [];           
+        this.nemonicoOptions = [];       
         this.selectedDPC = '';
         this.selectedNemonico = '';
       });

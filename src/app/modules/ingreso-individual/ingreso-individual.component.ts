@@ -63,42 +63,43 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   loadEmpresas(): void {
-    this.agencyService.getEmpresas().subscribe((empresas) => {
-      this.empresaOptions = empresas.map((empresa) => ({
-        value: empresa.id,
-        label: empresa.name,
-      }));
+    this.agencyService.getEmpresas().subscribe({
+      next: (empresas) => {
+        console.log('Empresas cargadas:', empresas);
+        this.empresaOptions = empresas.map(empresa => ({
+          value: empresa.id,
+          label: empresa.name
+        }));
+        console.log('Opciones de empresa configuradas:', this.empresaOptions);
+      },
+      error: (error) => {
+        console.error('Error al cargar empresas:', error);
+      }
     });
   }
+  
 
   onEmpresaChange(): void {
     if (this.selectedEmpresa) {
-      this.agencyService
-        .getAgenciasPorEmpresa(this.selectedEmpresa)
-        .subscribe((agencias) => {
-          this.agencies = agencias;
-          this.selectedAgency = undefined; // Resetear la agencia seleccionada
-          // También deberías resetear las opciones de DCP y nemonico aquí, ya que la agencia anterior ya no es válida
-          this.dpcOptions = [];
-          this.nemonicoOptions = [];
-          this.selectedDPC = '';
-          this.selectedNemonico = '';
-        });
+      this.agencyService.getAgenciasPorEmpresa(this.selectedEmpresa).subscribe(agencias => {
+        this.agencies = agencias;
+        this.selectedAgency = undefined;  // Restablece la agencia seleccionada
+        this.dpcOptions = [];             // Limpia las opciones de DPC
+        this.nemonicoOptions = [];        // Limpia las opciones de nemonico
+        this.selectedDPC = '';
+        this.selectedNemonico = '';
+      });
     }
   }
-
+  
   onAgencyChange(): void {
     if (this.selectedAgency) {
       this.dpcOptions = this.selectedAgency.dpcs;
       this.nemonicoOptions = this.selectedAgency.nemonicos;
-      // Aquí también podrías resetear o establecer por defecto los valores seleccionados para DCP y nemonico
-      this.selectedDPC =
-        this.dpcOptions.length > 0 ? this.dpcOptions[0].value : '';
-      this.selectedNemonico =
-        this.nemonicoOptions.length > 0 ? this.nemonicoOptions[0].value : '';
+      this.selectedDPC = this.dpcOptions.length > 0 ? this.dpcOptions[0].value : '';
+      this.selectedNemonico = this.nemonicoOptions.length > 0 ? this.nemonicoOptions[0].value : '';
     }
   }
-
   resetSelections(): void {
     this.selectedDPC = '';
     this.selectedEmpresa = '';

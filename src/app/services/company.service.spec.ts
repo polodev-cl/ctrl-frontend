@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CognitoService } from './cognito-service.service';
+import { CompanyService } from './company.service';
 
-describe('CognitoService', () => {
-  let service: CognitoService;
+describe('CompanyService', () => {
+  let service: CompanyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CognitoService);
+    service = TestBed.inject(CompanyService);
   });
 
   it('should be created', () => {

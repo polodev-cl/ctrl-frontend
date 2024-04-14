@@ -1,44 +1,100 @@
-import { signIn, signOut,signUp, ConfirmSignUpInput, confirmSignUp, SignInInput, autoSignIn } from 'aws-amplify/auth';
+import { Injectable } from '@angular/core';
+import {
+  signIn,
+  confirmSignIn,
+  type SignInInput,
+  signOut,
+  ConfirmSignInInput,
+  resetPassword,
+  confirmResetPassword,
+  updatePassword,
+} from 'aws-amplify/auth';
 
-type SignUpParameters = {
+interface ConfirmPasswordInput {
   username: string;
-  password: string;
-  email: string;
-  phone_number: string;
-};
+  newPassword: string;
+}
 
+@Injectable({
+  providedIn: 'root',
+})
 export class CognitoService {
-  async handleSignUp({
-    username,
-    password,
-    email,
-    phone_number,
-  }: SignUpParameters) {
-    try {
-      const { isSignUpComplete, userId, nextStep } = await signUp({
-        username,
-        password,
-        options: {
-          userAttributes: {
-            email,
-            phone_number,
-          },
-          autoSignIn: true,
-        },
-      });
+  private currentUser: any; // This should ideally be a type that includes user session data
 
-      console.log(userId);
+  async handleSignIn({ username, password }: SignInInput): Promise<string> {
+    const { isSignedIn, nextStep } = await signIn({ username, password });
+    if (nextStep) {
+      this.currentUser = nextStep; // Store necessary session info if available
+      return nextStep.signInStep; // Always return a string that indicates the next step
+    } else if (isSignedIn) {
+      return 'SIGNED_IN'; // Indicate successful sign-in
+    }
+    throw new Error('Authentication failed with unknown state'); // Handle unexpected cases
+  }
+
+  // In your CognitoService
+  async confirmNewPassword({
+    username,
+    newPassword,
+  }: ConfirmPasswordInput): Promise<void> {
+    try {
+      const confirmInput: ConfirmSignInInput = {
+        challengeResponse: newPassword,
+        // Add any additional parameters required for confirmSignIn here
+      };
+      const confirmResult = await confirmSignIn(confirmInput);
+
+      if (confirmResult.isSignedIn) {
+        console.log(
+          'User has successfully set a new password and is signed in.'
+        );
+      } else {
+        console.log(
+          'Next step after setting new password:',
+          confirmResult.nextStep
+        );
+      }
     } catch (error) {
-      console.log('error signing up:', error);
+      console.error('Error confirming new password:', error);
+      throw error; // Properly re-throw after logging
     }
   }
-  
-  async isUserAuthenticated(): Promise<boolean> {
+
+  async resetPassword(username: string) {
     try {
-      await autoSignIn();
-      return true;
+      const output = await resetPassword({ username });
+      return output; // Return the output to handle the next steps in the component
     } catch (error) {
-      return false;
+      console.error('Error during password reset:', error);
+      throw error;
+    }
+  }
+
+  async confirmResetPassword(
+    username: string,
+    code: string,
+    newPassword: string
+  ) {
+    try {
+      await confirmResetPassword({
+        username,
+        confirmationCode: code,
+        newPassword,
+      });
+      console.log('Password reset successfully');
+    } catch (error) {
+      console.error('Error during password confirmation:', error);
+      throw error;
+    }
+  }
+
+  async updatePassword(oldPassword: string, newPassword: string) {
+    try {
+      await updatePassword({ oldPassword, newPassword });
+      console.log('Password updated successfully');
+    } catch (error) {
+      console.error('Error updating password:', error);
+      throw error;
     }
   }
 
@@ -48,38 +104,6 @@ export class CognitoService {
       console.log('Sesión cerrada correctamente.');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-    }
-  }
-  
-  async handleSignIn({ username, password }: SignInInput): Promise<{ isSignedIn: boolean, nextStep: any }> {
-    try {
-      const { isSignedIn, nextStep } = await signIn({ username, password });
-      return { isSignedIn, nextStep };
-    } catch (error) {
-      console.log('error signing in', error);
-      throw error;
-    }
-  }
-
-  async handleSignUpConfirmation({
-    username,
-    confirmationCode,
-  }: ConfirmSignUpInput) {
-    try {
-      const { isSignUpComplete, nextStep } = await confirmSignUp({
-        username,
-        confirmationCode,
-      });
-    } catch (error) {
-      console.log('error confirming sign up', error);
-    }
-  }
-
-  async handleAutoSignIn() {
-    try {
-      const signInOutput = await autoSignIn();
-    } catch (error) {
-      console.log(error);
     }
   }
 }

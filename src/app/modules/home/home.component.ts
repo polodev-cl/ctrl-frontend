@@ -1,16 +1,36 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit} from '@angular/core';
+import { CompanyService } from '../../services/company.service';
+import { CognitoService } from '../../cognito-service.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
+
+  
 
   breadcrumbs = [
     { text: 'Home', link: '/home' },
   ];
 
+  empresa: any = null;
+
+  constructor(private companyService: CompanyService, private cognitoService: CognitoService) { }
+  async cerrarSesion() {
+    await this.cognitoService.signOut();
+    // Puedes realizar acciones adicionales después de cerrar sesión, como redirigir a la página de inicio de sesión
+  }
+  ngOnInit() {
+    this.companyService.getCompanyById(1).subscribe({
+      next: (data) => {
+        this.empresa = data;
+      },
+      error: (error) => {
+        console.error('Error al obtener datos de la empresa', error);
+      }
+    });
+  }
 
   mostrarModalConsultaMasiva: boolean = false;
   mostrarModalGestionUsuario: boolean = false;
@@ -76,5 +96,8 @@ export class HomeComponent {
     this.mostrarModalCargaMasiva = false; // Cierra el modal de carga masiva
     this.mostrarModalExito = true; // Abre el modal exitoso
   }
+
+
+
 
 }

@@ -262,6 +262,31 @@
           </div>
         </div>
       </div>
+    <div *ngIf="empresa" class="row">
+  <div class="col-md-12">
+    <div class="card border rounded card-shadow-box">
+      <div class="card-header">
+        Datos de la Empresa
+      </div>
+      <div class="card-body">
+        <p><strong>ID:</strong> {{ empresa.id }}</p>
+        <p><strong>RUT:</strong> {{ empresa.rut }}</p>
+        <p><strong>Razón Social:</strong> {{ empresa.razonSocial }}</p>
+        <p><strong>Nombre Corto:</strong> {{ empresa.nombreCorto }}</p>
+        <p><strong>Giro:</strong> {{ empresa.giro }}</p>
+        <p><strong>Domicilio:</strong> {{ empresa.domicilio }}</p>
+        <p><strong>Comuna:</strong> {{ empresa.comuna }}</p>
+        <p><strong>Sitio Web:</strong> {{ empresa.sitioWeb }}</p>
+        <p><strong>Observaciones:</strong> {{ empresa.observaciones }}</p>
+        <p><strong>Prestador:</strong> {{ empresa.prestador ? 'Sí' : 'No' }}</p>
+        <p><strong>Activo:</strong> {{ empresa.activo ? 'Sí' : 'No' }}</p>
+        <p><strong>Fecha de Creación:</strong> {{ empresa.fechaCreacion | date: 'medium' }}</p>
+        <p><strong>Fecha de Modificación:</strong> {{ empresa.fechaModificacion | date: 'medium' }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
     </div>
   </div>
 </div>

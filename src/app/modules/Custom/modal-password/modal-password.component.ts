@@ -1,22 +1,25 @@
-import { Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal-password',
   templateUrl: './modal-password.component.html',
   styleUrls: ['./modal-password.component.css']
 })
-export class ModalPasswordComponent implements OnInit {
+export class ModalPasswordComponent {
   @Input() display: boolean = false;
-  @Output() displayChange = new EventEmitter<boolean>();
+  @Input() email: string = '';
+  @Output() close = new EventEmitter<void>();
 
-  
-
-  ngOnInit(): void {
-  }
+  constructor(private router: Router) {}
 
   onClose() {
-    this.display = false;
-    this.displayChange.emit(this.display);
-    
+    this.close.emit();
+  }
+
+  onContinue() {
+    console.log('Email before navigation:', this.email);
+    this.router.navigate(['/recover-password']); 
+    this.display = false; 
   }
 }

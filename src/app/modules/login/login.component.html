@@ -24,7 +24,7 @@
             <div *ngIf="errorLogin" class="p-error mt-3">{{ errorMessage }}</div>
             
             <div class="p-field mt-3">
-              <p-password class="input-color" placeholder="New Password" [(ngModel)]="newPassword" name="newPassword" required minlength="8" #newPasswordModel="ngModel" [toggleMask]="true" [feedback]="false"></p-password>
+              <p-password class="input-color" placeholder="Nueva contraseña" [(ngModel)]="newPassword" name="newPassword" required minlength="8" #newPasswordModel="ngModel" [toggleMask]="true" [feedback]="false"></p-password>
               <div *ngIf="newPasswordModel.errors?.['required'] && newPasswordModel.touched" class="p-error mt-1">Nueva contraseña es requerida.</div>
               <div *ngIf="newPasswordModel.errors?.['minlength'] && newPasswordModel.touched" class="p-error mt-1">
                 La contraseña debe contener al menos 8 caracteres.
@@ -32,7 +32,7 @@
             </div>
         
             <div class="p-field mt-3">
-              <p-password class="input-color" placeholder="Confirm New Password" [(ngModel)]="confirmPassword" name="confirmPassword" required #confirmPasswordModel="ngModel" [toggleMask]="true" [feedback]="false"></p-password>
+              <p-password class="input-color" placeholder="Confirmar Nueva contraseña" [(ngModel)]="confirmPassword" name="confirmPassword" required #confirmPasswordModel="ngModel" [toggleMask]="true" [feedback]="false"></p-password>
               <div *ngIf="confirmPasswordModel.errors?.['required'] && confirmPasswordModel.touched" class="p-error mt-1">confirmar contraseña es requerido.</div>
               <div *ngIf="newPassword !== confirmPassword && confirmPasswordModel.touched" class="p-error mt-1">Las contraseñas no coinciden.</div>
             </div>

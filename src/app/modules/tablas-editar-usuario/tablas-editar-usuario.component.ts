@@ -2,6 +2,7 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { EditarUsuarioService } from '../../services/editar-usuario.service';
 
 interface Usuario {
   usuario: string;
@@ -25,121 +26,25 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
     'perfil',
     'acciones',
   ];
-  dataSource = new MatTableDataSource<Usuario>([
-    {
-      usuario: 'usuario1',
-      nombre: 'Nombre1',
-      rut: '12345678-9',
-      correo: 'usuario1@example.com',
-      perfil: 'Perfil1',
-    },
-    {
-      usuario: 'usuario2',
-      nombre: 'Nombre2',
-      rut: '98765432-1',
-      correo: 'usuario2@example.com',
-      perfil: 'Perfil2',
-    },
-    {
-      usuario: 'usuario3',
-      nombre: 'Nombre3',
-      rut: '24681357-9',
-      correo: 'usuario3@example.com',
-      perfil: 'Perfil3',
-    },
-    {
-      usuario: 'usuario1',
-      nombre: 'Nombre1',
-      rut: '12345678-9',
-      correo: 'usuario1@example.com',
-      perfil: 'Perfil1',
-    },
-    {
-      usuario: 'usuario2',
-      nombre: 'Nombre2',
-      rut: '98765432-1',
-      correo: 'usuario2@example.com',
-      perfil: 'Perfil2',
-    },
-    {
-      usuario: 'usuario3',
-      nombre: 'Nombre3',
-      rut: '24681357-9',
-      correo: 'usuario3@example.com',
-      perfil: 'Perfil3',
-    },
-    {
-      usuario: 'usuario1',
-      nombre: 'Nombre1',
-      rut: '12345678-9',
-      correo: 'usuario1@example.com',
-      perfil: 'Perfil1',
-    },
-    {
-      usuario: 'usuario2',
-      nombre: 'Nombre2',
-      rut: '98765432-1',
-      correo: 'usuario2@example.com',
-      perfil: 'Perfil2',
-    },
-    {
-      usuario: 'usuario3',
-      nombre: 'Nombre3',
-      rut: '24681357-9',
-      correo: 'usuario3@example.com',
-      perfil: 'Perfil3',
-    },
-    {
-      usuario: 'usuario1',
-      nombre: 'Nombre1',
-      rut: '12345678-9',
-      correo: 'usuario1@example.com',
-      perfil: 'Perfil1',
-    },
-    {
-      usuario: 'usuario2',
-      nombre: 'Nombre2',
-      rut: '98765432-1',
-      correo: 'usuario2@example.com',
-      perfil: 'Perfil2',
-    },
-    {
-      usuario: 'usuario3',
-      nombre: 'Nombre3',
-      rut: '24681357-9',
-      correo: 'usuario3@example.com',
-      perfil: 'Perfil3',
-    },
-    {
-      usuario: 'usuario1',
-      nombre: 'Nombre1',
-      rut: '12345678-9',
-      correo: 'usuario1@example.com',
-      perfil: 'Perfil1',
-    },
-    {
-      usuario: 'usuario2',
-      nombre: 'Nombre2',
-      rut: '98765432-1',
-      correo: 'usuario2@example.com',
-      perfil: 'Perfil2',
-    },
-    {
-      usuario: 'usuario3',
-      nombre: 'Nombre3',
-      rut: '24681357-9',
-      correo: 'usuario3@example.com',
-      perfil: 'Perfil3',
-    },
-    // Agrega más usuarios según sea necesario
-  ]);
+  dataSource = new MatTableDataSource<Usuario>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(private usuarioService: EditarUsuarioService) {}
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.usuarioService.obtenerUsuarios().subscribe({
+      next: (usuarios) => {
+        this.dataSource.data = usuarios;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => {
+        console.error('Error al obtener los datos:', error);
+      }
+    });
   }
-
   editarUsuario(user: Usuario) {
     // Lógica para editar el usuario
     console.log('Editando usuario:', user);

@@ -55,8 +55,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RutFormatterDirective } from './directives/rut-formatter.directive';
 import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 import { CognitoService } from './cognito-service.service';
-
-
+import { EditarUsuarioService } from './services/editar-usuario.service';
+import { ConsultaMasivaService } from './services/consulta-masiva.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -125,7 +125,9 @@ import { CognitoService } from './cognito-service.service';
   providers: [
     provideAnimationsAsync(),
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
-    CognitoService
+    CognitoService,
+    EditarUsuarioService,
+    ConsultaMasivaService
   ],
   bootstrap: [AppComponent],
 })

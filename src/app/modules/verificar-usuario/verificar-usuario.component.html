@@ -1,0 +1,13 @@
+<div class="verificar-container">
+    <form (ngSubmit)="verificarCodigo()">
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" [(ngModel)]="username" name="email" required>
+      </div>
+      <div>
+        <label for="codigo">Código de Verificación:</label>
+        <input type="text" [(ngModel)]="confirmationCode" name="codigo" required>
+      </div>
+      <button type="submit">Verificar</button>
+    </form>
+  </div>

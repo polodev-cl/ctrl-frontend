@@ -55,7 +55,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RutFormatterDirective } from './directives/rut-formatter.directive';
 import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 import { CognitoService } from './cognito-service.service';
-
+import { VerificarUsuarioComponent } from './modules/verificar-usuario/verificar-usuario.component';
+import { EditarUsuarioService } from './services/editar-usuario.service';
+import { ConsultaMasivaService } from './services/consulta-masiva.service';
 
 @NgModule({
   declarations: [
@@ -92,7 +94,8 @@ import { CognitoService } from './cognito-service.service';
     ModalHistorialEquipoDcpComponent,
     ModalHistorialEquipoInventarioComponent,
     UserProfileComponent,
-    RutFormatterDirective
+    RutFormatterDirective,
+    VerificarUsuarioComponent
     
     
   ],
@@ -105,7 +108,7 @@ import { CognitoService } from './cognito-service.service';
     PasswordModule,
     ButtonModule,
     MessagesModule,
-    MessageModule, // Añade AppRoutingModule aquí
+    MessageModule,
     CardModule,
     ButtonModule,
     InputTextModule,
@@ -122,10 +125,12 @@ import { CognitoService } from './cognito-service.service';
     HttpClientModule,
     AmplifyAuthenticatorModule
   ],
-  providers: [
+providers: [
     provideAnimationsAsync(),
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
-    CognitoService
+    CognitoService,
+    EditarUsuarioService,
+    ConsultaMasivaService
   ],
   bootstrap: [AppComponent],
 })

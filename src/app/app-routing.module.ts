@@ -14,6 +14,7 @@ import { EquiposDuplicadosComponent } from './modules/equipos-duplicados/equipos
 import { NumeroInventarioComponent } from './modules/numero-inventario/numero-inventario.component';
 import { AgenciaDcpComponent } from './modules/agencia-dcp/agencia-dcp.component';
 import { IngresarUsuarioComponent } from './modules/ingresar-usuario/ingresar-usuario.component';
+import { VerificarUsuarioComponent } from './modules/verificar-usuario/verificar-usuario.component'; 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -31,7 +32,7 @@ const routes: Routes = [
   { path: 'editar-usuario', component: EditarUsuarioComponent },
   { path: 'ingresar-usuario', component: IngresarUsuarioComponent },
   { path: 'equipos-duplicados', component: EquiposDuplicadosComponent },
-  
+  { path: 'verificar-usuario', component: VerificarUsuarioComponent },
 ];
 
 @NgModule({

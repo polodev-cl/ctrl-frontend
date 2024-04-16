@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { signUp } from 'aws-amplify/auth';
 
 @Component({
   selector: 'app-ingresar-usuario',
@@ -11,17 +12,44 @@ export class IngresarUsuarioComponent {
     { text: 'Ingresar-usuario', link: '/ingresar-usuario' }
   ];
 
-  mostrarModalExito: boolean = false; // Controla la visibilidad del modal exitoso
-  tituloModalExito: string = ''; // Título para el modal exitoso
-  mensajeModalExito: string = ''; // Mensaje para el modal exitoso
+
+  email: string = '';
+  password: string = 'test1234'; 
+
+  async registrarUsuario() {
+    try {
+      const { isSignUpComplete, userId, nextStep } = await signUp({
+        username: this.email,
+        password: this.password,
+        options: {
+          userAttributes: {
+            email: this.email,
+            // Otros atributos aquí...
+          },
+          autoSignIn: { enabled: false }
+        }
+      });
+      console.log('UserID:', userId);
+      // Ajusta aquí basado en la estructura de nextStep
+    } catch (error) {
+      console.error('Error en el registro de usuario:', error);
+    }
+  }
+
+
+  mostrarModalExito: boolean = false; 
+  tituloModalExito: string = ''; 
+  mensajeModalExito: string = ''; 
 
   abrirModalExito(): void {
-    this.tituloModalExito = 'Ingreso Usuario'; // Define el título
-    this.mensajeModalExito = 'Usuario JPerez ha sido ingresado con éxito'; // Define el mensaje
-    this.mostrarModalExito = true; // Muestra el modal
+    this.tituloModalExito = 'Ingreso Usuario'; 
+    this.mensajeModalExito = 'Usuario JPerez ha sido ingresado con éxito'; 
+    this.mostrarModalExito = true; 
   }
 
   cerrarModalExito(): void {
-    this.mostrarModalExito = false; // Oculta el modal
+    this.mostrarModalExito = false; 
   }
+
+
 }

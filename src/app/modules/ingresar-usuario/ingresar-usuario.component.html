@@ -110,13 +110,16 @@
       </div>
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <span class="p-float-label">
-          <input class="w-100 rounded" id="inventario" type="text" pInputText />
-          <label for="inventario">Correo</label>
+          <input class="w-100 rounded" id="correo" [(ngModel)]="email" type="email" pInputText required />
+          <label for="correo">Correo Electrónico</label>
         </span>
       </div>
       <div class="col-md-4 d-flex justify-content-end align-items-end">
-        <button pButton type="button" class="search-button px-5 py-2 mb-3" (click)="abrirModalExito()">
+        <!-- <button pButton type="button" class="search-button px-5 py-2 mb-3" (click)="abrirModalExito()">
           Ingresar
+        </button> -->
+        <button pButton type="button" class="search-button px-5 py-2 mb-3" (click)="registrarUsuario()">
+          Registrar
         </button>
       </div>
     </div>

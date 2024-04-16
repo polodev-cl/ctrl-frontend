@@ -20,6 +20,7 @@ export class LoginComponent {
 
   async signIn() {
     try {
+      await this.cognitoService.signOut().catch(error => console.error('Error al cerrar sesión previa, continuando con el inicio de sesión:', error));
       const signInStep = await this.cognitoService.handleSignIn({ username: this.usuario, password: this.password });
       if (signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED') {
         this.requireNewPassword = true;

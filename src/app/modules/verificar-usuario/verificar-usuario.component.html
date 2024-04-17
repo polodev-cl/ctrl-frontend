@@ -1,13 +1,43 @@
-<div class="verificar-container">
-    <form (ngSubmit)="verificarCodigo()">
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" [(ngModel)]="username" name="email" required>
+<div class="foto-container">
+  <img src="../../../assets/image/Foto-fondo.jpg" class="background-image" alt="" />
+  <div class="container">
+ 
+
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6 text-center mt-5">
+        <div class="justify-content-center">
+          <img class="logo" src="../../../assets/image/LogoGrande.svg" alt="logo" />
+        </div>
+        <p-card class="row justify-content-center">
+          <form class="p-fluid" (ngSubmit)="verificarCodigo()">
+            <!-- Display error message -->
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+            <!-- Email Input -->
+            <div class="p-field mb-3">
+              <input type="email" pInputText placeholder="Email" [(ngModel)]="username" name="username" class="input-color" required>
+            </div>
+
+            <!-- Verification Code Input -->
+            <div class="p-field mb-3">
+              <input type="text" pInputText placeholder="Código de verificación" [(ngModel)]="confirmationCode" name="confirmationCode" class="input-color" required>
+            </div>
+
+            <!-- Verify Button -->
+            <button pButton type="submit" label="Verificar" class="p-button-rounded mt-5"></button>
+            <button pButton routerLink="/login" type="button" label="Volver" class="back-button mt-3"></button>
+          </form>
+        </p-card>
       </div>
-      <div>
-        <label for="codigo">Código de Verificación:</label>
-        <input type="text" [(ngModel)]="confirmationCode" name="codigo" required>
-      </div>
-      <button type="submit">Verificar</button>
-    </form>
+   
+
+    </div>
+ 
   </div>
+  <app-modal-exitoso
+  *ngIf="mostrarModalExito"
+  [titulo]="tituloModalExito"
+  [mensajeModal]="mensajeModalExito"
+  (cerrar)="cerrarModalExito()">
+</app-modal-exitoso>
+</div>

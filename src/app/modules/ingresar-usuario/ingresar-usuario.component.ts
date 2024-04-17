@@ -12,13 +12,13 @@ export class IngresarUsuarioComponent {
     { text: 'Ingresar-usuario', link: '/ingresar-usuario' }
   ];
 
-
+  nombreUsuario: string = ''; 
   email: string = '';
   password: string = 'test1234'; 
 
   async registrarUsuario() {
     try {
-      const { isSignUpComplete, userId, nextStep } = await signUp({
+      await signUp({
         username: this.email,
         password: this.password,
         options: {
@@ -26,11 +26,11 @@ export class IngresarUsuarioComponent {
             email: this.email,
             // Otros atributos aquí...
           },
-          autoSignIn: { enabled: false }
+          autoSignIn: { enabled: true }
         }
       });
-      console.log('UserID:', userId);
-      // Ajusta aquí basado en la estructura de nextStep
+      // Llamar al modal de éxito inmediatamente después de la promesa signUp
+      this.abrirModalExito();
     } catch (error) {
       console.error('Error en el registro de usuario:', error);
     }
@@ -42,9 +42,9 @@ export class IngresarUsuarioComponent {
   mensajeModalExito: string = ''; 
 
   abrirModalExito(): void {
-    this.tituloModalExito = 'Ingreso Usuario'; 
-    this.mensajeModalExito = 'Usuario JPerez ha sido ingresado con éxito'; 
-    this.mostrarModalExito = true; 
+    this.tituloModalExito = 'Ingreso Usuario';
+    this.mensajeModalExito = `Usuario ${this.nombreUsuario} ha sido ingresado con éxito`;
+    this.mostrarModalExito = true;
   }
 
   cerrarModalExito(): void {

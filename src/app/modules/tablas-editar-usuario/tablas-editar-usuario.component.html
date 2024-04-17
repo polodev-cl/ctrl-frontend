@@ -2,19 +2,16 @@
   <app-modal-eliminar
     *ngIf="mostrarModalEliminar"
     (cerrar)="cerrarModalEliminar()"
-    (exito)="abrirModalExito()"
+    (exito)="confirmarEliminacion()"
   >
-    <!-- Este manejará la apertura del modal de éxito -->
   </app-modal-eliminar>
 
-  <!-- Asegúrate de que el modal de éxito también está en tu componente padre y se muestra basado en mostrarModalExito -->
   <app-modal-exitoso
     *ngIf="mostrarModalExito"
     [titulo]="tituloModalExito"
     [mensajeModal]="mensajeModalExito"
     (cerrar)="cerrarModalExito()"
   >
-    <!-- Este manejará el cierre del modal de éxito -->
   </app-modal-exitoso>
 
   <app-modal-editar
@@ -114,7 +111,7 @@
             <button
               mat-button
               class="hidden-button"
-              (click)="eliminarUsuario(element); abrirModalEliminar()"
+              (click)="abrirModalEliminar(element)"
             >
               <img src="../../../../assets/image/trash-2.svg" class="imagen" />
             </button>

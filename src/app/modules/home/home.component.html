@@ -64,11 +64,11 @@
           <p class="nav-link text-end">Perfil</p>
           <ul class="navbar-nav">
             <li class="navbar-item">
-              <app-user-profile></app-user-profile>
+              
+              <a href="#" class="nav-link" (click)="cerrarSesion()">Cerrar sesión</a>
             </li>
           </ul>
         </li>
-        <!-- Mostrar solo "Perfil" en pantallas pequeñas -->
         <li class="navbar-item">
           <a href="#" class="nav-link d-lg-none" (click)="cerrarSesion()">Cerrar sesión</a>
         </li>

@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EditarUsuarioService } from '../../services/editar-usuario.service';
 
 interface Usuario {
+  id: number;  
   usuario: string;
   nombre: string;
   rut: string;
@@ -18,6 +19,8 @@ interface Usuario {
   styleUrls: ['./tablas-editar-usuario.component.css'],
 })
 export class TablasEditarUsuarioComponent implements AfterViewInit {
+  usuarioAEliminar: Usuario | null = null;
+
   displayedColumns: string[] = [
     'usuario',
     'nombre',
@@ -46,7 +49,6 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
     });
   }
   editarUsuario(user: Usuario) {
-    // Lógica para editar el usuario
     console.log('Editando usuario:', user);
     this.cerrarModalEditar();
   }
@@ -56,7 +58,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   mensajeModalEditar: string = '';
   mostrarModalExito: boolean = false;
   mostrarModalEditar: boolean = false;
-  mostrarModalEliminar: boolean = false; // Asegúrate de que esta propiedad exista
+  mostrarModalEliminar: boolean = false; 
 
   //editar
   abrirModalEditar(): void {
@@ -65,43 +67,82 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   }
 
   onEditarUsuarioExitoso(): void {
-    this.cerrarModalEditar(); // Cierra el modal de editar
-
-    // Configura y abre el modal de éxito
+    this.cerrarModalEditar(); 
     this.tituloModalExito = 'Editar Usuario';
     this.mensajeModalExito = 'El usuario JPerez ha sido actualizado con éxito.';
     this.mostrarModalExito = true;
   }
 
   cerrarModalEditar(): void {
-    // Solo cierra el modal de eliminar
+
     this.mostrarModalEditar = false;
   }
 
-  //eliminar
-  abrirModalEliminar(): void {
-    this.mostrarModalEliminar = true;
+  abrirModalEliminar(user: Usuario): void {
+    this.usuarioAEliminar = user; 
+    this.mostrarModalEliminar = true; 
+}
+confirmarEliminacion(): void {
+  if (this.usuarioAEliminar) {
+      this.eliminarUsuario(this.usuarioAEliminar);
+  } else {
+      console.error('Error: No hay un usuario especificado para eliminar.');
   }
+}
 
-  cerrarModalEliminar(): void {
-    this.mostrarModalEliminar = false;
+  
+  
+cerrarModalEliminar(): void {
+  this.mostrarModalEliminar = false;
+  this.usuarioAEliminar = null; 
+}
+
+abrirModalExito(): void {
+  if (this.usuarioAEliminar) {
+      this.tituloModalExito = 'Eliminar Usuario';
+      this.mensajeModalExito = `Usuario ${this.usuarioAEliminar.nombre} ha sido eliminado con éxito.`;
+      this.mostrarModalExito = true;
+      this.mostrarModalEliminar = false;
+      this.usuarioAEliminar = null; 
+  } else {
+      console.error('No hay un usuario especificado para eliminar.');
   }
+}
 
-  abrirModalExito(): void {
-    this.tituloModalExito = 'Eliminar Usuario';
-    this.mensajeModalExito = 'Usuario JPerez ha sido eliminado con éxito.';
-    this.mostrarModalExito = true;
-
-    this.mostrarModalEliminar = false;
-  }
 
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
   }
 
   eliminarUsuario(user: Usuario) {
-    console.log('Eliminando usuario:', user);
+    console.log('Intentando eliminar usuario:', user);
 
-    this.cerrarModalEliminar();
+    this.usuarioService.eliminarUsuario(user.id).subscribe({
+        next: (response) => {
+            console.log('Usuario eliminado con éxito', response);
+            this.abrirModalExito(); 
+            this.recargarUsuarios(); 
+        },
+        error: (error) => {
+            console.error('Error al eliminar el usuario:', error);
+          
+        }
+    });
+}
+
+  
+  recargarUsuarios() {
+    this.usuarioService.obtenerUsuarios().subscribe({
+      next: (usuarios) => {
+        this.dataSource.data = usuarios;
+      },
+      error: (error) => {
+        console.error('Error al obtener los datos:', error);
+
+      }
+    });
   }
+  
+  
+  
 }

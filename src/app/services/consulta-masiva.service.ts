@@ -4,13 +4,35 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
 interface Equipamiento {
-  inventario: number;
-  nombre: string;
+  id: number;
+  fechaCreacion: string;
+  fechaModificacion: string;
+  estado: number;
+  fechaIngreso: string;
+  ordenCompra: string;
+  rut: string;
   ageId: number;
+  ageNemonico: string;
   ageDpc: number;
-  empresa: string;
-  usuario: string;
+  inventario: number;
+  tipo: string;
+  sistemaOperativo: string;
+  sistemaOperativoVersion: string;
+  uso: string;
+  marca: string;
   modelo: string;
+  mac: string;
+  ip: string;
+  nombre: string;
+  procesador: string;
+  ramGb: number;
+  disco: string;
+  ddllTbk: string;
+  serie: string;
+  encargadoAgencia: string;
+  ubicacion: string;
+  garantiaMeses: number;
+  fechaEliminacion?: any;
 }
 
 interface Consulta {
@@ -18,8 +40,8 @@ interface Consulta {
   equipo: string;
   dcp: string;
   agencia: string;
-  empresa: string;
-  usuario: string;
+  empresa: string; // Asegúrate de que este campo está disponible o maneja un valor predeterminado
+  usuario: string; // Asegúrate de que este campo está disponible o maneja un valor predeterminado
   modelo: string;
 }
 
@@ -45,6 +67,7 @@ export class ConsultaMasivaService {
       })))
     );
   }
+
 
   
 }

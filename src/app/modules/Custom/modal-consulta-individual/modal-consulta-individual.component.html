@@ -4,7 +4,8 @@
     <div *ngIf="tipoConsulta === 'usuario'">
       <div>Usuario / rut</div>
       <div class="form-group mt-3">
-        <input class="input-color" id="usuarioInput" type="text" pInputText placeholder="Ingresar usuario o rut" />
+        <input class="input-color" id="usuarioInput" type="text" [(ngModel)]="rut" pInputText placeholder="Ingresar usuario o rut" />
+
       </div>
     </div>
     <div *ngIf="tipoConsulta === 'agencia'">

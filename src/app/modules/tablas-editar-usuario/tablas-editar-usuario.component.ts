@@ -39,6 +39,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.usuarioService.obtenerUsuarios().subscribe({
       next: (usuarios) => {
+        console.log('Usuarios obtenidos:', usuarios);
         this.dataSource.data = usuarios;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -48,6 +49,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
       }
     });
   }
+  
   editarUsuario(user: Usuario) {
     console.log('Editando usuario:', user);
     this.cerrarModalEditar();

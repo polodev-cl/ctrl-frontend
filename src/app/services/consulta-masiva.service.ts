@@ -27,25 +27,24 @@ interface Consulta {
   providedIn: 'root'
 })
 export class ConsultaMasivaService {
-  private apiUrl = 'http://127.0.0.1:3000/api/equipment';
+  private apiUrl = 'https://nqyw4kymuud65aoxwslnl3jqhe0unvrn.lambda-url.us-east-1.on.aws/api/equipment';
 
   constructor(private http: HttpClient) {}
 
+
   obtenerEquipamiento(): Observable<Consulta[]> {
-    return this.http.get<{content: Equipamiento[]}>(this.apiUrl).pipe(
-      map(response => {
-        const transformed = response.content.map(item => ({
-          inventario: item.inventario,
-          equipo: item.nombre,
-          dcp: item.ageDpc.toString(),
-          agencia: item.ageId.toString(),
-          empresa: 'Nombre de la Empresa',
-          usuario: 'Nombre del Usuario',
-          modelo: item.modelo
-        }));
-        console.log('Datos:', transformed); // Log transformed data
-        return transformed;
-      })
+    return this.http.get<any[]>(this.apiUrl).pipe(
+      map(data => data.map(item => ({
+        inventario: item.inventario,               // Número de inventario
+        equipo: item.nombre,                       // Nombre del equipo
+        dcp: item.ageDpc.toString(),               // DPC de la agencia convertido a string
+        agencia: item.ageId.toString(),            // ID de la agencia convertido a string
+        empresa: 'Nombre de la Empresa',           // Nombre de la empresa (estático)
+        usuario: 'Nombre del Usuario',             // Nombre del usuario (estático)
+        modelo: item.modelo                        // Modelo del equipo
+      })))
     );
   }
+
+  
 }

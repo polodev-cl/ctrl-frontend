@@ -16,24 +16,21 @@ interface Usuario {
   providedIn: 'root'
 })
 export class EditarUsuarioService {
-  private apiUrl = 'http://127.0.0.1:3000/api/user'; 
-
+  private apiUrl = 'https://nqyw4kymuud65aoxwslnl3jqhe0unvrn.lambda-url.us-east-1.on.aws/api/user'; 
   constructor(private http: HttpClient) { }
+
   obtenerUsuarios(): Observable<Usuario[]> {
-    return this.http.get<{content: any[], statusCode: number, path: string, method: string, timestamp: string}>(this.apiUrl).pipe(
-      map(response => {
-        return response.content.map(item => ({
-          id: item.id,  // Asegúrate de extraer el ID aquí
-          usuario: item.email.split('@')[0],
-          nombre: `${item.nombres} ${item.apellidos}`,
-          rut: '', 
-          correo: item.email,
-          perfil: `${item.rolId}` 
-        }));
-      })
+    return this.http.get<any[]>(this.apiUrl).pipe(
+      map(data => data.map(item => ({
+        id: item.id,
+        usuario: item.email.split('@')[0],  // Extrayendo el nombre de usuario del email
+        nombre: `${item.nombres} ${item.apellidos}`,  // Combinando nombres y apellidos
+        rut: '', // No se proporciona un RUT en el objeto, por lo tanto, se deja vacío
+        correo: item.email,
+        perfil: item.rolId.toString()  // Convirtiendo el rolId a string si es necesario
+      })))
     );
   }
-  
 
   eliminarUsuario(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

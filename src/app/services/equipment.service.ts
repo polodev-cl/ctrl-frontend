@@ -10,10 +10,9 @@ export class EquipmentService {
 
   constructor(private http: HttpClient) { }
 
-  getEquipmentByRut(rut: string): Observable<any> {
+  getEquipmentByRut(rut: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}?rut=${rut}`).pipe(
-      tap(data => console.log('Data from API:', data)),
-      map(equipments => equipments[0] || null) // Suponiendo que la API devuelve un arreglo
+      tap(data => console.log('Data from API:', data))
     );
-  }
+}
 }

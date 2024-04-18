@@ -96,17 +96,17 @@
     </div>
 
     <div class="row mt-4 mb-3">
-      <div class="col-md-6">
+      <div *ngFor="let equipment of equipments; let i = index" class="col-md-6">
         <div class="card border rounded card-shadow-box">
           <div class="card-body">
             <div class="row">
               <div class="col">
-                <h5 class="card-title">Datos del equipo #1</h5>
+                <h5 class="card-title">Datos del equipo #{{ i + 1 }}</h5>
               </div>
               <div class="col-auto">
-                <span class="badge bg-secondary tiempo-garantia"
-                  >    Tiempo de garantía: {{ equipment.garantiaMeses ? equipment.garantiaMeses + ' Meses' : 'Información no disponible' }}</span
-                >
+                <span class="badge bg-secondary tiempo-garantia">
+                  Tiempo de garantía: {{ equipment.garantiaMeses ? equipment.garantiaMeses + ' Meses' : 'Información no disponible' }}
+                </span>
               </div>
             </div>
             <div class="row mt-3">
@@ -121,86 +121,22 @@
                 <p><strong>Número CI:</strong> {{ equipment.inventario }}</p>
                 <p><strong>Agencia:</strong> {{ equipment.ageNemonico }}</p>
                 <p><strong>DPC:</strong> {{ equipment.ageDpc }}</p>
-                <p>
-                  <strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }}
-                </p>
-                <p>
-                  <strong>Estado:</strong>
-                  {{ equipment.estado === 1 ? "Activo" : "Inactivo" }}
-                </p>
+                <p><strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }}</p>
+                <p><strong>Estado:</strong> {{ equipment.estado === 1 ? 'Activo' : 'Inactivo' }}</p>
               </div>
               <div class="col-4">
-                <img
-                  src="../../../assets/image/placeholder.jpg"
-                  alt="Imagen del equipo"
-                  class="team-image img-fluid"
-                />
+                <img src="../../../assets/image/placeholder.jpg" alt="Imagen del equipo" class="team-image img-fluid"/>
               </div>
             </div>
             <div class="row mt-3">
               <div class="col-12 col-md-4 mb-3 pe-md-0">
-                <button
-                  pButton
-                  type="button"
-                  label="Ver Historial"
-                  class="historial-button p-2 w-100"
-                  (click)="abrirModalHistorialEquipo()"
-                ></button>
+                <button pButton type="button" label="Ver Historial" class="historial-button p-2 w-100" (click)="abrirModalHistorialEquipo()"></button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 mt-4 mt-md-0">
-        <div class="card border rounded card-shadow-box">
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <h5 class="card-title">Datos del equipo #2</h5>
-              </div>
-              <div class="col-auto">
-                <span class="badge bg-secondary tiempo-garantia">
-                  Tiempo de garantía
-                  </span >
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-4">
-                <p><strong>Equipo:</strong> Escáner</p>
-                <p><strong>Marca:</strong> Epson</p>
-                <p><strong>Modelo:</strong> ES-500W</p>
-                <p><strong>Caja:</strong> No</p>
-                <p><strong>Ubicación:</strong> Escritorio</p>
-              </div>
-              <div class="col-4">
-                <p><strong>Número CI:</strong> 30120</p>
-                <p><strong>Agencia:</strong> Central</p>
-                <p><strong>DPC:</strong> 145</p>
-                <p><strong>Nemónico:</strong> SCL-b</p>
-                <p><strong>Estado:</strong> Activo</p>
-              </div>
-              <div class="col-4">
-                <img
-                  src="../../../assets/image/placeholder.jpg"
-                  alt="Imagen del equipo"
-                  class="team-image img-fluid"
-                />
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-12 col-md-4 mb-3 pe-md-0">
-                <button
-                  pButton
-                  type="button"
-                  label="Ver Historial"
-                  class="historial-button p-2 w-100"
-                  (click)="abrirModalHistorialEquipo()"
-                ></button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
+   
   </div>
 </div>

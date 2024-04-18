@@ -12,7 +12,7 @@ export class DataUsuarioRutComponent {
     { text: 'Consulta individual', link: '/consulta-individual' },
     { text: 'Usuario-rut', link: '/data-rut-usuario' },
   ];
-  equipment: any = null;
+  equipments: any[] = []; 
   rut: string = '';
   mostrarModalHistorialEquipo: boolean = false;
 
@@ -30,15 +30,15 @@ export class DataUsuarioRutComponent {
   buscarPorRut(rut: string): void {
     this.equipmentService.getEquipmentByRut(rut).subscribe({
       next: (data) => {
-        this.equipment = data;
-        console.log('Received equipment:', data);
+        this.equipments = data;  // Asegúrate de que data es un arreglo y se asigna correctamente
+        console.log('Received equipments:', data);
       },
       error: (error) => {
         console.error('Error fetching data:', error);
-        this.equipment = null;
+        this.equipments = [];  // Asigna un arreglo vacío en caso de error
       }
     });
-  }
+}
   //consulta masiva
   abrirModalHistorialEquipo(): void {
     this.mostrarModalHistorialEquipo = true;

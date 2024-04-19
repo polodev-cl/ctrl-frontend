@@ -37,7 +37,7 @@
           <p class="nav-link text-end">Perfil</p>
           <ul class="navbar-nav">
             <li class="navbar-item">
-              <app-user-profile></app-user-profile>
+             
             </li>
           </ul>
         </li>
@@ -96,7 +96,7 @@
     </div>
 
     <div class="row mt-4 mb-3">
-      <div *ngFor="let equipment of equipments; let i = index" class="col-md-6">
+      <div *ngFor="let equipment of equipments; let i = index" class="col-md-6 mb-4">
         <div class="card border rounded card-shadow-box">
           <div class="card-body">
             <div class="row">
@@ -105,7 +105,12 @@
               </div>
               <div class="col-auto">
                 <span class="badge bg-secondary tiempo-garantia">
-                  Tiempo de garantía: {{ equipment.garantiaMeses ? equipment.garantiaMeses + ' Meses' : 'Información no disponible' }}
+                  Tiempo de garantía:
+                  {{
+                    equipment.garantiaMeses
+                      ? equipment.garantiaMeses + " Meses"
+                      : "Información no disponible"
+                  }}
                 </span>
               </div>
             </div>
@@ -121,22 +126,36 @@
                 <p><strong>Número CI:</strong> {{ equipment.inventario }}</p>
                 <p><strong>Agencia:</strong> {{ equipment.ageNemonico }}</p>
                 <p><strong>DPC:</strong> {{ equipment.ageDpc }}</p>
-                <p><strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }}</p>
-                <p><strong>Estado:</strong> {{ equipment.estado === 1 ? 'Activo' : 'Inactivo' }}</p>
+                <p>
+                  <strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }}
+                </p>
+                <p>
+                  <strong>Estado:</strong>
+                  {{ equipment.estado === 1 ? "Activo" : "Inactivo" }}
+                </p>
               </div>
               <div class="col-4">
-                <img src="../../../assets/image/placeholder.jpg" alt="Imagen del equipo" class="team-image img-fluid"/>
+                <img
+                  src="../../../assets/image/placeholder.jpg"
+                  alt="Imagen del equipo"
+                  class="team-image img-fluid"
+                />
               </div>
             </div>
             <div class="row mt-3">
               <div class="col-12 col-md-4 mb-3 pe-md-0">
-                <button pButton type="button" label="Ver Historial" class="historial-button p-2 w-100" (click)="abrirModalHistorialEquipo()"></button>
+                <button
+                  pButton
+                  type="button"
+                  label="Ver Historial"
+                  class="historial-button p-2 w-100"
+                  (click)="abrirModalHistorialEquipo()"
+                ></button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      </div>
-   
+    </div>
   </div>
 </div>

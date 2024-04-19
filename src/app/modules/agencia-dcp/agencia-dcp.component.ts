@@ -20,7 +20,7 @@ export class AgenciaDcpComponent {
   constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {}
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.agenciaDpc = params['agenciaDpc']; // Captura el DPC desde los parámetros de ruta
+      this.agenciaDpc = params['agenciaDpc']; 
       if (this.agenciaDpc) {
         this.buscarPorDpc(this.agenciaDpc);
       }

@@ -22,4 +22,10 @@ export class EquipmentService {
       tap(data => console.log('Data from API:', data))
     );
   }
+
+  getEquipmentByInventory(inventoryNumber: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}?inventario=${inventoryNumber}`).pipe(
+      tap(data => console.log('Data from API:', data))
+    );
+}
 }

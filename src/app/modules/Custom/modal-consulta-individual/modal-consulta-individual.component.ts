@@ -11,14 +11,16 @@ export class ModalConsultaIndividualComponent {
   @Output() cerrar = new EventEmitter<void>();
   rut: string = ''; 
   noResultsFound: boolean = false;
+  inventario: number | null = null;
   dpc: number | null = null;
 
   constructor(private router: Router, private equipmentService: EquipmentService) {}
 
   cerrarModal(): void {
     this.cerrar.emit();
-    this.noResultsFound = false; // Resetear el flag al cerrar
+    this.noResultsFound = false;
   }
+
 
   buscar(): void {
     if (this.tipoConsulta === 'usuario' && this.rut) {
@@ -27,11 +29,11 @@ export class ModalConsultaIndividualComponent {
           if (data.length > 0) {
             this.router.navigate(['/data-usuario-rut', { rut: this.rut }]);
           } else {
-            this.noResultsFound = true; // Mostrar mensaje de no resultados en el modal
+            this.noResultsFound = true;
           }
         },
         error: () => {
-          this.noResultsFound = true; // Mostrar mensaje de error en el modal
+          this.noResultsFound = true;
         }
       });
     } else if (this.tipoConsulta === 'agencia' && this.dpc !== null) {
@@ -47,9 +49,19 @@ export class ModalConsultaIndividualComponent {
           this.noResultsFound = true;
         }
       });
-    } else if (this.tipoConsulta === 'inventario') {
-      this.router.navigate(['/data-numero-inventario']);
+    } else if (this.tipoConsulta === 'inventario' && this.inventario !== null) {
+      this.equipmentService.getEquipmentByInventory(this.inventario).subscribe({
+        next: (data) => {
+          if (data.length > 0) {
+            this.router.navigate(['/data-numero-inventario', { inventario: this.inventario }]);
+          } else {
+            this.noResultsFound = true;
+          }
+        },
+        error: () => {
+          this.noResultsFound = true;
+        }
+      });
     }
   }
-  
 }

@@ -22,7 +22,10 @@
     <div *ngIf="tipoConsulta === 'inventario'">
       <div>Número de inventario</div>
       <div class="form-group mt-3">
-        <input class="input-color" id="inventarioInput" type="text" pInputText placeholder="Ingresar N° de inventario" />
+        <input class="input-color" type="number" [(ngModel)]="inventario" pInputText placeholder="Ingresar N° de inventario" />
+        <div *ngIf="noResultsFound" class="alert alert-warning mt-2">
+          No se encontraron equipos con el número de inventario proporcionado.
+        </div>
       </div>
     </div>
     <div class="button-group d-flex justify-content-between mt-5 mb-3">

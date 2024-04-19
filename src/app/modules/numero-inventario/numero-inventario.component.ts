@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { EquipmentService } from '../../services/equipment.service';
 
 @Component({
   selector: 'app-numero-inventario',
@@ -11,8 +13,35 @@ export class NumeroInventarioComponent {
     { text: 'Consulta individual', link: '/consulta-individual' },
     { text: 'Número de inventario', link: '/data-numero-inventario' },
   ];
-
+  equipments: any[] = [];
+  inventario: number | null = null;
   mostrarModalHistorialEquipo: boolean = false;
+
+
+  constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {}
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.inventario = +params['inventario'];  // Convertir a número
+      if (this.inventario) {
+        this.buscarPorInventario(this.inventario);
+      }
+    });
+  }
+
+  buscarPorInventario(inventario: number): void {
+    this.equipmentService.getEquipmentByInventory(inventario).subscribe({
+      next: (data) => {
+        this.equipments = data;
+        console.log('Received equipments:', data);
+      },
+      error: (error) => {
+        console.error('Error fetching data:', error);
+        this.equipments = [];  // Asumir que no hay resultados si hay error
+      }
+    });
+  }
+
 
   //consulta masiva
   abrirModalHistorialEquipo(): void {

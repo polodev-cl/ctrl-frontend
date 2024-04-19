@@ -5,13 +5,18 @@
       <div>Usuario / rut</div>
       <div class="form-group mt-3">
         <input class="input-color" id="usuarioInput" type="text" [(ngModel)]="rut" pInputText placeholder="Ingresar usuario o rut" />
-
+        <div *ngIf="noResultsFound" class="alert alert-warning mt-2">
+          No se encontraron equipos con el RUT proporcionado.
+        </div>
       </div>
     </div>
     <div *ngIf="tipoConsulta === 'agencia'">
       <div>Agencia / DPC</div>
       <div class="form-group mt-3">
-        <input class="input-color" id="agenciaInput" type="text" pInputText placeholder="Ingresar agencia o DPC" />
+        <input class="input-color" type="number" [(ngModel)]="dpc" pInputText placeholder="Ingresar agencia o DPC" />
+        <div *ngIf="noResultsFound" class="alert alert-warning mt-2">
+          No se encontraron equipos con el DPC proporcionado.
+        </div>
       </div>
     </div>
     <div *ngIf="tipoConsulta === 'inventario'">

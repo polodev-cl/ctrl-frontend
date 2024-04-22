@@ -132,12 +132,10 @@
         class="form-select py-3 color-select"
       >
         <option [ngValue]="undefined" disabled>Empresa</option>
-        <option
-          *ngFor="let empresa of empresaOptions"
-          [ngValue]="empresa.value"
-        >
+        <option *ngFor="let empresa of empresaOptions" [ngValue]="empresa.value">
           {{ empresa.label }}
         </option>
+        
       </select>
     </div>
 

@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 export interface Company {
   id: number;
-  nombreCorto: string; 
+  razonSocial: string; 
 }
 
 export interface Agency {

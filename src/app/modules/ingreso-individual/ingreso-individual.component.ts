@@ -56,7 +56,7 @@ export class IngresoIndividualComponent implements OnInit {
       next: (companies) => {
         this.empresaOptions = companies.map((company) => ({
           value: company.id.toString(),
-          label: company.nombreCorto
+          label: company.razonSocial 
         }));
         console.log('Opciones de empresa configuradas:', this.empresaOptions);
       },
@@ -65,13 +65,12 @@ export class IngresoIndividualComponent implements OnInit {
       },
     });
   }
-
+  
   onEmpresaChange(): void {
     if (this.selectedEmpresa) {
       this.agencyService.getAgenciesByCompanyId(+this.selectedEmpresa).subscribe(agencies => {
         this.agencies = agencies;
         this.selectedAgency = undefined;
-        // Elimina las siguientes líneas si dpc y nemonico ya no son necesarios como listas
         this.dpcOptions = [];           
         this.nemonicoOptions = [];       
         this.selectedDPC = '';

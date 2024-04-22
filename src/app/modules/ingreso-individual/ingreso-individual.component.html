@@ -188,12 +188,11 @@
       </span>
     </div>
     <div class="grid-item my-3">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Tipo Equipo</option>
-        <option>Equipo 2</option>
-        <option>Equipo 3</option>
-        <option>Equipo 4</option>
+      <select [(ngModel)]="selectedType" (change)="onTypeChange()" class="form-select py-3 color-select">
+        <option value="" selected disabled>Tipo de Equipo</option>
+        <option *ngFor="let type of equipmentTypes" [ngValue]="type.value">{{ type.label }}</option>
       </select>
+      
     </div>
     <div class="grid-item my-3">
       <select

@@ -24,10 +24,15 @@ export class IngresoIndividualComponent implements OnInit {
     { text: 'Home', link: '/home' },
     { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
-
+  selectedType: string = ''; 
   selectedEmpresa: string | undefined = undefined;
   empresaOptions: Option[] = [];
 
+  equipmentTypes: Option[] = [
+    { value: 'PC', label: 'PC' },
+    { value: 'Impresora', label: 'Impresora' },
+
+  ];
   agencies: Agency[] = [];
   selectedAgency?: Agency;
 
@@ -99,10 +104,26 @@ export class IngresoIndividualComponent implements OnInit {
     this.isValidDDLTBK = isValid;
   }
 
-  loadSOData(): void {
-    this.soService.getSOData().subscribe((datos) => {
-      this.sistemasOperativos = datos;
+  onTypeChange(): void {
+    this.soService.getSODataByType(this.selectedType).subscribe((soOptions: SOVersion[]) => {
+      this.sistemasOperativos = soOptions;
+      this.selectedSO = '';
+      this.versionesFiltradas = [];
+      this.selectedVersion = '';
     });
+  }
+  
+  loadSOData(): void {
+    // Asumiendo que tienes una forma de obtener el 'type' adecuado
+    // Si no es así, necesitarás ajustar esta lógica para obtenerlo de alguna manera
+    const type = this.getSelectedType();
+    this.soService.getSODataByType(type).subscribe((soOptions: SOVersion[]) => {
+      this.sistemasOperativos = soOptions;
+    });
+  }
+  getSelectedType(): string {
+    // Tu lógica para obtener el tipo seleccionado
+    return this.selectedType;
   }
 
   onSOChange(): void {

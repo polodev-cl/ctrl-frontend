@@ -1,40 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-interface Option {
-  value: string;
-  label: string;
+
+export interface Company {
+  id: number;
+  nombreCorto: string; 
 }
 
-interface Agency {
-  id: string;
-  name: string;
-  dpcs: Option[];
-  nemonicos: Option[];
+export interface Agency {
+  id: number;
+  nombre: string;
+  nemonico: string;
+  dpc: number;
+  empId: number;
 }
-
-interface Empresa {
-  id: string;
-  name: string;
-  agencias: Agency[];
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class AgencyService {
-  private apiUrl = 'https://c7rm6ixvk5y6wldk52t5vh4uo40bjzcx.lambda-url.us-east-1.on.aws/';
+  private companyApiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/company';
+  private agencyApiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/agency';
 
   constructor(private http: HttpClient) {}
 
-  getEmpresas(): Observable<Empresa[]> {
-    return this.http.get<Empresa[]>(`${this.apiUrl}`);
+  getCompanies(): Observable<Company[]> {
+    return this.http.get<Company[]>(`${this.companyApiUrl}`);
   }
 
-  getAgenciasPorEmpresa(idEmpresa: string): Observable<Agency[]> {
-    return this.getEmpresas().pipe(
-      map(empresas => empresas.find(empresa => empresa.id === idEmpresa)?.agencias || [])
+  getAgenciesByCompanyId(companyId: number): Observable<Agency[]> {
+    return this.http.get<Agency[]>(`${this.agencyApiUrl}`).pipe(
+      map(agencies => agencies.filter(agency => agency.empId === companyId))
     );
   }
 }

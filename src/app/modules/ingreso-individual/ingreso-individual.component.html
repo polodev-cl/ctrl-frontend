@@ -150,8 +150,9 @@
       >
         <option [ngValue]="undefined" disabled>Agencia</option>
         <option *ngFor="let agency of agencies" [ngValue]="agency">
-          {{ agency.name }}
+          {{ agency.nombre }}
         </option>
+        
       </select>
     </div>
     <div class="grid-item my-3">
@@ -181,7 +182,7 @@
         />
         <label for="nemonico">Nemónico</label>
       </span>
-    </div>
+    </div>    
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="inventario" type="Number" pInputText />

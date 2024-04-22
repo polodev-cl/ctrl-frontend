@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AgencyService } from './AgencyService';
+import { AgencyService, Company, Agency } from './AgencyService';
 import { SOService, SOVersion } from './SOService';
 import {
   checkIpAddress,
@@ -12,18 +12,7 @@ interface Option {
   label: string;
 }
 
-interface Agency {
-  id: string;
-  name: string;
-  dpcs: Option[];
-  nemonicos: Option[];
-}
 
-interface Empresa {
-  id: string;
-  name: string;
-  agencias: Agency[];
-}
 
 @Component({
   selector: 'app-ingreso-individual',
@@ -63,27 +52,26 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   loadEmpresas(): void {
-    this.agencyService.getEmpresas().subscribe({
-      next: (empresas) => {
-        console.log('Empresas cargadas:', empresas);
-        this.empresaOptions = empresas.map(empresa => ({
-          value: empresa.id,
-          label: empresa.name
+    this.agencyService.getCompanies().subscribe({
+      next: (companies) => {
+        this.empresaOptions = companies.map((company) => ({
+          value: company.id.toString(),
+          label: company.nombreCorto
         }));
         console.log('Opciones de empresa configuradas:', this.empresaOptions);
       },
       error: (error) => {
         console.error('Error al cargar empresas:', error);
-      }
+      },
     });
   }
-  
 
   onEmpresaChange(): void {
     if (this.selectedEmpresa) {
-      this.agencyService.getAgenciasPorEmpresa(this.selectedEmpresa).subscribe(agencias => {
-        this.agencies = agencias;
+      this.agencyService.getAgenciesByCompanyId(+this.selectedEmpresa).subscribe(agencies => {
+        this.agencies = agencies;
         this.selectedAgency = undefined;
+        // Elimina las siguientes líneas si dpc y nemonico ya no son necesarios como listas
         this.dpcOptions = [];           
         this.nemonicoOptions = [];       
         this.selectedDPC = '';
@@ -91,13 +79,10 @@ export class IngresoIndividualComponent implements OnInit {
       });
     }
   }
-  
   onAgencyChange(): void {
     if (this.selectedAgency) {
-      this.dpcOptions = this.selectedAgency.dpcs;
-      this.nemonicoOptions = this.selectedAgency.nemonicos;
-      this.selectedDPC = this.dpcOptions.length > 0 ? this.dpcOptions[0].value : '';
-      this.selectedNemonico = this.nemonicoOptions.length > 0 ? this.nemonicoOptions[0].value : '';
+      this.selectedDPC = this.selectedAgency.dpc.toString();
+      this.selectedNemonico = this.selectedAgency.nemonico;
     }
   }
   resetSelections(): void {

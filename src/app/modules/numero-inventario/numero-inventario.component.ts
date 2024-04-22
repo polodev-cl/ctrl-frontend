@@ -22,7 +22,7 @@ export class NumeroInventarioComponent {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.inventario = +params['inventario'];  // Convertir a número
+      this.inventario = +params['inventario']; 
       if (this.inventario) {
         this.buscarPorInventario(this.inventario);
       }
@@ -37,7 +37,7 @@ export class NumeroInventarioComponent {
       },
       error: (error) => {
         console.error('Error fetching data:', error);
-        this.equipments = [];  // Asumir que no hay resultados si hay error
+        this.equipments = [];  
       }
     });
   }

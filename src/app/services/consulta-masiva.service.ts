@@ -40,8 +40,8 @@ interface Consulta {
   equipo: string;
   dcp: string;
   agencia: string;
-  empresa: string; // Asegúrate de que este campo está disponible o maneja un valor predeterminado
-  usuario: string; // Asegúrate de que este campo está disponible o maneja un valor predeterminado
+  empresa: string; 
+  usuario: string; 
   modelo: string;
 }
 
@@ -59,7 +59,7 @@ export class ConsultaMasivaService {
       map(data => data.map(item => ({
         inventario: item.inventario,              
         equipo: item.nombre,       
-        dcp: item.agenciaDpc ? item.agenciaDpc.toString() : '-', // DPC de la agencia convertido a string o valor predeterminado
+        dcp: item.agenciaDpc ? item.agenciaDpc.toString() : '-', 
         agencia: item.agenciaId ? item.agenciaId.toString() : '-',                         
         empresa: 'Nombre de la Empresa',          
         usuario: 'Nombre del Usuario',             

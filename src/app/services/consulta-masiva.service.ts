@@ -55,7 +55,7 @@ export class ConsultaMasivaService {
 
   constructor(private http: HttpClient) {}
 
-  // Método para obtener datos filtrados para la visualización en la tabla
+//TEST REMOTE
   obtenerEquipamientoFiltrado(): Observable<Consulta[]> {
     return this.http.get<Equipamiento[]>(this.apiUrl).pipe(
       map((data) =>

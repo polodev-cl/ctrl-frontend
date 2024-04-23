@@ -3,22 +3,23 @@ export function checkIpAddress(ip: string): boolean {
   const ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
   return ipv4Pattern.test(ip) || ipv6Pattern.test(ip);
 }
+
 export function formatAndValidateMAC(mac: string): { formattedMAC: string, isValid: boolean } {
   let value = mac.replace(/\W/gi, '').toLowerCase();
   let formatted = '';
-  
+
   // Formatear la dirección MAC
-  for (let i = 0; i < value.length; i++) {
-    if (i !== 0 && i % 2 === 0) formatted += ':';
+  for ( let i = 0; i < value.length; i++ ) {
+    if ( i !== 0 && i % 2 === 0 ) formatted += ':';
     formatted += value[i];
   }
-  
+
   formatted = formatted.slice(0, 17); // Limita a la longitud de una dirección MAC válida
 
   // Validar la dirección MAC formateada
   const macPattern = /^([0-9a-f]{2}:){5}[0-9a-f]{2}$/;
   const isValid = macPattern.test(formatted);
-  
+
   return { formattedMAC: formatted, isValid };
 }
 

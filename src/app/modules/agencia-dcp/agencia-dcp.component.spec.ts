@@ -8,10 +8,10 @@ describe('AgenciaDcpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AgenciaDcpComponent]
+      declarations: [ AgenciaDcpComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(AgenciaDcpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

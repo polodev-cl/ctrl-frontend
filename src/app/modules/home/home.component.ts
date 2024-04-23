@@ -1,26 +1,56 @@
-import { Component, OnInit} from '@angular/core';
-import { CompanyService } from '../../services/company.service';
+import { NgForOf, NgIf } from "@angular/common";
+import { Component, OnInit } from '@angular/core';
+import { RouterLink } from "@angular/router";
+import { ButtonModule } from "primeng/button";
+import { DividerModule } from "primeng/divider";
 import { CognitoService } from '../../cognito-service.service';
+import { CompanyService } from '../../services/company.service';
+import { ModalCargaMasivaComponent } from "../Custom/modal-carga-masiva/modal-carga-masiva.component";
+import { ModalConsultaMasivaComponent } from "../Custom/modal-consulta-masiva/modal-consulta-masiva.component";
+import { ModalDuplicadoComponent } from "../Custom/modal-duplicado/modal-duplicado.component";
+import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
+import { ModalGestionUsuarioComponent } from "../Custom/modal-gestion-usuario/modal-gestion-usuario.component";
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: [ './home.component.css' ],
+  standalone: true,
+  imports: [
+    ModalConsultaMasivaComponent,
+    ModalGestionUsuarioComponent,
+    ModalCargaMasivaComponent,
+    NgIf,
+    ModalDuplicadoComponent,
+    ModalExitosoComponent,
+    DividerModule,
+    RouterLink,
+    ButtonModule,
+    NgForOf
+  ]
 })
-export class HomeComponent implements OnInit{
-
-  
-
+export class HomeComponent implements OnInit {
   breadcrumbs = [
     { text: 'Home', link: '/home' },
   ];
 
   empresa: any = null;
+  mostrarModalConsultaMasiva: boolean = false;
+  mostrarModalGestionUsuario: boolean = false;
+  mostrarModalCargaMasiva: boolean = false;
+  mostrarModalDuplicados: boolean = false;
+  mostrarModalExito: boolean = false;
+  tituloModalExito: string = '';
+  mensajeModalExito: string = '';
 
-  constructor(private companyService: CompanyService, private cognitoService: CognitoService) { }
+  constructor(private companyService: CompanyService, private cognitoService: CognitoService) {
+  }
+
   async cerrarSesion() {
     await this.cognitoService.signOut();
     // Puedes realizar acciones adicionales después de cerrar sesión, como redirigir a la página de inicio de sesión
   }
+
   ngOnInit() {
     this.companyService.getCompanyById(1).subscribe({
       next: (data) => {
@@ -32,15 +62,6 @@ export class HomeComponent implements OnInit{
     });
   }
 
-  mostrarModalConsultaMasiva: boolean = false;
-  mostrarModalGestionUsuario: boolean = false;
-  mostrarModalCargaMasiva: boolean = false;
-  mostrarModalDuplicados: boolean = false;
-  mostrarModalExito: boolean = false;
-
-  tituloModalExito: string = '';
-  mensajeModalExito: string = '';
-
   abrirModalDuplicados(): void {
     this.mostrarModalDuplicados = true;
   }
@@ -48,7 +69,8 @@ export class HomeComponent implements OnInit{
   cerrarModalDuplicados(): void {
     this.mostrarModalDuplicados = false;
   }
-  //consulta masiva
+
+  // consulta masiva
   abrirModalConsultaMasiva(): void {
     this.mostrarModalConsultaMasiva = true;
   }
@@ -56,7 +78,6 @@ export class HomeComponent implements OnInit{
   cerrarModalConsultaMasiva(): void {
     this.mostrarModalConsultaMasiva = false;
   }
-//gestion usuario
 
   abrirModalGestionUsuario(): void {
     this.mostrarModalGestionUsuario = true;
@@ -66,7 +87,7 @@ export class HomeComponent implements OnInit{
     this.mostrarModalGestionUsuario = false;
   }
 
-  //carga masiva
+  // carga masiva
   abrirModalCargaMasiva(): void {
     this.mostrarModalCargaMasiva = true;
   }
@@ -92,12 +113,8 @@ export class HomeComponent implements OnInit{
     // Asigna los valores al título y mensaje del modal exitoso
     this.tituloModalExito = 'Carga Masiva';
     this.mensajeModalExito = 'Ingreso masivo realizado con exito.';
-  
+
     this.mostrarModalCargaMasiva = false; // Cierra el modal de carga masiva
     this.mostrarModalExito = true; // Abre el modal exitoso
   }
-
-
-
-
 }

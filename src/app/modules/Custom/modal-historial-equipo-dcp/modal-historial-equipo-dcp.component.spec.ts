@@ -8,10 +8,10 @@ describe('ModalHistorialEquipoDcpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalHistorialEquipoDcpComponent]
+      declarations: [ ModalHistorialEquipoDcpComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalHistorialEquipoDcpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

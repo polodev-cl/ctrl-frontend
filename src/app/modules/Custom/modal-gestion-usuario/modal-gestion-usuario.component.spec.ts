@@ -8,10 +8,10 @@ describe('ModalGestionUsuarioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalGestionUsuarioComponent]
+      declarations: [ ModalGestionUsuarioComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalGestionUsuarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

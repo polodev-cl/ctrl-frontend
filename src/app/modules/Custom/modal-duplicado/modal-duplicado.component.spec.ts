@@ -8,10 +8,10 @@ describe('ModalDuplicadoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalDuplicadoComponent]
+      declarations: [ ModalDuplicadoComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalDuplicadoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

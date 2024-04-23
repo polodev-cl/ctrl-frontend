@@ -5,22 +5,22 @@
     <h4 class="my-2">Consulta Masiva</h4>
     <div class="form-group mt-5"> <!-- Agrupa los selects -->
       <select class="form-select py-3 color-select mt-2 mb-4"> <!-- Reduce el margen -->
-        <option value="" selected disabled>Empresa</option>
+        <option disabled selected value="">Empresa</option>
         <option>Ayelén</option>
         <option>Starken</option>
         <option>EGT</option>
         <option>GTP</option>
       </select>
       <select class="form-select py-3 color-select my-5 "> <!-- Reduce el margen -->
-        <option value="" selected disabled>DCP - Agencia</option>
+        <option disabled selected value="">DCP - Agencia</option>
         <option>Seleccionar todas</option>
         <option>Ejemplo 1</option>
         <option>Ejemplo 2</option>
       </select>
     </div>
     <div class="button-group d-flex justify-content-between mt-5 mb-3"> <!-- Ajusta margen superior -->
-      <button class="btn btn-outline mt-5" (click)="cerrarModal()">Volver</button>
-      <button class="btn btn-primary mt-5" (click)="irAConsultaMasiva()">Continuar</button>
+      <button (click)="cerrarModal()" class="btn btn-outline mt-5">Volver</button>
+      <button (click)="irAConsultaMasiva()" class="btn btn-primary mt-5">Continuar</button>
     </div>
   </div>
 </div>

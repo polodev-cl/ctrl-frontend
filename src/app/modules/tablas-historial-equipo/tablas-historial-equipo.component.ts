@@ -1,33 +1,44 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
+import { NewlinePipe } from "../../common/pipes/newline.pipe";
 
-@Pipe({ name: 'newline' })
-export class NewlinePipe implements PipeTransform {
-  transform(value: string): string {
-    return value.replace(/\n/g, '<br/>'); // Esta línea debería manejar \n y \n\n
-  }
-}
 
 @Component({
   selector: 'app-tablas-historial-equipo',
   templateUrl: './tablas-historial-equipo.component.html',
-  styleUrls: ['./tablas-historial-equipo.component.css'],
+  styleUrls: [ './tablas-historial-equipo.component.css' ],
+  standalone: true,
+  imports: [
+    MatTable,
+    MatColumnDef,
+    MatHeaderCell,
+    MatCell,
+    MatCellDef,
+    MatHeaderCellDef,
+    MatHeaderRow,
+    MatRow,
+    MatRowDef,
+    MatHeaderRowDef,
+    MatPaginator,
+    NewlinePipe
+  ]
 })
 
-  export class TablasHistorialEquipoComponent implements OnInit {
-    @Input() activaDataSource!: MatTableDataSource<Element>;
-    displayedColumns: string[] = ['fecha', 'razonUsuario'];
-  
-    ngOnInit() {}
+export class TablasHistorialEquipoComponent implements OnInit {
+  @Input() activaDataSource!: MatTableDataSource<Element>;
+  displayedColumns: string[] = [ 'fecha', 'razonUsuario' ];
+
+  ngOnInit() {
   }
+}
 
-  // Variable para controlar cuál tabla se muestra
+// Variable para controlar cuál tabla se muestra
 
-  // ngOnInit() {
-  //   // Inicializa con uno de los DataSources
-  //   this.activaDataSource = this.inventarioDataSource;
-  // }
+// ngOnInit() {
+//   // Inicializa con uno de los DataSources
+//   this.activaDataSource = this.inventarioDataSource;
+// }
 
 
 // Estructura de datos de ejemplo
@@ -40,7 +51,7 @@ export interface Element {
   razonUsuario: string;
 }
 
-//aqui empieza las tablas
+// aqui empieza las tablas
 export const ELEMENT_DATA1: Element[] = [
   {
     fecha: '15/04/2023',
@@ -96,11 +107,9 @@ export const ELEMENT_DATA3: Element[] = [
   },
 ];
 
-import { MatPaginatorIntl } from '@angular/material/paginator';
-
 const spanishRangeLabel = (page: number, pageSize: number, length: number) => {
-  if (length === 0 || pageSize === 0) {
-    return `0 de ${length}`;
+  if ( length === 0 || pageSize === 0 ) {
+    return `0 de ${ length }`;
   }
 
   length = Math.max(length, 0);
@@ -111,7 +120,7 @@ const spanishRangeLabel = (page: number, pageSize: number, length: number) => {
       ? Math.min(startIndex + pageSize, length)
       : startIndex + pageSize;
 
-  return `${startIndex + 1} - ${endIndex} de ${length}`;
+  return `${ startIndex + 1 } - ${ endIndex } de ${ length }`;
 };
 
 export function getSpanishPaginatorIntl() {

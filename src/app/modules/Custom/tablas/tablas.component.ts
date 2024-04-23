@@ -1,8 +1,8 @@
-import { Component, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { ConsultaMasivaService } from '../../../services/consulta-masiva.service';
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import * as XLSX from 'xlsx';
+import { ConsultaMasivaService } from '../../../services/consulta-masiva.service';
 
 interface Consulta {
   inventario: number;
@@ -17,10 +17,24 @@ interface Consulta {
 @Component({
   selector: 'app-tablas',
   templateUrl: './tablas.component.html',
-  styleUrls: ['./tablas.component.css']
+  styleUrls: [ './tablas.component.css' ],
+  standalone: true,
+  imports: [
+    MatTable,
+    MatColumnDef,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatCell,
+    MatCellDef,
+    MatHeaderRow,
+    MatHeaderRowDef,
+    MatRow,
+    MatRowDef,
+    MatPaginator
+  ]
 })
 export class TablasComponent implements AfterViewInit {
-  displayedColumns: string[] = ['inventario', 'equipo', 'dcp', 'agencia', 'empresa', 'usuario', 'modelo'];
+  displayedColumns: string[] = [ 'inventario', 'equipo', 'dcp', 'agencia', 'empresa', 'usuario', 'modelo' ];
   dataSource = new MatTableDataSource<Consulta>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -51,7 +65,8 @@ export class TablasComponent implements AfterViewInit {
     { header: 'Fechas', wch: 10 }
   ];
 
-  constructor(private consultaMasivaService: ConsultaMasivaService) {}
+  constructor(private consultaMasivaService: ConsultaMasivaService) {
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -69,7 +84,7 @@ export class TablasComponent implements AfterViewInit {
     this.consultaMasivaService.obtenerEquipamientoCompleto().subscribe({
       next: (data) => {
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
-        XLSX.utils.sheet_add_aoa(ws, [this.columns.map(col => col.header)], { origin: 'A1' });
+        XLSX.utils.sheet_add_aoa(ws, [ this.columns.map(col => col.header) ], { origin: 'A1' });
         XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
         ws['!cols'] = this.columns.map(col => ({ wch: col.wch }));
         const wb: XLSX.WorkBook = XLSX.utils.book_new();

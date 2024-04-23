@@ -8,10 +8,10 @@ describe('ModalPasswordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalPasswordComponent]
+      declarations: [ ModalPasswordComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalPasswordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

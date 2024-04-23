@@ -14,106 +14,107 @@
 
 /* Estilos predeterminados de Dropzone */
 .dropzone {
-border: 2px dashed #747474; /* Cambiar a tu color deseado */
-border-radius: 20px;
-min-height: 150px; /* Ajusta según el tamaño que desees */
+  border: 2px dashed #747474; /* Cambiar a tu color deseado */
+  border-radius: 20px;
+  min-height: 150px; /* Ajusta según el tamaño que desees */
 }
 
 .dropzone .dz-message {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .file-info {
-display: flex;
-align-items: center;
-justify-content: center;
-/* Añade estilos adicionales aquí */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Añade estilos adicionales aquí */
 }
 
 .file-name {
-margin-right: 10px;
-/* Añade estilos adicionales aquí */
+  margin-right: 10px;
+  /* Añade estilos adicionales aquí */
 }
+
 .uploaded-file-info {
-display: flex;
-flex-direction: column; /* Stack children vertically */
-align-items: center; /* Center children horizontally */
-justify-content: center; /* Center children vertically if there's space */
-text-align: center; /* Center text */
-margin-top: 10px; /* Spacing from the progress bar */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically if there's space */
+  text-align: center; /* Center text */
+  margin-top: 10px; /* Spacing from the progress bar */
 }
 
 .progress-icons {
-display: flex;
-align-items: center;
-justify-content: start; /* Align children to the start */
+  display: flex;
+  align-items: center;
+  justify-content: start; /* Align children to the start */
 }
 
 .progress-bar-full {
-height: 5px;
-background-color: #34AA4E;
-flex-grow: 1; /* Allow the progress bar to take up available space */
-margin-right: 10px; /* Spacing between progress bar and tick icon */
+  height: 5px;
+  background-color: #34AA4E;
+  flex-grow: 1; /* Allow the progress bar to take up available space */
+  margin-right: 10px; /* Spacing between progress bar and tick icon */
 }
 
 .upload-tick-icon {
-margin-right: 10px; /* Spacing between tick icon and trash button */
+  margin-right: 10px; /* Spacing between tick icon and trash button */
 }
 
 .delete-file-btn {
-background: none;
-border: none;
-cursor: pointer;
-padding: 0; /* Remove padding if any */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0; /* Remove padding if any */
 }
 
 .file-details {
-margin-top: 5px; /* Spacing between icons and text details */
-display: block; /* Stack file name and size vertically */
-text-align: left; /* Align text to the left */
+  margin-top: 5px; /* Spacing between icons and text details */
+  display: block; /* Stack file name and size vertically */
+  text-align: left; /* Align text to the left */
 }
 
 
 .progress-bar-container {
-width: 100%; /* Full width of the container */
-background-color: #e0e0e0; /* Light grey background for the container */
-border-radius: 5px; /* Rounded corners for the container */
-margin: 10px 0; /* Margin for spacing */
+  width: 100%; /* Full width of the container */
+  background-color: #e0e0e0; /* Light grey background for the container */
+  border-radius: 5px; /* Rounded corners for the container */
+  margin: 10px 0; /* Margin for spacing */
 }
 
 .progress-bar {
-height: 5px; /* Same height as the full progress bar */
-background-color: #2C6FD5; /* Use a color to indicate progress */
-width: 0%; /* Initialized to 0% width */
-border-radius: 5px; /* Rounded corners for the progress bar */
-transition: width 0.5s ease; /* Smooth transition for the width */
+  height: 5px; /* Same height as the full progress bar */
+  background-color: #2C6FD5; /* Use a color to indicate progress */
+  width: 0%; /* Initialized to 0% width */
+  border-radius: 5px; /* Rounded corners for the progress bar */
+  transition: width 0.5s ease; /* Smooth transition for the width */
 }
 
 .uploaded-file-info {
-display: block; /* Use block to stack children vertically */
+  display: block; /* Use block to stack children vertically */
 }
 
 .progress-bar-full {
-height: 5px;
-background-color: #2C6FD5;
-width: 0%; /* Start with 0% and then animate to 100% */
-border-radius: 5px;
-transition: width 2s ease; /* Animate the width change */
+  height: 5px;
+  background-color: #2C6FD5;
+  width: 0%; /* Start with 0% and then animate to 100% */
+  border-radius: 5px;
+  transition: width 2s ease; /* Animate the width change */
 }
 
 .file-details-with-icon {
-display: flex;
-align-items: center;
-justify-content: start; /* Align children to the start of the flex container */
-margin-top: 10px; /* Provide space between the progress bar and file details */
+  display: flex;
+  align-items: center;
+  justify-content: start; /* Align children to the start of the flex container */
+  margin-top: 10px; /* Provide space between the progress bar and file details */
 }
 
 .upload-tick-icon {
-/* your styles for the tick icon */
-margin-right: 10px;
+  /* your styles for the tick icon */
+  margin-right: 10px;
 }
 
 
@@ -130,8 +131,8 @@ margin-right: 10px;
 
 @media (max-width: 768px) {
   .custom-modal-content {
-      width: 90%; /* Mantiene el modal responsive en dispositivos más pequeños */
-      padding: 2rem 4rem; /* Ajusta el espacio blanco para dispositivos pequeños si es necesario */
+    width: 90%; /* Mantiene el modal responsive en dispositivos más pequeños */
+    padding: 2rem 4rem; /* Ajusta el espacio blanco para dispositivos pequeños si es necesario */
   }
 }
 
@@ -154,7 +155,7 @@ margin-right: 10px;
   border: 1px dashed #747474; /* gray-300 */
   border-radius: 0.5rem;
   margin-bottom: 1rem;
-  background-color:#F6F6F6;;
+  background-color: #F6F6F6;;
 }
 
 .upload-text {
@@ -170,8 +171,6 @@ margin-right: 10px;
 }
 
 
-
-
 .btn {
   padding: 0.5rem 1.5rem;
   border-radius: 100px;
@@ -181,20 +180,22 @@ margin-right: 10px;
   background-color: transparent;
   color: #393939;
   font-weight: 500;
-  border-color: #FFA500; 
+  border-color: #FFA500;
 }
 
 .btn-primary {
-  background-color: #34AA4E; 
-  color: white; 
+  background-color: #34AA4E;
+  color: white;
   font-weight: 500;
-  border-color: #34AA4E; 
-  
+  border-color: #34AA4E;
+
 }
+
 .btn-primary:hover {
   background-color: #2C8C40; /* Un verde más oscuro para el efecto hover */
   border-color: #2C8C40; /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
 }
+
 .btn-disabled {
   background-color: #EAEAEA;
   color: #ccc; /* Un color más claro para el texto que sugiere que el botón está desactivado */

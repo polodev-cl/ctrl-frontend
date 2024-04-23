@@ -1,5 +1,5 @@
-import { RutFormatterDirective } from './rut-formatter.directive';
 import { ElementRef } from '@angular/core';
+import { RutFormatterDirective } from './rut-formatter.directive';
 
 describe('RutFormatterDirective', () => {
   it('should create an instance', () => {

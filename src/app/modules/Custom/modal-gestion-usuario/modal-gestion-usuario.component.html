@@ -1,15 +1,14 @@
 <div class="custom-modal">
-    <div class="custom-modal-content rounded-3 text-center">
-      <h4 class="my-2 font-strong">Gestión de usuarios</h4>
-      <div class="button-group d-flex justify-content-between mt-5 mb-3">
-        <button class="btn btn-primary my-btn" routerLink="/editar-usuario" >
-          <img src="../../../../assets/image/edit.svg" class="imagen m-1"> Editar Usuario
-        </button>
-        <button class="btn btn-primary my-btn" routerLink="/ingresar-usuario" >
-          <img src="../../../../assets/image/user.svg" class="imagen m-1   "> Ingresar Usuario
-        </button>
-      </div>
-      <button class="btn btn-outline mt-5" (click)="cerrarModal()">Volver</button>
+  <div class="custom-modal-content rounded-3 text-center">
+    <h4 class="my-2 font-strong">Gestión de usuarios</h4>
+    <div class="button-group d-flex justify-content-between mt-5 mb-3">
+      <button class="btn btn-primary my-btn" routerLink="/editar-usuario">
+        <img class="imagen m-1" src="../../../../assets/image/edit.svg"> Editar Usuario
+      </button>
+      <button class="btn btn-primary my-btn" routerLink="/ingresar-usuario">
+        <img class="imagen m-1   " src="../../../../assets/image/user.svg"> Ingresar Usuario
+      </button>
     </div>
+    <button (click)="cerrarModal()" class="btn btn-outline mt-5">Volver</button>
   </div>
-  
+</div>

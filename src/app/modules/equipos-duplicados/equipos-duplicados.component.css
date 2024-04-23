@@ -1,12 +1,12 @@
 .search-button {
-    border: none;
-    border-radius: 100px;
-    background-color: green;
-    color: white;
-    font-family: 'Roboto';
+  border: none;
+  border-radius: 100px;
+  background-color: green;
+  color: white;
+  font-family: 'Roboto';
 }
 
-div.container-fluid.tabla{
-    padding-right: 0px !important;
-    padding-left: 0px !important;
+div.container-fluid.tabla {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
 }

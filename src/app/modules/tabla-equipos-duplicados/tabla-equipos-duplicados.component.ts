@@ -1,6 +1,8 @@
-import { Component, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { NgForOf } from "@angular/common";
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
+
 export interface Consulta {
   nombreEquipo: string;
   codigoInventario: string;
@@ -10,11 +12,26 @@ export interface Consulta {
 @Component({
   selector: 'app-tabla-equipos-duplicados',
   templateUrl: './tabla-equipos-duplicados.component.html',
-  styleUrls: ['./tabla-equipos-duplicados.component.css']
+  styleUrls: [ './tabla-equipos-duplicados.component.css' ],
+  standalone: true,
+  imports: [
+    MatTable,
+    MatColumnDef,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatCell,
+    MatCellDef,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRow,
+    MatRowDef,
+    MatPaginator,
+    NgForOf
+  ]
 })
 export class TablaEquiposDuplicadosComponent implements AfterViewInit {
   @Input() data: Consulta[] = [];
-  displayedColumns: string[] = ['nombreEquipo', 'codigoInventario', 'datosModificados'];
+  displayedColumns: string[] = [ 'nombreEquipo', 'codigoInventario', 'datosModificados' ];
   dataSource = new MatTableDataSource<Consulta>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

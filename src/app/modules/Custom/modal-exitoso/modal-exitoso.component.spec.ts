@@ -8,10 +8,10 @@ describe('ModalExitosoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalExitosoComponent]
+      declarations: [ ModalExitosoComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalExitosoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

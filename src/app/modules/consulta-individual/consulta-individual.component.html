@@ -3,26 +3,26 @@
 >
   <div class="container-md">
     <app-modal-consulta-individual
-    *ngIf="mostrarModalConsultaIndividual"
-    [tipoConsulta]="tipoConsulta"
-    (cerrar)="cerrarModalConsultaIndividual()"
-  >
-  </app-modal-consulta-individual>
-  
+      (cerrar)="cerrarModalConsultaIndividual()"
+      *ngIf="mostrarModalConsultaIndividual"
+      [tipoConsulta]="tipoConsulta"
+    >
+    </app-modal-consulta-individual>
+
     <a class="navbar-brand" href="home">
       <img
-        src="../../../assets/image/Logo.svg"
         alt="User Icon"
-        width="100"
-        height="40"
         class="d-inline-block align-text-top user-logo"
+        height="40"
+        src="../../../assets/image/Logo.svg"
+        width="100"
       />
     </a>
-<button
+    <button
       class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
       data-bs-target="#navbarCollapse"
+      data-bs-toggle="collapse"
+      type="button"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -38,21 +38,21 @@
           <p class="nav-link text-end">Perfil</p>
           <ul class="navbar-nav">
             <li class="navbar-item">
-             
+
             </li>
           </ul>
         </li>
         <!-- Mostrar solo "Perfil" en pantallas pequeñas -->
         <li class="navbar-item">
-          <a href="#" class="nav-link d-lg-none">Perfil Juan Perez</a>
+          <a class="nav-link d-lg-none" href="#">Perfil Juan Perez</a>
         </li>
         <li
           class="navbar-item d-flex justify-content-center align-items-center"
         >
           <img
-            src="../../../assets/image/user.png"
             alt="User Icon"
             class="user-icon"
+            src="../../../assets/image/user.png"
           />
         </li>
       </ul>
@@ -66,9 +66,9 @@
       <div class="col-md-12">
         <h2 class="consultation-title">
           <img
-            src="../../../assets/image/logo-amarillo.jpg"
-            height="16"
             class=""
+            height="16"
+            src="../../../assets/image/logo-amarillo.jpg"
           />
           Consulta Individual
         </h2>
@@ -76,9 +76,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li
-              class="breadcrumb-item"
               *ngFor="let crumb of breadcrumbs; let last = last"
               [class.active]="last"
+              class="breadcrumb-item"
             >
               <a *ngIf="!last" [routerLink]="crumb.link">{{ crumb.text }}</a>
               <span *ngIf="last">{{ crumb.text }}</span>
@@ -108,13 +108,12 @@
               <div class="col-md-3 col-12 ps-0 mt-3 mt-md-0">
                 <div class="container">
                   <button
-                  pButton
-                    type="button"
+                    (click)="abrirModalConsultaIndividual('usuario')"
                     class="consultar-button p-2 w-100"
                     label="Consultar"
-                    (click)="abrirModalConsultaIndividual('usuario')"
+                    pButton
+                    type="button"
                   >
-                  
                   </button>
                 </div>
               </div>
@@ -144,13 +143,12 @@
               <div class="col-md-3 col-12 ps-0 mt-3 mt-md-0">
                 <div class="container">
                   <button
-                  pButton
-                    type="button"
+                    (click)="abrirModalConsultaIndividual('agencia')"
                     class="consultar-button p-2 w-100"
                     label="Consultar"
-                    (click)="abrirModalConsultaIndividual('agencia')"
+                    pButton
+                    type="button"
                   >
-                  
                   </button>
                 </div>
               </div>
@@ -180,13 +178,12 @@
               <div class="col-md-3 col-12 ps-0 mt-3 mt-md-0">
                 <div class="container">
                   <button
-                  pButton
-                    type="button"
+                    (click)="abrirModalConsultaIndividual('inventario')"
                     class="consultar-button p-2 w-100"
                     label="Consultar"
-                    (click)="abrirModalConsultaIndividual('inventario')"
+                    pButton
+                    type="button"
                   >
-                  
                   </button>
                 </div>
               </div>
@@ -198,15 +195,13 @@
 
     <div class="row my-5">
       <div class="col-md-2 col-12">
-
-          <button
-            pButton
-            routerLink="/home"
-            type="button"
-            label="Volver"
-            class="back-button p-2 w-100"
-          ></button>
-
+        <button
+          class="back-button p-2 w-100"
+          label="Volver"
+          pButton
+          routerLink="/home"
+          type="button"
+        ></button>
       </div>
     </div>
   </div>

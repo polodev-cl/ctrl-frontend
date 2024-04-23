@@ -2,26 +2,29 @@
   <div class="custom-modal-content rounded-3 text-center">
     <p class="my-3">Advertencia: Equipos Duplicados</p>
     <img
-      src="../../../../assets/image/alert.svg"
-      class="mt-4 mb-4"
       alt="Alert"
+      class="mt-4 mb-4"
+      src="../../../../assets/image/alert.svg"
     />
     <p class="subtitulo">Uno o mas equipos están duplicados en el documento</p>
 
-   
+
     <div class="row d-flex justify-content-center align-items-center">
       <div class="col-12 col-md-4 my-2"> <!-- Ajuste para responsividad aquí -->
-        <button class="btn btn-outline  rounded-5 my-2 w-100" (click)="cerrarModal()"> <!-- Ajuste para ancho completo -->
+        <button (click)="cerrarModal()" class="btn btn-outline  rounded-5 my-2 w-100">
+          <!-- Ajuste para ancho completo -->
           Volver
         </button>
       </div>
       <div class="col-12 col-md-4 my-2"> <!-- Ajuste para responsividad aquí -->
-        <button class="search-button  rounded-5  py-2 w-100" routerLink="/equipos-duplicados"> <!-- Ajuste para ancho completo -->
+        <button class="search-button  rounded-5  py-2 w-100" routerLink="/equipos-duplicados">
+          <!-- Ajuste para ancho completo -->
           Ver Duplicados
         </button>
       </div>
       <div class="col-12 col-md-4 my-2"> <!-- Ajuste para responsividad aquí -->
-        <button class="search-button  rounded-5 py-2 w-100" (click)="reemplazarYCerrar()"> <!-- Ajuste para ancho completo -->
+        <button (click)="reemplazarYCerrar()" class="search-button  rounded-5 py-2 w-100">
+          <!-- Ajuste para ancho completo -->
           Reemplazar
         </button>
       </div>

@@ -1,11 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { NgForOf, NgIf } from "@angular/common";
+import { Component } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DividerModule } from "primeng/divider";
 import { EquipmentService } from '../../services/equipment.service';
+import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/modal-historial-equipo.component";
 
 @Component({
   selector: 'app-numero-inventario',
   templateUrl: './numero-inventario.component.html',
-  styleUrl: './numero-inventario.component.css'
+  styleUrl: './numero-inventario.component.css',
+  standalone: true,
+  imports: [
+    ModalHistorialEquipoComponent,
+    NgIf,
+    DividerModule,
+    RouterLink,
+    NgForOf
+  ]
 })
 export class NumeroInventarioComponent {
   breadcrumbs = [
@@ -18,12 +29,13 @@ export class NumeroInventarioComponent {
   mostrarModalHistorialEquipo: boolean = false;
 
 
-  constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {}
+  constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.inventario = +params['inventario']; 
-      if (this.inventario) {
+      this.inventario = +params['inventario'];
+      if ( this.inventario ) {
         this.buscarPorInventario(this.inventario);
       }
     });
@@ -37,7 +49,7 @@ export class NumeroInventarioComponent {
       },
       error: (error) => {
         console.error('Error fetching data:', error);
-        this.equipments = [];  
+        this.equipments = [];
       }
     });
   }

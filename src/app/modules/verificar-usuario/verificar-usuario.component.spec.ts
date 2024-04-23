@@ -8,10 +8,10 @@ describe('VerificarUsuarioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VerificarUsuarioComponent]
+      declarations: [ VerificarUsuarioComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(VerificarUsuarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

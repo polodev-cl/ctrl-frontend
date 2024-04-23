@@ -8,10 +8,10 @@ describe('ModalEliminarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalEliminarComponent]
+      declarations: [ ModalEliminarComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalEliminarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { I18n } from '@aws-amplify/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: [ './app.component.css' ],
+  standalone: true,
+  imports: [
+    RouterOutlet
+  ]
 })
 export class AppComponent {
   constructor(private router: Router) {
@@ -16,16 +20,16 @@ export class AppComponent {
         'Sign in': 'Iniciar sesión',
         'Sign Up': 'Registrarse',
         'Sign Out': 'Cerrar sesión',
-        "Email":"Correo Electrónico",
-        "Enter your Email":"Ingresa tu Correo",
+        "Email": "Correo Electrónico",
+        "Enter your Email": "Ingresa tu Correo",
         'Username': 'Nombre de usuario',
         'Welcome!': 'Bienvenido',
-        "Password must have at least 8 characters" : "La contraseña debe tener al menos 8 caracteres",
+        "Password must have at least 8 characters": "La contraseña debe tener al menos 8 caracteres",
         'Change Password': 'Cambio de contraseña',
         'Your passwords must match': 'Las contraseñas deben coincidir',
         'Confirm Password': 'Confirmar Contraseña',
         'Back to Sign In': 'Volver a inicio de sesión',
-        "Please confirm your Password" : "Por favor confirma tu contraseña",
+        "Please confirm your Password": "Por favor confirma tu contraseña",
         'Password': 'Contraseña',
         'Enter your username': 'Introduce tu nombre de usuario',
         'Enter your Password': 'Introduce tu contraseña',
@@ -33,7 +37,7 @@ export class AppComponent {
         'No account?': '¿No tienes cuenta?',
         'Create Account': 'Crear cuenta',
         'Reset your password': 'Restablecer tu contraseña',
-        
+
       }
     };
 
@@ -45,6 +49,6 @@ export class AppComponent {
   }
 
   redirectToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate([ '/login' ]);
   }
 }

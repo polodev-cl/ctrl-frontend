@@ -1,25 +1,23 @@
-
 <div class="custom-modal">
-    <div class="custom-modal-content rounded-3 text-center">
-      <h4 class="my-2">Historial del equipo</h4>
-      <p class="my-3">Numero de inventario</p>
-      <hr />
-  
-      <!-- <div class="container-fluid no-padding">
-          <app-tablas-historial-equipo></app-tablas-historial-equipo>
-        </div> -->
-        <div>
-          <app-tablas-historial-equipo
-            [activaDataSource]="activaDataSource"
-          ></app-tablas-historial-equipo>
-        </div>
-  
-      <div class="text-start">
-    
-        <button class="btn btn-outline mt-5" (click)="cerrarModal()">
-          Volver
-        </button>
-      </div>
+  <div class="custom-modal-content rounded-3 text-center">
+    <h4 class="my-2">Historial del equipo</h4>
+    <p class="my-3">Numero de inventario</p>
+    <hr/>
+
+    <!-- <div class="container-fluid no-padding">
+        <app-tablas-historial-equipo></app-tablas-historial-equipo>
+      </div> -->
+    <div>
+      <app-tablas-historial-equipo
+        [activaDataSource]="activaDataSource"
+      ></app-tablas-historial-equipo>
+    </div>
+
+    <div class="text-start">
+
+      <button (click)="cerrarModal()" class="btn btn-outline mt-5">
+        Volver
+      </button>
     </div>
   </div>
-  
+</div>

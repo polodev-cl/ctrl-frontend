@@ -1,86 +1,86 @@
 .search-button {
-    border: none;
-    border-radius: 100px;
-    background-color: #34AA4E;
-    color: white;
-    font-family: 'Roboto';
+  border: none;
+  border-radius: 100px;
+  background-color: #34AA4E;
+  color: white;
+  font-family: 'Roboto';
 }
 
 .search-button:hover {
-    background-color: #2C8C40; 
-    border-color: #2C8C40;
+  background-color: #2C8C40;
+  border-color: #2C8C40;
 }
 
 .color-select {
-    background-color: #EAEAEA;
+  background-color: #EAEAEA;
 }
 
 .color-input-label {
-    background-color: #EAEAEA;
+  background-color: #EAEAEA;
 }
 
 .color-input-label::after {
-    background-color: #EAEAEA;
+  background-color: #EAEAEA;
 }
 
 .form-floating::after {
-    display: none;
+  display: none;
 }
 
 .p-inputtext {
-    border: none !important;
-    box-shadow: none !important;
-    color: black !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: black !important;
 }
 
 /* Estilo para el label flotante de PrimeNG */
-.p-float-label .p-inputtext:not(:placeholder-shown)+label,
-.p-float-label .p-inputtext:focus+label {
-    color: black !important;
-    /* Texto en negro para el label */
-    background-color: transparent;
+.p-float-label .p-inputtext:not(:placeholder-shown) + label,
+.p-float-label .p-inputtext:focus + label {
+  color: black !important;
+  /* Texto en negro para el label */
+  background-color: transparent;
 }
 
 /* Es posible que también necesites ajustar los estilos del label cuando no está flotando */
 .p-float-label label {
-    color: grey !important;
-    /* Texto en gris para el label cuando no está flotante */
+  color: grey !important;
+  /* Texto en gris para el label cuando no está flotante */
 }
 
 /* Asegúrate de que el label se muestre correctamente cuando el input está vacío */
 .p-float-label .p-inputtext::placeholder {
-    color: transparent;
+  color: transparent;
 }
 
 /* Ajusta el color del label al enfocar y llenar el input */
 .p-float-label .p-inputtext:focus::placeholder {
-    color: black !important;
+  color: black !important;
 }
 
 .color-label {
-    color: black !important;
+  color: black !important;
 }
 
 div.container-fluid.no-tabla {
 
-    padding-right: 0px !important;
-    padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
 
 }
 
 .back-button {
-    border: 1px solid #F3B04E;
-    border-radius: 100px;
-    background: white;
-    color: #222;
-    font-family: 'Roboto';
-    
+  border: 1px solid #F3B04E;
+  border-radius: 100px;
+  background: white;
+  color: #222;
+  font-family: 'Roboto';
+
 }
 
 .p-inputtext {
-    border: none;
-    background-color: #21212114;
-    border-radius: 5px 5px 0 0;
-    transition: box-shadow 0.1s, border-radius 0.1s;
+  border: none;
+  background-color: #21212114;
+  border-radius: 5px 5px 0 0;
+  transition: box-shadow 0.1s, border-radius 0.1s;
 
-  }
+}

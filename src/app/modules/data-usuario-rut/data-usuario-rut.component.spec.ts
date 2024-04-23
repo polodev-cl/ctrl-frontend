@@ -8,10 +8,10 @@ describe('DataUsuarioRutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DataUsuarioRutComponent]
+      declarations: [ DataUsuarioRutComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(DataUsuarioRutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

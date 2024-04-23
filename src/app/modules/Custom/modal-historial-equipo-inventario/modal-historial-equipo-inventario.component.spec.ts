@@ -8,10 +8,10 @@ describe('ModalHistorialEquipoInventarioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalHistorialEquipoInventarioComponent]
+      declarations: [ ModalHistorialEquipoInventarioComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalHistorialEquipoInventarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

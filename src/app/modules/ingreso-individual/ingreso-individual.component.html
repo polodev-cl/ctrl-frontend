@@ -3,34 +3,33 @@
 >
   <div class="container-md">
     <app-modal-resumen-ingreso-individual
-      *ngIf="mostrarModalResumenIngresoIndividual"
       (cerrar)="cerrarModalResumenIngresoIndividual()"
       (exito)="abrirModalExito()"
+      *ngIf="mostrarModalResumenIngresoIndividual"
     >
-      >
     </app-modal-resumen-ingreso-individual>
     <app-modal-exitoso
-      *ngIf="mostrarModalExito"
-      [titulo]="tituloModalExito"
-      [mensajeModal]="mensajeModalExito"
       (cerrar)="cerrarModalExito()"
+      *ngIf="mostrarModalExito"
+      [mensajeModal]="mensajeModalExito"
+      [titulo]="tituloModalExito"
     >
     </app-modal-exitoso>
 
     <a class="navbar-brand" href="home">
       <img
-        src="../../../assets/image/Logo.svg"
         alt="User Icon"
-        width="100"
-        height="40"
         class="d-inline-block align-text-top user-logo"
+        height="40"
+        src="../../../assets/image/Logo.svg"
+        width="100"
       />
     </a>
     <button
       class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
       data-bs-target="#navbarCollapse"
+      data-bs-toggle="collapse"
+      type="button"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -52,15 +51,15 @@
         </li>
         <!-- Mostrar solo "Perfil" en pantallas pequeñas -->
         <li class="navbar-item">
-          <a href="#" class="nav-link d-lg-none">Perfil Juan Perez</a>
+          <a class="nav-link d-lg-none" href="#">Perfil Juan Perez</a>
         </li>
         <li
           class="navbar-item d-flex justify-content-center align-items-center"
         >
           <img
-            src="../../../assets/image/user.png"
             alt="User Icon"
             class="user-icon"
+            src="../../../assets/image/user.png"
           />
         </li>
       </ul>
@@ -73,9 +72,9 @@
       <div class="col-md-12">
         <h2 class="consultation-title">
           <img
-            src="../../../assets/image/logo-amarillo.jpg"
-            height="16"
             class=""
+            height="16"
+            src="../../../assets/image/logo-amarillo.jpg"
           />
           Ingreso Individual
         </h2>
@@ -83,9 +82,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li
-              class="breadcrumb-item"
               *ngFor="let crumb of breadcrumbs; let last = last"
               [class.active]="last"
+              class="breadcrumb-item"
             >
               <a *ngIf="!last" [routerLink]="crumb.link">{{ crumb.text }}</a>
               <span *ngIf="last">{{ crumb.text }}</span>
@@ -102,10 +101,11 @@
         <div class="flex-auto">
           <span class="p-float-label">
             <p-calendar
-              [showIcon]="true"
-              inputId="fecha_ingreso"
-              dateFormat="dd/mm/yy"
               [iconDisplay]="'input'"
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+              id="fecha_ingreso"
+              inputId="fecha_ingreso"
             ></p-calendar>
             <label class="" for="fecha_ingreso">Fecha de ingreso</label>
           </span>
@@ -115,54 +115,54 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          class="w-100 rounded"
-          id="modelo"
-          type="text"
-          pInputText
-          autocomplete="on"
           appRutFormatter
+          autocomplete="on"
+          class="w-100 rounded"
+          id="rut"
+          pInputText
+          type="text"
         />
-        <label for="modelo">Rut (12345678-9)</label>
+        <label for="rut">Rut (12345678-9)</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <select
-        [(ngModel)]="selectedEmpresa"
         (change)="onEmpresaChange()"
+        [(ngModel)]="selectedEmpresa"
         class="form-select py-3 color-select"
       >
         <option [ngValue]="undefined" disabled>Empresa</option>
         <option *ngFor="let empresa of empresaOptions" [ngValue]="empresa.value">
           {{ empresa.label }}
         </option>
-        
+
       </select>
     </div>
 
     <div class="grid-item my-3">
       <select
-        [(ngModel)]="selectedAgency"
         (change)="onAgencyChange()"
-        class="form-select py-3 color-select"
+        [(ngModel)]="selectedAgency"
         [disabled]="!selectedEmpresa"
+        class="form-select py-3 color-select"
       >
         <option [ngValue]="undefined" disabled>Agencia</option>
         <option *ngFor="let agency of agencies" [ngValue]="agency">
           {{ agency.nombre }}
         </option>
-        
+
       </select>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          class="w-100 rounded"
           [(ngModel)]="selectedDPC"
-          id="dpc"
-          type="text"
-          placeholder="DPC"
+          class="w-100 rounded"
           disabled
+          id="dpc"
           pInputText
+          placeholder="DPC"
+          type="text"
         />
         <label for="dpc">DPC</label>
       </span>
@@ -170,48 +170,47 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          class="w-100 rounded"
           [(ngModel)]="selectedNemonico"
-          id="nemonico"
-          type="text"
-          placeholder="Nemónico"
+          class="w-100 rounded"
           disabled
+          id="nemonico"
           pInputText
+          placeholder="Nemónico"
+          type="text"
         />
         <label for="nemonico">Nemónico</label>
       </span>
-    </div>    
+    </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="inventario" type="Number" pInputText />
+        <input class="w-100 rounded" id="inventario" pInputText type="Number"/>
         <label for="inventario">N° Inventario</label>
       </span>
     </div>
     <div class="grid-item my-3">
-      <select [(ngModel)]="selectedType" (change)="onTypeChange()" class="form-select py-3 color-select">
-        <option value="" selected disabled>Tipo de Equipo</option>
+      <select (change)="onTypeChange()" [(ngModel)]="selectedType" class="form-select py-3 color-select">
+        <option disabled selected value="">Tipo de Equipo</option>
         <option *ngFor="let type of equipmentTypes" [ngValue]="type.value">{{ type.label }}</option>
       </select>
     </div>
-    
-  <div class="grid-item my-3">
-  <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notSpecialEquipment">
-    <select [(ngModel)]="selectedSO" disabled class="form-select py-3 color-select">
-      <option value="N/A">N/A</option>
-    </select>
-  </ng-container>
-  <ng-template #notSpecialEquipment>
-    <select [(ngModel)]="selectedSO" (change)="onSOChange()" class="form-select py-3 color-select">
-      <option value="" disabled>Sistema Operativo</option>
-      <option *ngFor="let so of sistemasOperativos" [value]="so.so">
-        {{ so.so }}
-      </option>
-    </select>
-  </ng-template>
-</div>
 
-    
-    
+    <div class="grid-item my-3">
+      <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notSpecialEquipment">
+        <select [(ngModel)]="selectedSO" class="form-select py-3 color-select" disabled>
+          <option value="N/A">N/A</option>
+        </select>
+      </ng-container>
+      <ng-template #notSpecialEquipment>
+        <select (change)="onSOChange()" [(ngModel)]="selectedSO" class="form-select py-3 color-select">
+          <option disabled value="">Sistema Operativo</option>
+          <option *ngFor="let so of sistemasOperativos" [value]="so.so">
+            {{ so.so }}
+          </option>
+        </select>
+      </ng-template>
+    </div>
+
+
     <div class="grid-item my-3">
       <select
         [(ngModel)]="selectedVersion"
@@ -219,7 +218,7 @@
         [ngClass]="{ 'disabled-select': versionesFiltradas.length === 0 }"
         class="form-select py-3 color-select"
       >
-        <option value="" disabled>Versión</option>
+        <option disabled value="">Versión</option>
         <option *ngFor="let version of versionesFiltradas" [value]="version">
           {{ version }}
         </option>
@@ -227,7 +226,7 @@
     </div>
     <div class="grid-item my-3">
       <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Uso</option>
+        <option disabled selected value="">Uso</option>
         <option>Administrativo</option>
         <option>Caja</option>
       </select>
@@ -235,11 +234,11 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
+          autocomplete="on"
           class="w-100 rounded"
           id="marca"
-          type="text"
           pInputText
-          autocomplete="on"
+          type="text"
         />
         <label for="marca">Marca</label>
       </span>
@@ -247,11 +246,11 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
+          autocomplete="on"
           class="w-100 rounded"
           id="modelo"
-          type="text"
           pInputText
-          autocomplete="on"
+          type="text"
         />
         <label for="modelo">Modelo</label>
       </span>
@@ -259,11 +258,12 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          [(ngModel)]="macAddress"
           (keyup)="onMacInput($event)"
-          type="text"
-          pInputText
+          [(ngModel)]="macAddress"
           class="w-100 rounded"
+          id="mac"
+          pInputText
+          type="text"
         />
         <label for="mac">MAC (XX:XX:XX:XX:XX:XX)</label>
       </span>
@@ -274,12 +274,12 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
+          (keyup)="limitAndValidateIP()"
+          [(ngModel)]="ipAddress"
           class="w-100 rounded"
           id="ip"
-          [(ngModel)]="ipAddress"
-          (keyup)="limitAndValidateIP()"
-          type="text"
           pInputText
+          type="text"
         />
 
         <label for="ip">IP (IPV4 o IPv6)</label>
@@ -290,127 +290,125 @@
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="maquina" type="text" pInputText />
+        <input class="w-100 rounded" id="maquina" pInputText type="text"/>
         <label for="maquina">Nombre Máquina </label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-    class="w-100 rounded"
-    id="procesador"
-    type="text"
-    pInputText
-    [(ngModel)]="procesador"
-    [disabled]="isEquipmentWithNoOptions(selectedType)"
-    [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : procesador"
-  />
+          [(ngModel)]="procesador"
+          [disabled]="isEquipmentWithNoOptions(selectedType)"
+          [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : procesador"
+          class="w-100 rounded"
+          id="procesador"
+          pInputText
+          type="text"
+        />
         <label for="procesador">Procesador</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <div class="p-float-label position-relative">
-        <input 
-          class="w-100 rounded" 
-          id="ram" 
-          pInputText 
-          type="text" 
-          [(ngModel)]="ram" 
-          [disabled]="isEquipmentWithNoOptions(selectedType)" 
-          [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : ram"/>
+        <input
+          [(ngModel)]="ram"
+          [disabled]="isEquipmentWithNoOptions(selectedType)"
+          [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : ram"
+          class="w-100 rounded"
+          id="ram"
+          pInputText
+          type="text"/>
         <label for="ram">RAM</label>
         <div *ngIf="!isEquipmentWithNoOptions(selectedType)"
-          class="position-absolute"
-          style="top: 0; right: 10px; height: 100%; display: flex; align-items: center; pointer-events: none;">
+             class="position-absolute"
+             style="top: 0; right: 10px; height: 100%; display: flex; align-items: center; pointer-events: none;">
           GB
         </div>
       </div>
     </div>
-    
-   <div class="grid-item my-3">
-  <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notPrinterDisk">
-    <select [(ngModel)]="tipoDisco" disabled class="form-select py-3 color-select w-100 rounded">
-      <option value="N/A">N/A</option>
-    </select>
-  </ng-container>
-  <ng-template #notPrinterDisk>
-    <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded">
-      <option value="" disabled>SSD/HDD</option>
-      <option value="SSD">SSD</option>
-      <option value="HDD">HDD</option>
-    </select>
-  </ng-template>
-</div>
-
-<div class="grid-item my-3">
-  <span class="p-float-label">
-    <input
-      [(ngModel)]="ddlTbk"
-      (keyup)="onDDLTBKInput()"
-      appLimitInput
-      pInputText
-      type="text"
-      class="w-100 rounded"
-      id="ddlTbk"
-      [disabled]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK'"
-      [value]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK' ? 'N/A' : ddlTbk"
-    />
-    <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
-  </span>
-  <div *ngIf="isValidDDLTBK === false" class="text-danger">
-    Formato DDL/TBK no válido
-  </div>
-</div>
-
-
 
     <div class="grid-item my-3">
+      <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notPrinterDisk">
+        <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded" disabled>
+          <option value="N/A">N/A</option>
+        </select>
+      </ng-container>
+      <ng-template #notPrinterDisk>
+        <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded">
+          <option disabled value="">SSD/HDD</option>
+          <option value="SSD">SSD</option>
+          <option value="HDD">HDD</option>
+        </select>
+      </ng-template>
+    </div>
+
+    <div class="grid-item my-3">
+      <!-- TODO: revisar appLimitInput, a que corresponde -->
       <span class="p-float-label">
-        <input class="w-100 rounded" id="serie" type="text" pInputText />
+        <input
+          (keyup)="onDDLTBKInput()"
+          [(ngModel)]="ddlTbk"
+          [disabled]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK'"
+          [value]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK' ? 'N/A' : ddlTbk"
+          appLimitInput
+          class="w-100 rounded"
+          id="ddlTbk"
+          pInputText
+          type="text"
+        />
+        <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
+      </span>
+      <div *ngIf="isValidDDLTBK === false" class="text-danger">
+        Formato DDL/TBK no válido
+      </div>
+    </div>
+    <div class="grid-item my-3">
+      <span class="p-float-label">
+        <input class="w-100 rounded" id="serie" pInputText type="text"/>
         <label for="serie">Número de Serie </label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
+          autocomplete="on"
           class="w-100 rounded"
           id="encargado"
-          type="text"
           pInputText
-          autocomplete="on"
+          type="text"
         />
         <label for="encargado">Encargado Agencia</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="ubicacion" type="text" pInputText />
+        <input class="w-100 rounded" id="ubicacion" pInputText type="text"/>
         <label for="ubicacion">Ubicación</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="garantia" type="Number" pInputText />
+        <input class="w-100 rounded" id="garantia" pInputText type="Number"/>
         <label for="garantia">Garantía</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          class="w-100 rounded"
-          id="encargado"
-          type="text"
-          pInputText
           autocomplete="on"
+          class="w-100 rounded"
+          id="orden_compra"
+          pInputText
+          type="text"
         />
-        <label for="encargado">Orden de compra</label>
+        <label for="orden_compra">Orden de compra</label>
       </span>
     </div>
   </div>
 
   <div class="row">
     <div class="col">
-      <hr />
+      <hr/>
     </div>
   </div>
 
@@ -418,19 +416,19 @@
     <div class="col-12">
       <div class="d-flex justify-content-between">
         <button
+          class="back-button px-5 py-2"
+          label="Volver"
           pButton
           routerLink="/home"
           type="button"
-          label="Volver"
-          class="back-button px-5 py-2"
         ></button>
 
         <button
-          pButton
-          type="button"
-          label="Ingresar"
           (click)="abrirModalResumenIngresoIndividual()"
           class="search-button px-5 py-2"
+          label="Ingresar"
+          pButton
+          type="button"
         ></button>
       </div>
     </div>

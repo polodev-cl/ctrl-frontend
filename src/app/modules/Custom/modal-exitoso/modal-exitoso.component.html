@@ -1,10 +1,10 @@
 <div class="custom-modal">
   <div class="custom-modal-content rounded-3 text-center">
-      <h2 class="my-3">{{ titulo }}</h2>
-      <img src="../../../../assets/image/check-circle.svg" class="mt-4 mb-4" alt="Check Circle" />
-      <p [innerHTML]="mensajeModal"></p>
+    <h2 class="my-3">{{ titulo }}</h2>
+    <img alt="Check Circle" class="mt-4 mb-4" src="../../../../assets/image/check-circle.svg"/>
+    <p [innerHTML]="mensajeModal"></p>
 
-      <button class="btn btn-outline my-3 px-1" (click)="cerrarModal()">Volver</button>
-    </div>
+    <button (click)="cerrarModal()" class="btn btn-outline my-3 px-1">Volver</button>
   </div>
-  
+  `
+</div>

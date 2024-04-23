@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,13 +8,14 @@ import { Observable } from 'rxjs';
 export class CompanyService {
   private baseUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/company';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getCompanies(): Observable<any> {
     return this.http.get<any>(this.baseUrl);
   }
 
   getCompanyById(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}`);
+    return this.http.get(`${ this.baseUrl }`);
   }
 }

@@ -8,10 +8,10 @@ describe('IngresoIndividualComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngresoIndividualComponent]
+      declarations: [ IngresoIndividualComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(IngresoIndividualComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

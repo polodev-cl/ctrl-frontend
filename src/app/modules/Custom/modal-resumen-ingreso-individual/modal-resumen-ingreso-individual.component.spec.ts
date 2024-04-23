@@ -8,10 +8,10 @@ describe('ModalResumenIngresoIndividualComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalResumenIngresoIndividualComponent]
+      declarations: [ ModalResumenIngresoIndividualComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalResumenIngresoIndividualComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

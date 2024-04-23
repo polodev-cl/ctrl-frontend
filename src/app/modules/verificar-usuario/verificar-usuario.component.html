@@ -1,43 +1,45 @@
 <div class="foto-container">
-  <img src="../../../assets/image/Foto-fondo.jpg" class="background-image" alt="" />
+  <img alt="" class="background-image" src="../../../assets/image/Foto-fondo.jpg"/>
   <div class="container">
- 
+
 
     <div class="row justify-content-center mt-5">
       <div class="col-md-6 text-center mt-5">
         <div class="justify-content-center">
-          <img class="logo" src="../../../assets/image/LogoGrande.svg" alt="logo" />
+          <img alt="logo" class="logo" src="../../../assets/image/LogoGrande.svg"/>
         </div>
         <p-card class="row justify-content-center">
-          <form class="p-fluid" (ngSubmit)="verificarCodigo()">
+          <form (ngSubmit)="verificarCodigo()" class="p-fluid">
             <!-- Display error message -->
             <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
             <!-- Email Input -->
             <div class="p-field mb-3">
-              <input type="email" pInputText placeholder="Email" [(ngModel)]="username" name="username" class="input-color" required>
+              <input [(ngModel)]="username" class="input-color" name="username" pInputText placeholder="Email"
+                     required type="email">
             </div>
 
             <!-- Verification Code Input -->
             <div class="p-field mb-3">
-              <input type="text" pInputText placeholder="Código de verificación" [(ngModel)]="confirmationCode" name="confirmationCode" class="input-color" required>
+              <input [(ngModel)]="confirmationCode" class="input-color" name="confirmationCode" pInputText
+                     placeholder="Código de verificación" required type="text">
             </div>
 
             <!-- Verify Button -->
-            <button pButton type="submit" label="Verificar" class="p-button-rounded mt-5"></button>
-            <button pButton routerLink="/login" type="button" label="Volver" class="back-button mt-3"></button>
+            <button class="p-button-rounded mt-5" label="Verificar" pButton type="submit"></button>
+            <button class="back-button mt-3" label="Volver" pButton routerLink="/login" type="button"></button>
           </form>
         </p-card>
       </div>
-   
+
 
     </div>
- 
+
   </div>
   <app-modal-exitoso
-  *ngIf="mostrarModalExito"
-  [titulo]="tituloModalExito"
-  [mensajeModal]="mensajeModalExito"
-  (cerrar)="cerrarModalExito()">
-</app-modal-exitoso>
+    (cerrar)="cerrarModalExito()"
+    *ngIf="mostrarModalExito"
+    [mensajeModal]="mensajeModalExito"
+    [titulo]="tituloModalExito">
+  </app-modal-exitoso>
 </div>

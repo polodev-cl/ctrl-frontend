@@ -1,14 +1,15 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import {
-  Element,
-  ELEMENT_DATA3,
-} from '../../tablas-historial-equipo/tablas-historial-equipo.component';
+import { Element, ELEMENT_DATA3, TablasHistorialEquipoComponent, } from '../../tablas-historial-equipo/tablas-historial-equipo.component';
 
 @Component({
   selector: 'app-modal-historial-equipo',
   templateUrl: './modal-historial-equipo.component.html',
-  styleUrls: ['./modal-historial-equipo.component.css'],
+  styleUrls: [ './modal-historial-equipo.component.css' ],
+  standalone: true,
+  imports: [
+    TablasHistorialEquipoComponent
+  ]
 })
 export class ModalHistorialEquipoComponent {
   @Output() cerrar = new EventEmitter<void>();

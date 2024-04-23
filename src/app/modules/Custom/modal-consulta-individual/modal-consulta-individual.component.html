@@ -4,7 +4,8 @@
     <div *ngIf="tipoConsulta === 'usuario'">
       <div>Usuario / rut</div>
       <div class="form-group mt-3">
-        <input class="input-color" id="usuarioInput" type="text" [(ngModel)]="rut" pInputText placeholder="Ingresar usuario o rut" />
+        <input [(ngModel)]="rut" class="input-color" id="usuarioInput" pInputText placeholder="Ingresar usuario o rut"
+               type="text"/>
         <div *ngIf="noResultsFound" class="alert alert-warning mt-2">
           No se encontraron equipos con el RUT proporcionado.
         </div>
@@ -13,7 +14,7 @@
     <div *ngIf="tipoConsulta === 'agencia'">
       <div>Agencia / DPC</div>
       <div class="form-group mt-3">
-        <input class="input-color" type="number" [(ngModel)]="dpc" pInputText placeholder="Ingresar agencia o DPC" />
+        <input [(ngModel)]="dpc" class="input-color" pInputText placeholder="Ingresar agencia o DPC" type="number"/>
         <div *ngIf="noResultsFound" class="alert alert-warning mt-2">
           No se encontraron equipos con el DPC proporcionado.
         </div>
@@ -22,16 +23,17 @@
     <div *ngIf="tipoConsulta === 'inventario'">
       <div>Número de inventario</div>
       <div class="form-group mt-3">
-        <input class="input-color" type="number" [(ngModel)]="inventario" pInputText placeholder="Ingresar N° de inventario" />
+        <input [(ngModel)]="inventario" class="input-color" pInputText placeholder="Ingresar N° de inventario"
+               type="number"/>
         <div *ngIf="noResultsFound" class="alert alert-warning mt-2">
           No se encontraron equipos con el número de inventario proporcionado.
         </div>
       </div>
     </div>
     <div class="button-group d-flex justify-content-between mt-5 mb-3">
-      <button class="btn btn-outline" (click)="cerrarModal()">Volver</button>
-      <button class="btn btn-primary" (click)="buscar()">
-        <img src="../../../../assets/image/search.svg" class="imagen">
+      <button (click)="cerrarModal()" class="btn btn-outline">Volver</button>
+      <button (click)="buscar()" class="btn btn-primary">
+        <img class="imagen" src="../../../../assets/image/search.svg">
         Buscar
       </button>
     </div>

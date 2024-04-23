@@ -1,42 +1,41 @@
 <div class="custom-modal">
-    <div class="custom-modal-content rounded-3 text-center">
-        <h2 class="title">Carga masiva</h2>
-        <p class="description">Arrastra al recuadro o haz click en él para cargar tu archivo en formato Excel</p>
-        
-        <!-- Dropzone Area -->
-        <div class="upload-box" (click)="fileInput.click()">
-            <input type="file" style="display: none" #fileInput (change)="onFileSelected($event)">
-            <p class="upload-text">
-                <!-- Include an upload icon here -->
-                <img src="../../../../assets/image/uploadBig.svg" alt="Upload icon">
-            </p>
-        </div>
-        
-        <!-- Información de progreso y botones -->
-        <div *ngIf="fileLoading" class="progress-bar-container">
-            <div class="progress-bar" [style.width]="progress + '%'"></div>
-        </div>
-        <div *ngIf="fileLoaded && !fileLoading" class="uploaded-file-info">
-            <div class="progress-icons">
-                <img src="../../../../assets/image/tick.svg" alt="Uploaded" class="upload-tick-icon">
-                <div class="progress-bar-full" [style.width]="'100%'"></div>
-             
-                <button class="delete-file-btn" (click)="deleteFile()">
-                    <img src="../../../../assets/image/trash.svg" alt="Delete file">
-                </button>
-            </div>
-            <div class="file-details">
-                <span class="file-name">{{ fileName }}</span>
-                <span class="file-size">{{ fileSize }}</span>
-            </div>
-        </div>
-        
-          
-          
-        <div class="button-group d-flex justify-content-between">
-            <button class="btn btn-outline mt-3 " (click)="cerrarModal()">Volver</button>
-            <button class="btn btn-outline mt-3 " (click)="abrirDuplicados()">Ver duplicados</button>
-            <button [class.btn-disabled]="!fileLoaded" class="btn btn-primary mt-3 " (click)="onUpload()">Subir</button>
-        </div>
+  <div class="custom-modal-content rounded-3 text-center">
+    <h2 class="title">Carga masiva</h2>
+    <p class="description">Arrastra al recuadro o haz click en él para cargar tu archivo en formato Excel</p>
+
+    <!-- Dropzone Area -->
+    <div (click)="fileInput.click()" class="upload-box">
+      <input #fileInput (change)="onFileSelected($event)" style="display: none" type="file">
+      <p class="upload-text">
+        <!-- Include an upload icon here -->
+        <img alt="Upload icon" src="../../../../assets/image/uploadBig.svg">
+      </p>
     </div>
+
+    <!-- Información de progreso y botones -->
+    <div *ngIf="fileLoading" class="progress-bar-container">
+      <div [style.width]="progress + '%'" class="progress-bar"></div>
+    </div>
+    <div *ngIf="fileLoaded && !fileLoading" class="uploaded-file-info">
+      <div class="progress-icons">
+        <img alt="Uploaded" class="upload-tick-icon" src="../../../../assets/image/tick.svg">
+        <div [style.width]="'100%'" class="progress-bar-full"></div>
+
+        <button (click)="deleteFile()" class="delete-file-btn">
+          <img alt="Delete file" src="../../../../assets/image/trash.svg">
+        </button>
+      </div>
+      <div class="file-details">
+        <span class="file-name">{{ fileName }}</span>
+        <span class="file-size">{{ fileSize }}</span>
+      </div>
+    </div>
+
+
+    <div class="button-group d-flex justify-content-between">
+      <button (click)="cerrarModal()" class="btn btn-outline mt-3 ">Volver</button>
+      <button (click)="abrirDuplicados()" class="btn btn-outline mt-3 ">Ver duplicados</button>
+      <button (click)="onUpload()" [class.btn-disabled]="!fileLoaded" class="btn btn-primary mt-3 ">Subir</button>
+    </div>
+  </div>
 </div>

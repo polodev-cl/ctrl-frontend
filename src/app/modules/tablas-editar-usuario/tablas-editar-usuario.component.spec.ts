@@ -8,10 +8,10 @@ describe('TablasEditarUsuarioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TablasEditarUsuarioComponent]
+      declarations: [ TablasEditarUsuarioComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(TablasEditarUsuarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

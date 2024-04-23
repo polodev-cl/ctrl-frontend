@@ -1,7 +1,7 @@
 // src/app/services/consulta-masiva.service.ts
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
 
 export interface Equipamiento {
   id: number;
@@ -53,7 +53,8 @@ export interface Consulta {
 export class ConsultaMasivaService {
   private apiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/equipment'; // Asegúrate de que la URL sea correcta
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
 
   obtenerEquipamientoFiltrado(): Observable<Consulta[]> {
@@ -74,13 +75,13 @@ export class ConsultaMasivaService {
 
   obtenerEquipamientoCompleto(): Observable<any[]> {
     return this.http.get<Equipamiento[]>(this.apiUrl).pipe(
-      map(data => data.map(({ 
-        id, usuarioIdCreacion, usuarioIdModificacion, fechaModificacion, ...rest 
-      }) => {
+      map(data => data.map(({
+                              id, usuarioIdCreacion, usuarioIdModificacion, fechaModificacion, ...rest
+                            }) => {
         return {
-          Empresa: 'Nombre Empresa', 
+          Empresa: 'Nombre Empresa',
           'Rut Usuario': rest.rut || '-',
-          'Agencia Nombre': rest.ageId?.toString() || 'Sin Agencia', 
+          'Agencia Nombre': rest.ageId?.toString() || 'Sin Agencia',
           Nemonico: rest.agenciaNemonico || '-',
           DPC: rest.agenciaDpc?.toString() || '-',
           caja: rest.uso || '-',
@@ -90,29 +91,29 @@ export class ConsultaMasivaService {
           Modelo: rest.modelo || '-',
           'Sistema Operativo': rest.sistemaOperativo || '-',
           MAC: rest.mac || '-',
-          'Nombre de Maquina': rest.tipo || '-', 
+          'Nombre de Maquina': rest.tipo || '-',
           Procesador: rest.procesador || '-',
-          RAM: rest.ramGb ? `${rest.ramGb} GB` : '-', 
-          'SSD/HDD': rest.disco || '-', 
+          RAM: rest.ramGb ? `${ rest.ramGb } GB` : '-',
+          'SSD/HDD': rest.disco || '-',
           IP: rest.ip || '-',
           'DDLL TBK': rest.ddllTbk || '-',
           'Numero serie': rest.serie || '-',
           Estado: rest.estado?.toString() || '-',
           'Encargado Agencia': rest.encargadoAgencia || '-',
           'Orden de compra numero': rest.ordenCompra || '-',
-          Fechas: this.formatDate(rest.fechaIngreso) 
+          Fechas: this.formatDate(rest.fechaIngreso)
         };
       }))
     );
   }
-  
+
 
   private formatDate(dateString: string): string {
     const date = new Date(dateString);
     let day = ('0' + date.getDate()).slice(-2);
-    const months = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    const months = [ "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic" ];
     let month = months[date.getMonth()]; // Usa el array para obtener el nombre del mes
-    return `${day}-${month}`; // Formato DD-mmm-YYYY (e.g., "11-feb-2024")
-}
+    return `${ day }-${ month }`; // Formato DD-mmm-YYYY (e.g., "11-feb-2024")
+  }
 
 }

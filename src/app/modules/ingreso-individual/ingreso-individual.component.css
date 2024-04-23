@@ -1,129 +1,127 @@
 .search-button {
-    border: none;
-    border-radius: 100px;
-    background-color: #34AA4E;
-    color: white;
-    font-family: 'Roboto';
+  border: none;
+  border-radius: 100px;
+  background-color: #34AA4E;
+  color: white;
+  font-family: 'Roboto';
 }
 
 .search-button:hover {
-    background-color: #2C8C40;
-    /* Un verde más oscuro para el efecto hover */
-    border-color: #2C8C40;
-    /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
+  background-color: #2C8C40;
+  /* Un verde más oscuro para el efecto hover */
+  border-color: #2C8C40;
+  /* Asegúrate de que el color del borde también cambie para mantener la coherencia */
 }
 
 .large-checkbox {
-    width: 1.5em;
-    /* You can adjust the size as needed */
-    height: 1.5em;
-    /* You can adjust the size as needed */
+  width: 1.5em;
+  /* You can adjust the size as needed */
+  height: 1.5em;
+  /* You can adjust the size as needed */
 }
 
 .large-label {
-    font-size: 1.25em;
-    /* Adjust label text size as needed */
-    /* Optional: increase the click area for the label */
-    padding: 0.25em 0.5em;
-    display: inline-block;
+  font-size: 1.25em;
+  /* Adjust label text size as needed */
+  /* Optional: increase the click area for the label */
+  padding: 0.25em 0.5em;
+  display: inline-block;
 }
 
 .color-select {
-    background-color: #EAEAEA;
+  background-color: #EAEAEA;
 }
 
 
 .color-input-label {
-    background-color: #EAEAEA;
+  background-color: #EAEAEA;
 }
 
 
 .color-input-label::after {
-    background-color: #EAEAEA;
+  background-color: #EAEAEA;
 }
 
 .form-floating::after {
-    display: none;
+  display: none;
 }
-
 
 
 /* Estilos para los inputs de PrimeNG */
 .p-inputtext {
-    border: none !important;
-    /* Elimina los bordes */
-    box-shadow: none !important;
-    /* Elimina el sombreado al enfocar */
-    color: black !important;
-    /* Texto en negro */
+  border: none !important;
+  /* Elimina los bordes */
+  box-shadow: none !important;
+  /* Elimina el sombreado al enfocar */
+  color: black !important;
+  /* Texto en negro */
 
 }
 
 /* Estilo para el label cuando el input asociado está enfocado o lleno */
-.p-float-label .p-inputtext:not(:placeholder-shown)+label,
-.p-float-label .p-inputtext:focus+label,
-.p-float-label p-calendar+label {
-    color: black !important;
-    background-color: transparent;
+.p-float-label .p-inputtext:not(:placeholder-shown) + label,
+.p-float-label .p-inputtext:focus + label,
+.p-float-label p-calendar + label {
+  color: black !important;
+  background-color: transparent;
 }
 
 /* Estilo base para el label */
 .p-float-label label {
-    color: grey !important;
-    background-color: transparent;
-    /* Asegura que el fondo sea transparente */
+  color: grey !important;
+  background-color: transparent;
+  /* Asegura que el fondo sea transparente */
 }
 
 /* Estilo para el placeholder del input */
 .p-float-label .p-inputtext::placeholder {
-    color: transparent;
+  color: transparent;
 }
 
 /* Estilo para el placeholder cuando el input está enfocado */
 .p-float-label .p-inputtext:focus::placeholder {
-    color: black !important;
+  color: black !important;
 }
 
 .color-label {
-    color: black !important;
+  color: black !important;
 }
 
 
 input[type=number] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 .p-calendar .p-inputtext {
-    border: none !important;
+  border: none !important;
 }
 
 
 .p-calendar .p-button {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .disabled-select,
 .form-select:disabled {
-    background-color: #f8f8f8;
-    color: #6c757d;
-    border: none;
+  background-color: #f8f8f8;
+  color: #6c757d;
+  border: none;
 
- 
+
 }
 
 
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Crea tres columnas de igual tamaño */
-    
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Crea tres columnas de igual tamaño */
+
+}
+
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Una sola columna en móviles */
   }
-  
-
-
-  @media (max-width: 768px) {
-    .grid-container {
-      grid-template-columns: 1fr; /* Una sola columna en móviles */
-    }
 }

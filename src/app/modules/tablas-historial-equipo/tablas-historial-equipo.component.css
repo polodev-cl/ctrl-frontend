@@ -1,34 +1,34 @@
 /* Structure */
 .example-container {
-    position: relative;
+  position: relative;
 }
 
 .example-table-container {
-    position: relative;
-    min-height: 200px;
-    max-height: 400px;
-    overflow: auto;
+  position: relative;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
 }
 
 table {
-    width: 100%;
+  width: 100%;
 }
 
-.example-table{
-    background-color:#F9F9F9;
+.example-table {
+  background-color: #F9F9F9;
 }
 
 
 /* Column Widths */
 .mat-column-fecha {
 
-    max-width: 20%;
+  max-width: 20%;
 }
 
 .mat-column-razonUsuario {
-    max-width: 80%;
+  max-width: 80%;
 }
+
 .example-table-container .mat-cell div {
-    display: block !important; /* Asegura que cada div se muestre en una nueva línea y tiene mayor especificidad */
-  }
-  
+  display: block !important; /* Asegura que cada div se muestre en una nueva línea y tiene mayor especificidad */
+}

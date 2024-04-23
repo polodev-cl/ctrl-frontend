@@ -1,14 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  signIn,
-  confirmSignIn,
-  type SignInInput,
-  signOut,
-  ConfirmSignInInput,
-  resetPassword,
-  confirmResetPassword,
-  updatePassword,
-} from 'aws-amplify/auth';
+import { confirmResetPassword, confirmSignIn, ConfirmSignInInput, resetPassword, signIn, type SignInInput, signOut, updatePassword, } from 'aws-amplify/auth';
 
 interface ConfirmPasswordInput {
   username: string;
@@ -19,30 +10,30 @@ interface ConfirmPasswordInput {
   providedIn: 'root',
 })
 export class CognitoService {
-  private currentUser: any; 
+  private currentUser: any;
 
   async handleSignIn({ username, password }: SignInInput): Promise<string> {
     const { isSignedIn, nextStep } = await signIn({ username, password });
-    if (nextStep) {
-      this.currentUser = nextStep; 
-      return nextStep.signInStep; 
-    } else if (isSignedIn) {
+    if ( nextStep ) {
+      this.currentUser = nextStep;
+      return nextStep.signInStep;
+    } else if ( isSignedIn ) {
       return 'SIGNED_IN';
     }
-    throw new Error('Authentication failed with unknown state'); 
+    throw new Error('Authentication failed with unknown state');
   }
 
   async confirmNewPassword({
-    username,
-    newPassword,
-  }: ConfirmPasswordInput): Promise<void> {
+                             username,
+                             newPassword,
+                           }: ConfirmPasswordInput): Promise<void> {
     try {
       const confirmInput: ConfirmSignInInput = {
         challengeResponse: newPassword,
       };
       const confirmResult = await confirmSignIn(confirmInput);
 
-      if (confirmResult.isSignedIn) {
+      if ( confirmResult.isSignedIn ) {
         console.log(
           'User has successfully set a new password and is signed in.'
         );
@@ -52,7 +43,7 @@ export class CognitoService {
           confirmResult.nextStep
         );
       }
-    } catch (error) {
+    } catch ( error ) {
       console.error('Error confirming new password:', error);
       throw error;
     }
@@ -61,8 +52,8 @@ export class CognitoService {
   async resetPassword(username: string) {
     try {
       const output = await resetPassword({ username });
-      return output; 
-    } catch (error) {
+      return output;
+    } catch ( error ) {
       console.error('Error during password reset:', error);
       throw error;
     }
@@ -80,7 +71,7 @@ export class CognitoService {
         newPassword,
       });
       console.log('Password reset successfully');
-    } catch (error) {
+    } catch ( error ) {
       console.error('Error during password confirmation:', error);
       throw error;
     }
@@ -90,7 +81,7 @@ export class CognitoService {
     try {
       await updatePassword({ oldPassword, newPassword });
       console.log('Password updated successfully');
-    } catch (error) {
+    } catch ( error ) {
       console.error('Error updating password:', error);
       throw error;
     }
@@ -100,7 +91,7 @@ export class CognitoService {
     try {
       await signOut();
       console.log('Sesión cerrada correctamente.');
-    } catch (error) {
+    } catch ( error ) {
       console.error('Error al cerrar sesión:', error);
     }
   }

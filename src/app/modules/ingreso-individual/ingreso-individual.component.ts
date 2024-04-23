@@ -1,13 +1,16 @@
+import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
-import { AgencyService, Company, Agency } from './AgencyService';
-import { EquipmentService } from '../../services/equipment.service'; 
-import { SOService, SOVersion } from './SOService';
-import {
-  checkIpAddress,
-  formatAndValidateMAC,
-  formatAndValidateDDLTBK,
-} from '../../utils/utils';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
+import { RouterLink } from "@angular/router";
+import { CalendarModule } from "primeng/calendar";
+import { DividerModule } from "primeng/divider";
+import { InputTextModule } from "primeng/inputtext";
+import { RutFormatterDirective } from "../../directives/rut-formatter.directive";
+import { checkIpAddress, formatAndValidateDDLTBK, formatAndValidateMAC, } from '../../utils/utils';
+import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
+import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
+import { Agency, AgencyService } from './agency.service';
+import { SoService, SOVersion } from './so.service';
 
 interface Option {
   value: string;
@@ -17,16 +20,29 @@ interface Option {
 @Component({
   selector: 'app-ingreso-individual',
   templateUrl: './ingreso-individual.component.html',
-  styleUrls: ['./ingreso-individual.component.css'],
+  styleUrls: [ './ingreso-individual.component.css' ],
+  standalone: true,
+  imports: [
+    ModalExitosoComponent,
+    DividerModule,
+    ModalResumenIngresoIndividualComponent,
+    NgIf,
+    RouterLink,
+    CalendarModule,
+    FormsModule,
+    NgForOf,
+    InputTextModule,
+    NgClass,
+    RutFormatterDirective
+  ]
 })
 export class IngresoIndividualComponent implements OnInit {
-  
   breadcrumbs = [
     { text: 'Home', link: '/home' },
     { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
 
-  //empresas y agencias
+  // empresas y agencias
   selectedType: string = '';
   selectedEmpresa: string | undefined = undefined;
   empresaOptions: Option[] = [];
@@ -50,7 +66,7 @@ export class IngresoIndividualComponent implements OnInit {
   selectedDPC: string = '';
   selectedNemonico: string = '';
 
-  //equipo
+  // equipo
   sistemasOperativos: SOVersion[] = [];
   selectedSO: string = '';
   versionesFiltradas: string[] = [];
@@ -59,18 +75,29 @@ export class IngresoIndividualComponent implements OnInit {
   ram: string = '';
   tipoDisco: string = '';
 
-  form: FormGroup[]=[];
+  form: FormGroup[] = [];
+  ddlTbk: string = '';
+  isValidDDLTBK: boolean | null = null;
+  macAddress: string = '';
+  ipAddress: string = '';
+  isValidIP: boolean | null = null;
+  isValidMAC: boolean | null = null;
+  tituloModalExito: string = '';
+  mensajeModalExito: string = '';
+  mostrarModalExito: boolean = false;
+  mostrarModalResumenIngresoIndividual: boolean = false;
+
   constructor(
-    private soService: SOService,
-    private agencyService: AgencyService,
-    private fb: FormBuilder,
-    private equipmentService: EquipmentService,
-  ) {}
+    private soService: SoService,
+    private agencyService: AgencyService
+  ) {
+  }
 
   ngOnInit() {
     this.loadEmpresas();
     this.loadSOData();
   }
+
   isEquipmentWithNoOptions(type: string): boolean {
     return [
       'Impresora',
@@ -83,6 +110,7 @@ export class IngresoIndividualComponent implements OnInit {
       'TBK',
     ].includes(type);
   }
+
   loadEmpresas(): void {
     this.agencyService.getCompanies().subscribe({
       next: (companies) => {
@@ -99,7 +127,7 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   onEmpresaChange(): void {
-    if (this.selectedEmpresa) {
+    if ( this.selectedEmpresa ) {
       this.agencyService
         .getAgenciesByCompanyId(+this.selectedEmpresa)
         .subscribe((agencies) => {
@@ -112,43 +140,45 @@ export class IngresoIndividualComponent implements OnInit {
         });
     }
   }
+
   onAgencyChange(): void {
-    if (this.selectedAgency) {
+    if ( this.selectedAgency ) {
       this.selectedDPC = this.selectedAgency.dpc.toString();
       this.selectedNemonico = this.selectedAgency.nemonico;
     }
   }
+
   resetSelections(): void {
     this.selectedDPC = '';
     this.selectedEmpresa = '';
     this.selectedNemonico = '';
   }
 
-  ddlTbk: string = '';
-  isValidDDLTBK: boolean | null = null;
-
   onDDLTBKInput(): void {
     const { formatted, isValid } = formatAndValidateDDLTBK(this.ddlTbk);
     this.ddlTbk = formatted;
     this.isValidDDLTBK = isValid;
   }
+
   onTypeChange(): void {
-    if (this.isEquipmentWithNoOptions(this.selectedType)) {
+    if ( this.isEquipmentWithNoOptions(this.selectedType) ) {
       this.selectedSO = 'N/A';
       this.selectedVersion = 'N/A';
       this.procesador = 'N/A';
       this.ram = 'N/A';
       this.tipoDisco = 'N/A';
-      if (this.selectedType !== 'TBK') {
+      if ( this.selectedType !== 'TBK' ) {
         this.ddlTbk = 'N/A';
       }
     } else {
       this.loadSOData();
     }
   }
+
   resetFields(): void {
     this.ddlTbk = this.selectedType === 'TBK' ? this.ddlTbk : 'N/A';
   }
+
   loadSOData(): void {
     this.soService
       .getSODataByType(this.selectedType)
@@ -162,6 +192,7 @@ export class IngresoIndividualComponent implements OnInit {
         this.tipoDisco = '';
       });
   }
+
   getSelectedType(): string {
     return this.selectedType;
   }
@@ -174,18 +205,13 @@ export class IngresoIndividualComponent implements OnInit {
     this.selectedVersion = '';
   }
 
-  macAddress: string = '';
-  ipAddress: string = '';
-  isValidIP: boolean | null = null;
   limitAndValidateIP(): void {
-    if (this.ipAddress && this.ipAddress.length > 39) {
+    if ( this.ipAddress && this.ipAddress.length > 39 ) {
       this.ipAddress = this.ipAddress.substring(0, 39);
     }
 
     this.isValidIP = checkIpAddress(this.ipAddress);
   }
-
-  isValidMAC: boolean | null = null;
 
   onMacInput(event: KeyboardEvent): void {
     const input = event.target as HTMLInputElement;
@@ -194,12 +220,6 @@ export class IngresoIndividualComponent implements OnInit {
     this.macAddress = formattedMAC;
     this.isValidMAC = isValid;
   }
-
-  tituloModalExito: string = '';
-  mensajeModalExito: string = '';
-
-  mostrarModalExito: boolean = false;
-  mostrarModalResumenIngresoIndividual: boolean = false;
 
   abrirModalExito(): void {
     this.mostrarModalResumenIngresoIndividual = false;

@@ -64,6 +64,7 @@
   font-weight: 500;
   border-color: #388CD9; /* El color del borde */
 }
+
 .btn-primary:hover {
   background-color: #3072BF; /* Un azul más oscuro para el hover */
   border-color: #3072BF; /* Asegúrate de que el color del borde también cambie para mantener la consistencia */
@@ -76,14 +77,14 @@
 }
 
 
-
 .color-select {
   background-color: #EAEAEA;
   font-size: 1rem; /* Aumenta el tamaño de la fuente */
- 
+
   max-width: 300px; /* Establece un ancho máximo para los select */
   margin: auto; /* Centra los selectores si el modal es muy ancho */
 }
+
 .close {
   position: absolute;
   top: -5rem; /* Ajusta la distancia desde la parte superior para bajar el botón un poco */

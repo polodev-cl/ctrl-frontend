@@ -1,22 +1,22 @@
 .custom-input-icon {
-    position: absolute;
-    right: .87rem; /* Ajusta la posición horizontal del icono según sea necesario */
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    z-index: 10;
-  }
-  
+  position: absolute;
+  right: .87rem; /* Ajusta la posición horizontal del icono según sea necesario */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
 
-  /* Añade esto a tu archivo styles.scss o en un estilo interno */
 
-  .container-fluid.no-padding{
-    padding: 0 !important;
-  }
+/* Añade esto a tu archivo styles.scss o en un estilo interno */
 
-  div.container-fluid.no-tabla {
+.container-fluid.no-padding {
+  padding: 0 !important;
+}
 
-    padding-right: 0px !important;
-    padding-left: 0px !important;
+div.container-fluid.no-tabla {
+
+  padding-right: 0px !important;
+  padding-left: 0px !important;
 
 }

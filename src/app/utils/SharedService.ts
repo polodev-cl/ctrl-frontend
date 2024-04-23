@@ -18,7 +18,8 @@ export class EmailStateService {
     this.email = '';
   }
 }
-//POR SI RECARGA LA PAGINA EN EL LOGIN 
+
+//POR SI RECARGA LA PAGINA EN EL LOGIN
 
 // import { Injectable } from '@angular/core';
 

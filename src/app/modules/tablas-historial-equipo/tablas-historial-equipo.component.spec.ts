@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewlinePipe } from './tablas-historial-equipo.component'; // Asegúrate de tener la ruta correcta al Pipe
-
-import { TablasHistorialEquipoComponent } from './tablas-historial-equipo.component';
+import { NewlinePipe, TablasHistorialEquipoComponent } from './tablas-historial-equipo.component'; // Asegúrate de tener la ruta correcta al Pipe
 
 describe('TablasHistorialEquipoComponent', () => {
   let component: TablasHistorialEquipoComponent;
@@ -13,10 +11,10 @@ describe('TablasHistorialEquipoComponent', () => {
         TablasHistorialEquipoComponent,
         NewlinePipe // Añade el NewlinePipe aquí
       ]
-      
+
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(TablasHistorialEquipoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

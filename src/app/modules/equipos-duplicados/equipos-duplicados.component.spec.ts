@@ -8,10 +8,10 @@ describe('EquiposDuplicadosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EquiposDuplicadosComponent]
+      declarations: [ EquiposDuplicadosComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(EquiposDuplicadosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

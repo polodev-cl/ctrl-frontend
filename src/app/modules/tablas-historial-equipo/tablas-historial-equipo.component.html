@@ -1,11 +1,9 @@
-
-
 <div class="example-table-container">
-  <table mat-table [dataSource]="activaDataSource" class="example-table">
+  <table [dataSource]="activaDataSource" class="example-table" mat-table>
     <!-- Cabecera de la Fecha -->
     <!-- ... -->
     <ng-container matColumnDef="fecha">
-      <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Fecha</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ row.fecha }}
       </mat-cell>
@@ -14,12 +12,11 @@
 
     <!-- En tu archivo componente.html -->
     <ng-container matColumnDef="razonUsuario">
-      <mat-header-cell *matHeaderCellDef> Razón/Usuario </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Razón/Usuario</mat-header-cell>
       <mat-cell
         *matCellDef="let row"
-        class="py-2"
         [innerHTML]="row.razonUsuario | newline"
-      >
+        class="py-2">
       </mat-cell>
     </ng-container>
 
@@ -28,8 +25,8 @@
   </table>
   <mat-paginator
     #paginator
-    [pageSize]="10"
     [pageSizeOptions]="[5, 10, 20]"
+    [pageSize]="10"
     class="custom-borders"
   ></mat-paginator>
 </div>

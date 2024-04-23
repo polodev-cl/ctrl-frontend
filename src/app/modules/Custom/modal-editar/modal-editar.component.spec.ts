@@ -8,10 +8,10 @@ describe('ModalEditarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalEditarComponent]
+      declarations: [ ModalEditarComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalEditarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

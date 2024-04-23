@@ -8,10 +8,10 @@ describe('ModalCargaMasivaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalCargaMasivaComponent]
+      declarations: [ ModalCargaMasivaComponent ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalCargaMasivaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

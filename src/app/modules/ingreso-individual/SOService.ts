@@ -16,21 +16,56 @@ export interface SOVersion {
 })
 export class SOService {
   
-  // Supongamos que tienes una lista de tipos de equipos con sistemas operativos permitidos.
   private datosEquipos: EquipmentType[] = [
-    { 
-      type: 'PC', 
+    {
+      type: 'PC',
       soOptions: [
         { so: 'Windows', versiones: ['Windows 10', 'Windows 11'] },
         { so: 'Linux', versiones: ['Ubuntu 20.04', 'Fedora 34'] },
-        // Más opciones...
       ]
     },
-    { 
-      type: 'Impresora', 
-      soOptions: [] // Las impresoras pueden no tener sistemas operativos aplicables.
+    {
+      type: 'Impresora',
+      soOptions: []  
     },
-    // Más tipos de equipos...
+    {
+      type: 'Anexos',
+      soOptions: []  
+    },
+    {
+      type: 'Escaner',
+      soOptions: [] 
+    },
+    {
+      type: 'LBM',
+      soOptions: []  
+    },
+    {
+      type: 'Monitor',
+      soOptions: [] 
+    },
+    {
+      type: 'Notebook',
+      soOptions: [
+        { so: 'Windows', versiones: ['Windows 10', 'Windows 11'] },
+        { so: 'MacOS', versiones: ['Mojave', 'Catalina', 'Big Sur'] },
+        { so: 'Linux', versiones: ['Ubuntu 20.04', 'Fedora 34'] }
+      ]
+    },
+    {
+      type: 'Pistola',
+      soOptions: []  
+    },
+    {
+      type: 'Print Server',
+      soOptions: [
+        { so: 'Linux', versiones: ['Ubuntu Server 20.04', 'Debian Server 10'] }
+      ]
+    },
+    {
+      type: 'TBK',
+      soOptions: []  
+    }
   ];
   getSODataByType(type: string): Observable<SOVersion[]> {
     const equipmentType = this.datosEquipos.find(e => e.type === type);

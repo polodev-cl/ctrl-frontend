@@ -24,6 +24,9 @@ export class IngresoIndividualComponent implements OnInit {
     { text: 'Home', link: '/home' },
     { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
+
+
+  //empresas y agencias
   selectedType: string = ''; 
   selectedEmpresa: string | undefined = undefined;
   empresaOptions: Option[] = [];
@@ -31,20 +34,30 @@ export class IngresoIndividualComponent implements OnInit {
   equipmentTypes: Option[] = [
     { value: 'PC', label: 'PC' },
     { value: 'Impresora', label: 'Impresora' },
-
+    { value: 'Anexos', label: 'Anexos' },
+    { value: 'Escaner', label: 'Escaner' },
+    { value: 'LBM', label: 'LBM' },
+    { value: 'Monitor', label: 'Monitor' },
+    { value: 'Notebook', label: 'Notebook' },
+    { value: 'Pistola', label: 'Pistola' },
+    { value: 'Print Server', label: 'Print Server' },
+    { value: 'TBK', label: 'TBK' }
   ];
   agencies: Agency[] = [];
   selectedAgency?: Agency;
-
   dpcOptions: Option[] = [];
   nemonicoOptions: Option[] = [];
   selectedDPC: string = '';
   selectedNemonico: string = '';
 
+  //equipo
   sistemasOperativos: SOVersion[] = [];
   selectedSO: string = '';
   versionesFiltradas: string[] = [];
   selectedVersion: string = '';
+  procesador: string = '';
+  ram: string = '';
+  tipoDisco: string = '';
 
   constructor(
     private soService: SOService,
@@ -55,7 +68,9 @@ export class IngresoIndividualComponent implements OnInit {
     this.loadEmpresas();
     this.loadSOData();
   }
-
+  isPrinter(type: string): boolean {
+    return type === 'Impresora';
+  }
   loadEmpresas(): void {
     this.agencyService.getCompanies().subscribe({
       next: (companies) => {
@@ -105,14 +120,24 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   onTypeChange(): void {
-    this.soService.getSODataByType(this.selectedType).subscribe((soOptions: SOVersion[]) => {
-      this.sistemasOperativos = soOptions;
-      this.selectedSO = '';
-      this.versionesFiltradas = [];
-      this.selectedVersion = '';
-    });
+    if (this.isPrinter(this.selectedType)) {
+      this.selectedSO = 'N/A';
+      this.selectedVersion = 'N/A';
+      this.procesador = 'N/A';
+      this.ram = 'N/A';
+      this.tipoDisco = 'N/A';
+    } else {
+      this.soService.getSODataByType(this.selectedType).subscribe((soOptions: SOVersion[]) => {
+        this.sistemasOperativos = soOptions;
+        this.selectedSO = '';
+        this.versionesFiltradas = [];
+        this.selectedVersion = '';
+        this.procesador = '';
+        this.ram = '';
+        this.tipoDisco = '';
+      });
+    }
   }
-  
   loadSOData(): void {
     // Asumiendo que tienes una forma de obtener el 'type' adecuado
     // Si no es así, necesitarás ajustar esta lógica para obtenerlo de alguna manera

@@ -192,20 +192,25 @@
         <option value="" selected disabled>Tipo de Equipo</option>
         <option *ngFor="let type of equipmentTypes" [ngValue]="type.value">{{ type.label }}</option>
       </select>
-      
     </div>
+    
     <div class="grid-item my-3">
-      <select
-        [(ngModel)]="selectedSO"
-        (change)="onSOChange()"
-        class="form-select py-3 color-select"
-      >
-        <option value="" disabled>Sistema Operativo</option>
-        <option *ngFor="let so of sistemasOperativos" [value]="so.so">
-          {{ so.so }}
-        </option>
-      </select>
+      <ng-container *ngIf="isPrinter(selectedType); else notPrinter">
+        <select [(ngModel)]="selectedSO" disabled class="form-select py-3 color-select">
+          <option value="N/A">N/A</option>
+        </select>
+      </ng-container>
+      <ng-template #notPrinter>
+        <select [(ngModel)]="selectedSO" (change)="onSOChange()" class="form-select py-3 color-select">
+          <option value="" disabled>Sistema Operativo</option>
+          <option *ngFor="let so of sistemasOperativos" [value]="so.so">
+            {{ so.so }}
+          </option>
+        </select>
+      </ng-template>
     </div>
+    
+    
     <div class="grid-item my-3">
       <select
         [(ngModel)]="selectedVersion"
@@ -291,41 +296,51 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          class="w-100 rounded"
-          id="procesador"
-          type="text"
-          pInputText
-          autocomplete="on"
-        />
+    class="w-100 rounded"
+    id="procesador"
+    type="text"
+    pInputText
+    [(ngModel)]="procesador"
+    [disabled]="isPrinter(selectedType)"
+    [value]="isPrinter(selectedType) ? 'N/A' : procesador"
+  />
         <label for="procesador">Procesador</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <div class="p-float-label position-relative">
-        <input class="w-100 rounded" id="ram" pInputText type="text" />
+        <input 
+          class="w-100 rounded" 
+          id="ram" 
+          pInputText 
+          type="text" 
+          [(ngModel)]="ram" 
+          [disabled]="isPrinter(selectedType)" 
+          [value]="isPrinter(selectedType) ? 'N/A' : ram"/>
         <label for="ram">RAM</label>
-        <div
+        <div *ngIf="!isPrinter(selectedType)"
           class="position-absolute"
-          style="
-            top: 0;
-            right: 10px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            pointer-events: none;
-          "
-        >
+          style="top: 0; right: 10px; height: 100%; display: flex; align-items: center; pointer-events: none;">
           GB
         </div>
       </div>
     </div>
-    <div class="grid-item my-3">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>SSD / HDD</option>
-        <option>SSD</option>
-        <option>HDD</option>
-      </select>
-    </div>
+    
+   <div class="grid-item my-3">
+  <ng-container *ngIf="isPrinter(selectedType); else notPrinterDisk">
+    <select [(ngModel)]="tipoDisco" disabled class="form-select py-3 color-select w-100 rounded">
+      <option value="N/A">N/A</option>
+    </select>
+  </ng-container>
+  <ng-template #notPrinterDisk>
+    <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded">
+      <option value="" disabled>SSD/HDD</option>
+      <option value="SSD">SSD</option>
+      <option value="HDD">HDD</option>
+    </select>
+  </ng-template>
+</div>
+
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input

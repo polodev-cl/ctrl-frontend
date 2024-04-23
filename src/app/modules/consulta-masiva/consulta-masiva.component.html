@@ -151,12 +151,12 @@
       </div>
       <div *ngIf="showTable" class="col-12 col-md-2 mb-3">
         <button
-          pButton
-          type="button"
-          label="Excel"
-          (click)="tablasComponent.triggerExport()"
-          class="search-button p-2 w-100"
-        ></button>
+        pButton
+        type="button"
+        label="Excel"
+        (click)="tablasComponent.exportToExcel()"
+        class="search-button p-2 w-100"
+      ></button>
       </div>
     </div>
   </div>

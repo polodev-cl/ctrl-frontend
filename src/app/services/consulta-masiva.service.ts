@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
-interface Equipamiento {
+export interface Equipamiento {
   id: number;
   fechaCreacion: string;
   fechaModificacion: string;
@@ -12,8 +12,8 @@ interface Equipamiento {
   ordenCompra: string;
   rut: string;
   ageId: number;
-  ageNemonico: string;
-  ageDpc: number;
+  agenciaNemonico: string;
+  agenciaDpc: number;
   inventario: number;
   tipo: string;
   sistemaOperativo: string;
@@ -32,42 +32,87 @@ interface Equipamiento {
   encargadoAgencia: string;
   ubicacion: string;
   garantiaMeses: number;
+  usuarioIdCreacion: string;
+  usuarioIdModificacion: string;
   fechaEliminacion?: any;
 }
 
-interface Consulta {
+export interface Consulta {
   inventario: number;
   equipo: string;
   dcp: string;
   agencia: string;
-  empresa: string; 
-  usuario: string; 
+  empresa: string;
+  usuario: string;
   modelo: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConsultaMasivaService {
-  private apiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/equipment';
+  private apiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/equipment'; // Asegúrate de que la URL sea correcta
 
   constructor(private http: HttpClient) {}
 
-
-  obtenerEquipamiento(): Observable<Consulta[]> {
-    return this.http.get<any[]>(this.apiUrl).pipe(
-      map(data => data.map(item => ({
-        inventario: item.inventario,              
-        equipo: item.nombre,       
-        dcp: item.agenciaDpc ? item.agenciaDpc.toString() : '-', 
-        agencia: item.agenciaId ? item.agenciaId.toString() : '-',                         
-        empresa: 'Nombre de la Empresa',          
-        usuario: 'Nombre del Usuario',             
-        modelo: item.modelo                        
-      })))
+  // Método para obtener datos filtrados para la visualización en la tabla
+  obtenerEquipamientoFiltrado(): Observable<Consulta[]> {
+    return this.http.get<Equipamiento[]>(this.apiUrl).pipe(
+      map((data) =>
+        data.map((item) => ({
+          inventario: item.inventario,
+          equipo: item.nombre,
+          dcp: item.agenciaDpc ? item.agenciaDpc.toString() : '-',
+          agencia: item.ageId ? item.ageId.toString() : '-',
+          empresa: 'Nombre de la Empresa',
+          usuario: 'Nombre del Usuario',
+          modelo: item.modelo,
+        }))
+      )
     );
   }
 
-
+  obtenerEquipamientoCompleto(): Observable<any[]> {
+    return this.http.get<Equipamiento[]>(this.apiUrl).pipe(
+      map(data => data.map(({ 
+        id, usuarioIdCreacion, usuarioIdModificacion, fechaModificacion, ...rest 
+      }) => {
+        return {
+          Empresa: 'Nombre Empresa', 
+          'Rut Usuario': rest.rut || '-',
+          'Agencia Nombre': rest.ageId?.toString() || 'Sin Agencia', 
+          Nemonico: rest.agenciaNemonico || '-',
+          DPC: rest.agenciaDpc?.toString() || '-',
+          caja: rest.uso || '-',
+          Ubicacion: rest.ubicacion || '-',
+          Equipo: rest.nombre || '-',
+          Marca: rest.marca || '-',
+          Modelo: rest.modelo || '-',
+          'Sistema Operativo': rest.sistemaOperativo || '-',
+          MAC: rest.mac || '-',
+          'Nombre de Maquina': rest.tipo || '-', 
+          Procesador: rest.procesador || '-',
+          RAM: rest.ramGb ? `${rest.ramGb} GB` : '-', 
+          'SSD/HDD': rest.disco || '-', 
+          IP: rest.ip || '-',
+          'DDLL TBK': rest.ddllTbk || '-',
+          'Numero serie': rest.serie || '-',
+          Estado: rest.estado?.toString() || '-',
+          'Encargado Agencia': rest.encargadoAgencia || '-',
+          'Orden de compra numero': rest.ordenCompra || '-',
+          Fechas: this.formatDate(rest.fechaIngreso) 
+        };
+      }))
+    );
+  }
   
+
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    let day = ('0' + date.getDate()).slice(-2);
+    const months = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    let month = months[date.getMonth()]; // Usa el array para obtener el nombre del mes
+    return `${day}-${month}`; // Formato DD-mmm-YYYY (e.g., "11-feb-2024")
+}
+
 }

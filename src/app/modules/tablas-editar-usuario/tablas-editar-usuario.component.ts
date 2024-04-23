@@ -4,6 +4,7 @@ import { MatButton } from "@angular/material/button";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTooltip } from "@angular/material/tooltip";
 import { EditarUsuarioService } from '../../services/editar-usuario.service';
 import { ModalEditarComponent } from "../Custom/modal-editar/modal-editar.component";
 import { ModalEliminarComponent } from "../Custom/modal-eliminar/modal-eliminar.component";
@@ -39,7 +40,8 @@ interface Usuario {
     MatRow,
     MatHeaderRowDef,
     MatRowDef,
-    MatCell
+    MatCell,
+    MatTooltip
   ]
 })
 export class TablasEditarUsuarioComponent implements AfterViewInit {

@@ -1,13 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { NgForOf, NgIf } from "@angular/common";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
-import { TablasComponent } from '../Custom/tablas/tablas.component';
-import { ConsultaMasivaService } from '../../services/consulta-masiva.service';
+import { ConsultaMasivaService } from '../../common/equipment/services/consulta-masiva.service';
 import { FiltrosMasivaService } from '../../services/filtros-masiva.service';
+import { TablasComponent } from '../Custom/tablas/tablas.component';
 
 interface EquipmentType {
   name: string;
@@ -23,7 +22,7 @@ interface OperatingSystem {
 @Component({
   selector: 'app-consulta-masiva',
   templateUrl: './consulta-masiva.component.html',
-  styleUrls: ['./consulta-masiva.component.css'],
+  styleUrls: [ './consulta-masiva.component.css' ],
   standalone: true,
   imports: [
     DividerModule,
@@ -53,8 +52,9 @@ export class ConsultaMasivaComponent implements OnInit {
   selectedVersion: string = '';
   selectedUsage: string = '';
 
-  
-  constructor(private filtrosService: FiltrosMasivaService, private consultaMasivaService: ConsultaMasivaService) {}
+
+  constructor(private filtrosService: FiltrosMasivaService, private consultaMasivaService: ConsultaMasivaService) {
+  }
 
   ngOnInit(): void {
     this.loadOptions();
@@ -70,16 +70,16 @@ export class ConsultaMasivaComponent implements OnInit {
   }
 
   getVersions(): string[] {
-    if (!this.systems || !this.selectedSystem) {
+    if ( !this.systems || !this.selectedSystem ) {
       return [];
     }
     const selectedSystem = this.systems.find(system => system.name === this.selectedSystem);
     return selectedSystem ? selectedSystem.versions : [];
   }
-  
+
   onEquipmentTypeChange() {
     const selectedEquipment = this.equipmentTypes.find(equipment => equipment.name === this.selectedMachineType);
-    if (selectedEquipment && selectedEquipment.operatingSystems.length > 0) {
+    if ( selectedEquipment && selectedEquipment.operatingSystems.length > 0 ) {
       this.systems = selectedEquipment.operatingSystems;
       this.selectedSystem = selectedEquipment.operatingSystems[0]?.name;
       this.selectedVersion = this.getVersions()[0] || 'N/A';
@@ -88,9 +88,7 @@ export class ConsultaMasivaComponent implements OnInit {
       this.selectedSystem = this.selectedVersion = 'N/A';
     }
   }
-  
-  
-  
+
 
   onSearch() {
     console.log('Realizando búsqueda con los siguientes parámetros:');
@@ -98,7 +96,7 @@ export class ConsultaMasivaComponent implements OnInit {
     console.log('Sistema Operativo:', this.selectedSystem);
     console.log('Versión del Sistema Operativo:', this.selectedVersion);
     console.log('Uso:', this.selectedUsage);
-  
+
     this.consultaMasivaService.obtenerEquipamientoFiltrado(
       this.selectedMachineType,
       this.selectedSystem,
@@ -110,9 +108,9 @@ export class ConsultaMasivaComponent implements OnInit {
       },
       error: (error) => console.error('Error al obtener el equipamiento filtrado:', error)
     });
-  
+
     this.showTable = true;
   }
-  
-  
+
+
 }

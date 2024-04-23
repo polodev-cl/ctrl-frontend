@@ -5,7 +5,7 @@ import { RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { InputTextModule } from "primeng/inputtext";
-import { CognitoService } from '../../cognito-service.service';
+import { CognitoService } from '../../common/auth/cognito-service.service';
 import { EmailStateService } from '../../utils/SharedService';
 import { ModalPasswordComponent } from "../Custom/modal-password/modal-password.component";
 

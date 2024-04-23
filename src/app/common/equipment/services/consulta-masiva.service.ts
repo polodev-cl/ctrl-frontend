@@ -1,51 +1,9 @@
 // src/app/services/consulta-masiva.service.ts
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-
-export interface Equipamiento {
-  id: number;
-  fechaCreacion: string;
-  fechaModificacion: string;
-  estado: number;
-  fechaIngreso: string;
-  ordenCompra: string;
-  rut: string;
-  ageId: number;
-  agenciaNemonico: string;
-  agenciaDpc: number;
-  inventario: number;
-  tipo: string;
-  sistemaOperativo: string;
-  sistemaOperativoVersion: string;
-  uso: string;
-  marca: string;
-  modelo: string;
-  mac: string;
-  ip: string;
-  nombre: string;
-  procesador: string;
-  ramGb: number;
-  disco: string;
-  ddllTbk: string;
-  serie: string;
-  encargadoAgencia: string;
-  ubicacion: string;
-  garantiaMeses: number;
-  usuarioIdCreacion: string;
-  usuarioIdModificacion: string;
-  fechaEliminacion?: any;
-}
-
-export interface Consulta {
-  inventario: number;
-  equipo: string;
-  dcp: string;
-  agencia: string;
-  empresa: string;
-  usuario: string;
-  modelo: string;
-}
+import { Consulta } from "../interfaces/consulta-equipment.interface";
+import { Equipamiento } from "../interfaces/equipamiento.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +13,6 @@ export class ConsultaMasivaService {
 
   constructor(private http: HttpClient) {
   }
-
 
 
   obtenerEquipamientoFiltrado(tipo: string, sistemaOperativo: string, sistemaOperativoVersion: string, uso: string): Observable<Consulta[]> {

@@ -6,7 +6,7 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
-import { CognitoService } from '../../cognito-service.service';
+import { CognitoService } from '../../common/auth/cognito-service.service';
 import { EmailStateService } from '../../utils/SharedService';
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
 

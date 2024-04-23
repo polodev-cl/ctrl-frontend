@@ -7,9 +7,7 @@ interface ConfirmPasswordInput {
   newPassword: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root', })
 export class CognitoService {
   private readonly _router: Router = inject(Router);
   private currentUser: any;
@@ -17,7 +15,6 @@ export class CognitoService {
   async handleSignIn({ username, password }: SignInInput): Promise<string> {
     const { isSignedIn, nextStep } = await signIn({ username, password });
     if ( nextStep ) {
-      this.currentUser = nextStep
       return nextStep.signInStep;
     } else if ( isSignedIn ) {
       return 'SIGNED_IN';
@@ -48,7 +45,7 @@ export class CognitoService {
     }
   }
 
-  getCurrentUser = () => getCurrentUser();
+  getCurrentUser = () => getCurrentUser().then((user) => this.currentUser = user);
 
   async resetPassword(username: string) {
     try {

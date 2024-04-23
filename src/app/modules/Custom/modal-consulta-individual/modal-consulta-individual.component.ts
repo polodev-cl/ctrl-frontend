@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { Router } from '@angular/router';
 import { InputTextModule } from "primeng/inputtext";
-import { EquipmentService } from '../../../services/equipment.service';
+import { EquipmentService } from '../../../common/equipment/services/equipment.service';
 
 @Component({
   selector: 'app-modal-consulta-individual',

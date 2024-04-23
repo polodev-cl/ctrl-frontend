@@ -1,9 +1,9 @@
 import { NgForOf, NgIf } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
-import { CognitoService } from '../../cognito-service.service';
+import { CognitoService } from '../../common/auth/cognito-service.service';
 import { CompanyService } from '../../services/company.service';
 import { ModalCargaMasivaComponent } from "../Custom/modal-carga-masiva/modal-carga-masiva.component";
 import { ModalConsultaMasivaComponent } from "../Custom/modal-consulta-masiva/modal-consulta-masiva.component";
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
 
-  constructor(private companyService: CompanyService, private cognitoService: CognitoService) {
+  constructor(private companyService: CompanyService, private cognitoService: CognitoService, private route: ActivatedRoute) {
   }
 
   cerrarSesion() {
@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.route.snapshot.data['authenticatedUser']);
     this.companyService.getCompanyById(1).subscribe({
       next: (data) => {
         this.empresa = data;

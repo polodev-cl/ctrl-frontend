@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
-interface Usuario {
+export interface Usuario {
   id: number;
   usuario: string;
   nombre: string;
@@ -12,9 +12,7 @@ interface Usuario {
 }
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class EditarUsuarioService {
   private apiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/user';
 

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from "./common/guards/auth.guard";
-import { NoAuthGuard } from "./common/guards/no-auth.guard";
+import { AuthGuard } from "./common/auth/guards/auth.guard";
+import { NoAuthGuard } from "./common/auth/guards/no-auth.guard";
+import { appResolver } from "./common/auth/resolvers/auth.resolver";
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -23,8 +24,9 @@ export const routes: Routes = [
     path: '',
     canActivate: [ AuthGuard ],
     canActivateChild: [ AuthGuard ],
+    resolve: { authenticatedUser: appResolver },
     children: [
-      { path: 'home', loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent) },
+      { path: 'home', data: { title: 'Menú principal' }, loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent) },
       { path: 'consulta-individual', loadComponent: () => import('./modules/consulta-individual/consulta-individual.component').then(m => m.ConsultaIndividualComponent) },
       { path: 'consulta-masiva', loadComponent: () => import('./modules/consulta-masiva/consulta-masiva.component').then(m => m.ConsultaMasivaComponent) },
       { path: 'data-usuario-rut', loadComponent: () => import('./modules/data-usuario-rut/data-usuario-rut.component').then(m => m.DataUsuarioRutComponent) },

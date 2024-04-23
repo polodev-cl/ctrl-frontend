@@ -68,8 +68,8 @@ export class IngresoIndividualComponent implements OnInit {
     this.loadEmpresas();
     this.loadSOData();
   }
-  isPrinter(type: string): boolean {
-    return type === 'Impresora';
+  isEquipmentWithNoOptions(type: string): boolean {
+    return ['Impresora', 'Anexos', 'Escaner', 'LBM', 'Monitor', 'Pistola', 'Print Server', 'TBK'].includes(type);
   }
   loadEmpresas(): void {
     this.agencyService.getCompanies().subscribe({
@@ -118,36 +118,35 @@ export class IngresoIndividualComponent implements OnInit {
     this.ddlTbk = formatted;
     this.isValidDDLTBK = isValid;
   }
-
   onTypeChange(): void {
-    if (this.isPrinter(this.selectedType)) {
+    if (this.isEquipmentWithNoOptions(this.selectedType)) {
       this.selectedSO = 'N/A';
       this.selectedVersion = 'N/A';
       this.procesador = 'N/A';
       this.ram = 'N/A';
       this.tipoDisco = 'N/A';
+      if (this.selectedType !== 'TBK') {
+        this.ddlTbk = 'N/A'; 
+      }
     } else {
-      this.soService.getSODataByType(this.selectedType).subscribe((soOptions: SOVersion[]) => {
-        this.sistemasOperativos = soOptions;
-        this.selectedSO = '';
-        this.versionesFiltradas = [];
-        this.selectedVersion = '';
-        this.procesador = '';
-        this.ram = '';
-        this.tipoDisco = '';
-      });
+      this.loadSOData();
     }
   }
-  loadSOData(): void {
-    // Asumiendo que tienes una forma de obtener el 'type' adecuado
-    // Si no es así, necesitarás ajustar esta lógica para obtenerlo de alguna manera
-    const type = this.getSelectedType();
-    this.soService.getSODataByType(type).subscribe((soOptions: SOVersion[]) => {
-      this.sistemasOperativos = soOptions;
-    });
-  }
+resetFields(): void {
+  this.ddlTbk = this.selectedType === 'TBK' ? this.ddlTbk : 'N/A';
+}
+loadSOData(): void {
+  this.soService.getSODataByType(this.selectedType).subscribe((soOptions: SOVersion[]) => {
+    this.sistemasOperativos = soOptions;
+    this.selectedSO = '';
+    this.versionesFiltradas = [];
+    this.selectedVersion = '';
+    this.procesador = '';
+    this.ram = '';
+    this.tipoDisco = '';
+  });
+}
   getSelectedType(): string {
-    // Tu lógica para obtener el tipo seleccionado
     return this.selectedType;
   }
 

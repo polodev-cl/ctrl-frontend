@@ -16,7 +16,7 @@ interface Usuario {
   providedIn: 'root'
 })
 export class EditarUsuarioService {
-  private apiUrl = 'https://nqyw4kymuud65aoxwslnl3jqhe0unvrn.lambda-url.us-east-1.on.aws/api/user';
+  private apiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/user';
 
   constructor(private http: HttpClient) {
   }

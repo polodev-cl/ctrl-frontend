@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CompanyService {
-  private baseUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/company';
+  private baseUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/company';
 
   constructor(private http: HttpClient) {
   }

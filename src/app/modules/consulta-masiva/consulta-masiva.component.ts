@@ -1,15 +1,29 @@
-import { NgForOf, NgIf } from "@angular/common";
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { NgForOf, NgIf } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
 import { TablasComponent } from '../Custom/tablas/tablas.component';
+import { ConsultaMasivaService } from '../../services/consulta-masiva.service';
+import { FiltrosMasivaService } from '../../services/filtros-masiva.service';
+
+interface EquipmentType {
+  name: string;
+  operatingSystems: OperatingSystem[];
+}
+
+interface OperatingSystem {
+  name: string;
+  versions: string[];
+}
 
 
 @Component({
   selector: 'app-consulta-masiva',
   templateUrl: './consulta-masiva.component.html',
-  styleUrls: [ './consulta-masiva.component.css' ],
+  styleUrls: ['./consulta-masiva.component.css'],
   standalone: true,
   imports: [
     DividerModule,
@@ -17,51 +31,88 @@ import { TablasComponent } from '../Custom/tablas/tablas.component';
     NgIf,
     NgForOf,
     ButtonModule,
-    TablasComponent
+    TablasComponent,
+    FormsModule // Importa FormsModule aquí
   ]
 })
 export class ConsultaMasivaComponent implements OnInit {
   @ViewChild(TablasComponent) tablasComponent!: TablasComponent;
 
-  showTable = false;
-  products: any[] = [];
-  filteredProducts: any[] = [];
 
-
-  selectedMachineType: string = '';
-  selectedSystem: string = '';
-  selectedVersion: string = '';
-  selectedUsage: string = '';
-
-  machineTypes: string[] = [ 'Máquina 1', 'Máquina 2', 'Máquina 3', 'Máquina 4', 'Máquina 5', 'Máquina 6', 'Máquina 7', 'Máquina 8', 'Máquina 9', 'Máquina 10' ];
-  systems: string[] = [ 'Sistema 1', 'Sistema 2', 'Sistema 3', 'Sistema 4', 'Sistema 5', 'Sistema 6', 'Sistema 7', 'Sistema 8', 'Sistema 9', 'Sistema 10' ];
-  versions: string[] = [ 'Versión 1', 'Versión 2', 'Versión 3', 'Versión 4', 'Versión 5', 'Versión 6', 'Versión 7', 'Versión 8', 'Versión 9', 'Versión 10' ];
-  usages: string[] = [ 'Uso 1', 'Uso 2', 'Uso 3', 'Uso 4', 'Uso 5', 'Uso 6', 'Uso 7', 'Uso 8', 'Uso 9', 'Uso 10' ];
   breadcrumbs = [
     { text: 'Home', link: '/home' },
     { text: 'Consulta masiva', link: '/consulta-masiva' }
   ];
 
+  showTable = false;
+  equipmentTypes: EquipmentType[] = [];
+  systems: OperatingSystem[] = [];
+  usages: string[] = [];
+  selectedMachineType: string = '';
+  selectedSystem: string = '';
+  selectedVersion: string = '';
+  selectedUsage: string = '';
+
+  
+  constructor(private filtrosService: FiltrosMasivaService, private consultaMasivaService: ConsultaMasivaService) {}
+
   ngOnInit(): void {
-    this.loadProducts();
+    this.loadOptions();
   }
 
-  loadProducts() {
-
-    this.products = [];
-    this.filteredProducts = [ ...this.products ]; // Inicialmente, todos los productos son mostrados
+  loadOptions() {
+    this.filtrosService.getOptionData().subscribe(data => {
+      this.equipmentTypes = data.equipmentTypes;
+      this.systems = data.systems;
+      this.usages = data.usages;
+      console.log('Datos del JSON:', data);
+    });
   }
+
+  getVersions(): string[] {
+    if (!this.systems || !this.selectedSystem) {
+      return [];
+    }
+    const selectedSystem = this.systems.find(system => system.name === this.selectedSystem);
+    return selectedSystem ? selectedSystem.versions : [];
+  }
+  
+  onEquipmentTypeChange() {
+    const selectedEquipment = this.equipmentTypes.find(equipment => equipment.name === this.selectedMachineType);
+    if (selectedEquipment && selectedEquipment.operatingSystems.length > 0) {
+      this.systems = selectedEquipment.operatingSystems;
+      this.selectedSystem = selectedEquipment.operatingSystems[0]?.name;
+      this.selectedVersion = this.getVersions()[0] || 'N/A';
+    } else {
+      this.systems = [];
+      this.selectedSystem = this.selectedVersion = 'N/A';
+    }
+  }
+  
+  
+  
 
   onSearch() {
-    // this.filteredProducts = this.products.filter(product => {
-    //   return (!this.selectedMachineType || product.tipo === this.selectedMachineType) &&
-    //          (!this.selectedSystem || product.sistema === this.selectedSystem) &&
-    //          (!this.selectedVersion || product.version === this.selectedVersion) &&
-    //          (!this.selectedUsage || product.uso === this.selectedUsage);
-    // });
+    console.log('Realizando búsqueda con los siguientes parámetros:');
+    console.log('Tipo:', this.selectedMachineType);
+    console.log('Sistema Operativo:', this.selectedSystem);
+    console.log('Versión del Sistema Operativo:', this.selectedVersion);
+    console.log('Uso:', this.selectedUsage);
+  
+    this.consultaMasivaService.obtenerEquipamientoFiltrado(
+      this.selectedMachineType,
+      this.selectedSystem,
+      this.selectedVersion,
+      this.selectedUsage
+    ).subscribe({
+      next: (equipamiento) => {
+        console.log('Equipamiento filtrado:', equipamiento);
+      },
+      error: (error) => console.error('Error al obtener el equipamiento filtrado:', error)
+    });
+  
     this.showTable = true;
   }
-
+  
+  
 }
-
-

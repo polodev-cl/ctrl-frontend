@@ -1,5 +1,5 @@
 // src/app/services/consulta-masiva.service.ts
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
@@ -51,14 +51,21 @@ export interface Consulta {
   providedIn: 'root',
 })
 export class ConsultaMasivaService {
-  private apiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/equipment'; // Asegúrate de que la URL sea correcta
+  private apiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment'; // Asegúrate de que la URL sea correcta
 
   constructor(private http: HttpClient) {
   }
 
 
-  obtenerEquipamientoFiltrado(): Observable<Consulta[]> {
-    return this.http.get<Equipamiento[]>(this.apiUrl).pipe(
+
+  obtenerEquipamientoFiltrado(tipo: string, sistemaOperativo: string, sistemaOperativoVersion: string, uso: string): Observable<Consulta[]> {
+    const params = {
+      tipo,
+      sistemaOperativo,
+      sistemaOperativoVersion,
+      uso
+    };
+    return this.http.get<Equipamiento[]>(this.apiUrl, { params }).pipe(
       map((data) =>
         data.map((item) => ({
           inventario: item.inventario,

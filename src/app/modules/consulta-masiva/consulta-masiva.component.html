@@ -83,45 +83,37 @@
 
     <div class="row mb-3">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <!-- Dropdown para el tipo de máquina -->
-        <select class="form-select py-3 color-select">
-          <option disabled selected value="">Tipo de máquina</option>
-          <option>Máquina 1</option>
-          <option>Máquina 2</option>
-          <option>Máquina 3</option>
-          <!-- Otras opciones -->
+        <select class="form-select py-3 color-select" [(ngModel)]="selectedMachineType" (change)="onEquipmentTypeChange()">
+          <option disabled selected value="">Seleccione tipo de equipo</option>
+          <option *ngFor="let equipment of equipmentTypes" [value]="equipment.name">{{ equipment.name }}</option>
         </select>
+        
       </div>
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <!-- Dropdown para el sistema operativo -->
-        <select class="form-select py-3 color-select">
-          <option disabled selected value="">Sistema operativo</option>
-          <option>Sistema 1</option>
-          <option>Sistema 2</option>
-          <option>Sistema 3</option>
-          <!-- Otras opciones -->
+        <select class="form-select py-3 color-select" [(ngModel)]="selectedSystem">
+
+        <option disabled selected value="">Seleccione sistema operativo</option>
+          <option *ngIf="!systems || systems.length === 0" [value]="'N/A'">N/A</option>
+          <ng-container *ngFor="let system of systems">
+            <option [value]="system.name">{{ system.name }}</option>
+          </ng-container>
         </select>
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <!-- Dropdown para la versión -->
-        <select class="form-select py-3 color-select">
-          <option disabled selected value="">Versión</option>
-          <option>Versión 1</option>
-          <option>Versión 2</option>
-          <option>Versión 3</option>
-          <!-- Otras opciones -->
+        <select class="form-select py-3 color-select" [(ngModel)]="selectedVersion">
+          <option disabled selected value="">Seleccione versión</option>
+          <option *ngIf="!getVersions() || getVersions().length === 0" [value]="'N/A'">N/A</option>
+          <ng-container *ngFor="let version of getVersions()">
+            <option [value]="version">{{ version }}</option>
+          </ng-container>
         </select>
-      </div>
+      </div>  
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <!-- Dropdown para el uso -->
-        <select class="form-select py-3 color-select">
-          <option disabled selected value="">Uso</option>
-          <option>Uso 1</option>
-          <option>Uso 2</option>
-          <option>Uso 3</option>
-          <!-- Otras opciones -->
+        <select class="form-select py-3 color-select" [(ngModel)]="selectedUsage">
+          <option disabled selected value="">Seleccione uso</option>
+          <option *ngFor="let use of usages" [value]="use">{{ use }}</option>
         </select>
       </div>
       <div class="col-md-4 d-flex justify-content-end align-items-end">

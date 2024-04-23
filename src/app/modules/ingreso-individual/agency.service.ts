@@ -18,8 +18,8 @@ export interface Agency {
 
 @Injectable({ providedIn: 'root', })
 export class AgencyService {
-  private companyApiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/company';
-  private agencyApiUrl = 'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/agency';
+  private companyApiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/company';
+  private agencyApiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/agency';
 
   constructor(private http: HttpClient) {
   }

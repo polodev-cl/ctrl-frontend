@@ -1,0 +1,71 @@
+{
+    "equipmentTypes": [
+      {
+        "name": "PC",
+        "operatingSystems": [
+          {
+            "name": "Windows",
+            "versions": ["11", "10 Pro", "10", "8.1", "7", "Server 2019"]
+          },
+          {
+            "name": "macOS",
+            "versions": ["14.0"]
+          },
+          {
+            "name": "Fedora",
+            "versions": ["24", "14"]
+          }
+        ]
+      },
+      {
+        "name": "Notebook",
+        "operatingSystems": [
+          {
+            "name": "Windows",
+            "versions": ["11", "10 Pro", "10", "8.1", "7", "Server 2019"]
+          },
+          {
+            "name": "macOS",
+            "versions": ["14.0"]
+          },
+          {
+            "name": "Fedora",
+            "versions": ["24", "14"]
+          }
+        ]
+      },
+      {
+        "name": "Impresora",
+        "operatingSystems": []
+      },
+      {
+        "name": "Escaner",
+        "operatingSystems": []
+      },
+      {
+        "name": "Monitor",
+        "operatingSystems": []
+      },
+      {
+        "name": "Print Server",
+        "operatingSystems": []
+      },
+      {
+        "name": "Anexos",
+        "operatingSystems": []
+      },
+      {
+        "name": "LBM",
+        "operatingSystems": []
+      },
+      {
+        "name": "TBK",
+        "operatingSystems": []
+      }
+    ],
+    "usages": [
+      "Caja",
+      "Administrativo"
+    ]
+  }
+  

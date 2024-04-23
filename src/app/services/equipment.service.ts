@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 })
 export class EquipmentService {
   private apiUrl =
-    'https://44n9fvhnl0.execute-api.us-east-1.amazonaws.com/api/equipment';
+    'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment';
 
   constructor(private http: HttpClient) {
   }

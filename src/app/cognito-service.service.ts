@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { confirmResetPassword, confirmSignIn, ConfirmSignInInput, resetPassword, signIn, type SignInInput, signOut, updatePassword, } from 'aws-amplify/auth';
+import { inject, Injectable } from '@angular/core';
+import { Router } from "@angular/router";
+import { confirmResetPassword, confirmSignIn, ConfirmSignInInput, getCurrentUser, resetPassword, signIn, type SignInInput, signOut, updatePassword, } from 'aws-amplify/auth';
 
 interface ConfirmPasswordInput {
   username: string;
@@ -10,12 +11,13 @@ interface ConfirmPasswordInput {
   providedIn: 'root',
 })
 export class CognitoService {
+  private readonly _router: Router = inject(Router);
   private currentUser: any;
 
   async handleSignIn({ username, password }: SignInInput): Promise<string> {
     const { isSignedIn, nextStep } = await signIn({ username, password });
     if ( nextStep ) {
-      this.currentUser = nextStep;
+      this.currentUser = nextStep
       return nextStep.signInStep;
     } else if ( isSignedIn ) {
       return 'SIGNED_IN';
@@ -23,10 +25,7 @@ export class CognitoService {
     throw new Error('Authentication failed with unknown state');
   }
 
-  async confirmNewPassword({
-                             username,
-                             newPassword,
-                           }: ConfirmPasswordInput): Promise<void> {
+  async confirmNewPassword({ username, newPassword, }: ConfirmPasswordInput): Promise<void> {
     try {
       const confirmInput: ConfirmSignInInput = {
         challengeResponse: newPassword,
@@ -49,10 +48,11 @@ export class CognitoService {
     }
   }
 
+  getCurrentUser = () => getCurrentUser();
+
   async resetPassword(username: string) {
     try {
-      const output = await resetPassword({ username });
-      return output;
+      return await resetPassword({ username });
     } catch ( error ) {
       console.error('Error during password reset:', error);
       throw error;
@@ -87,12 +87,5 @@ export class CognitoService {
     }
   }
 
-  async signOut(): Promise<void> {
-    try {
-      await signOut();
-      console.log('Sesión cerrada correctamente.');
-    } catch ( error ) {
-      console.error('Error al cerrar sesión:', error);
-    }
-  }
+  signOut = () => signOut().then(() => this._router.navigate([ '/sign-in' ]).then());
 }

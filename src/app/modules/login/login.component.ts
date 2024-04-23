@@ -35,22 +35,26 @@ export class LoginComponent {
   constructor(private router: Router, private cognitoService: CognitoService) {
   }
 
-  async signIn() {
-    try {
-      await this.cognitoService.signOut().catch(error => console.error('Error al cerrar sesión previa, continuando con el inicio de sesión:', error));
-      const signInStep = await this.cognitoService.handleSignIn({ username: this.usuario, password: this.password });
-      if ( signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED' ) {
-        this.requireNewPassword = true;
-      } else if ( signInStep === 'SIGNED_IN' || signInStep === 'DONE' ) {
-        this.router.navigate([ '/home' ]);
-      } else {
-        this.errorMessage = 'Unhandled sign-in step: ' + signInStep;
+  signIn() {
+    this.cognitoService.signOut()
+      .then(() => this.cognitoService.handleSignIn({ username: this.usuario, password: this.password }))
+      .then(signInStep => {
+        console.log('Sign-in step:', signInStep)
+        if ( [ 'SIGNED_IN', 'DONE' ].includes(signInStep) ) {
+          return this.router.navigate([ '/home' ]);
+        } else if ( signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED' ) {
+          this.requireNewPassword = true;
+          return;
+        } else {
+          throw new Error(`Unhandled sign-in step: ${ signInStep }`);
+        }
+      })
+      .catch(error => {
+        console.error('Error during sign-in or sign-out:', error);
+        this.errorMessage = error.message || 'Error during sign-in';
         this.errorLogin = true;
-      }
-    } catch ( error ) {
-      this.errorMessage = 'Error during sign-in';
-      this.errorLogin = true;
-    }
+        return;
+      });
   }
 
   async submitNewPassword() {

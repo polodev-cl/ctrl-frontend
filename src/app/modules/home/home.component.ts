@@ -46,9 +46,8 @@ export class HomeComponent implements OnInit {
   constructor(private companyService: CompanyService, private cognitoService: CognitoService) {
   }
 
-  async cerrarSesion() {
-    await this.cognitoService.signOut();
-    // Puedes realizar acciones adicionales después de cerrar sesión, como redirigir a la página de inicio de sesión
+  cerrarSesion() {
+    this.cognitoService.signOut();
   }
 
   ngOnInit() {

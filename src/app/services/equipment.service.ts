@@ -28,4 +28,8 @@ export class EquipmentService {
       tap(data => console.log('Data from API:', data))
     );
 }
+
+createEquipment(equipmentData: any): Observable<any> {
+  return this.http.post(this.apiUrl, equipmentData);
+}
 }

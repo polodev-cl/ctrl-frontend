@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AgencyService, Company, Agency } from './AgencyService';
+import { EquipmentService } from '../../services/equipment.service'; 
 import { SOService, SOVersion } from './SOService';
 import {
   checkIpAddress,
   formatAndValidateMAC,
   formatAndValidateDDLTBK,
 } from '../../utils/utils';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 interface Option {
   value: string;
   label: string;
 }
-
-
 
 @Component({
   selector: 'app-ingreso-individual',
@@ -20,14 +20,14 @@ interface Option {
   styleUrls: ['./ingreso-individual.component.css'],
 })
 export class IngresoIndividualComponent implements OnInit {
+  
   breadcrumbs = [
     { text: 'Home', link: '/home' },
     { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
 
-
   //empresas y agencias
-  selectedType: string = ''; 
+  selectedType: string = '';
   selectedEmpresa: string | undefined = undefined;
   empresaOptions: Option[] = [];
 
@@ -41,7 +41,7 @@ export class IngresoIndividualComponent implements OnInit {
     { value: 'Notebook', label: 'Notebook' },
     { value: 'Pistola', label: 'Pistola' },
     { value: 'Print Server', label: 'Print Server' },
-    { value: 'TBK', label: 'TBK' }
+    { value: 'TBK', label: 'TBK' },
   ];
   agencies: Agency[] = [];
   selectedAgency?: Agency;
@@ -59,9 +59,12 @@ export class IngresoIndividualComponent implements OnInit {
   ram: string = '';
   tipoDisco: string = '';
 
+  form: FormGroup[]=[];
   constructor(
     private soService: SOService,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
+    private fb: FormBuilder,
+    private equipmentService: EquipmentService,
   ) {}
 
   ngOnInit() {
@@ -69,14 +72,23 @@ export class IngresoIndividualComponent implements OnInit {
     this.loadSOData();
   }
   isEquipmentWithNoOptions(type: string): boolean {
-    return ['Impresora', 'Anexos', 'Escaner', 'LBM', 'Monitor', 'Pistola', 'Print Server', 'TBK'].includes(type);
+    return [
+      'Impresora',
+      'Anexos',
+      'Escaner',
+      'LBM',
+      'Monitor',
+      'Pistola',
+      'Print Server',
+      'TBK',
+    ].includes(type);
   }
   loadEmpresas(): void {
     this.agencyService.getCompanies().subscribe({
       next: (companies) => {
         this.empresaOptions = companies.map((company) => ({
           value: company.id.toString(),
-          label: company.razonSocial 
+          label: company.razonSocial,
         }));
         console.log('Opciones de empresa configuradas:', this.empresaOptions);
       },
@@ -85,17 +97,19 @@ export class IngresoIndividualComponent implements OnInit {
       },
     });
   }
-  
+
   onEmpresaChange(): void {
     if (this.selectedEmpresa) {
-      this.agencyService.getAgenciesByCompanyId(+this.selectedEmpresa).subscribe(agencies => {
-        this.agencies = agencies;
-        this.selectedAgency = undefined;
-        this.dpcOptions = [];           
-        this.nemonicoOptions = [];       
-        this.selectedDPC = '';
-        this.selectedNemonico = '';
-      });
+      this.agencyService
+        .getAgenciesByCompanyId(+this.selectedEmpresa)
+        .subscribe((agencies) => {
+          this.agencies = agencies;
+          this.selectedAgency = undefined;
+          this.dpcOptions = [];
+          this.nemonicoOptions = [];
+          this.selectedDPC = '';
+          this.selectedNemonico = '';
+        });
     }
   }
   onAgencyChange(): void {
@@ -126,26 +140,28 @@ export class IngresoIndividualComponent implements OnInit {
       this.ram = 'N/A';
       this.tipoDisco = 'N/A';
       if (this.selectedType !== 'TBK') {
-        this.ddlTbk = 'N/A'; 
+        this.ddlTbk = 'N/A';
       }
     } else {
       this.loadSOData();
     }
   }
-resetFields(): void {
-  this.ddlTbk = this.selectedType === 'TBK' ? this.ddlTbk : 'N/A';
-}
-loadSOData(): void {
-  this.soService.getSODataByType(this.selectedType).subscribe((soOptions: SOVersion[]) => {
-    this.sistemasOperativos = soOptions;
-    this.selectedSO = '';
-    this.versionesFiltradas = [];
-    this.selectedVersion = '';
-    this.procesador = '';
-    this.ram = '';
-    this.tipoDisco = '';
-  });
-}
+  resetFields(): void {
+    this.ddlTbk = this.selectedType === 'TBK' ? this.ddlTbk : 'N/A';
+  }
+  loadSOData(): void {
+    this.soService
+      .getSODataByType(this.selectedType)
+      .subscribe((soOptions: SOVersion[]) => {
+        this.sistemasOperativos = soOptions;
+        this.selectedSO = '';
+        this.versionesFiltradas = [];
+        this.selectedVersion = '';
+        this.procesador = '';
+        this.ram = '';
+        this.tipoDisco = '';
+      });
+  }
   getSelectedType(): string {
     return this.selectedType;
   }

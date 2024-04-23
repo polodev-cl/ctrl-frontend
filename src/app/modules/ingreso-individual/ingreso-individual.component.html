@@ -106,6 +106,7 @@
               dateFormat="dd/mm/yy"
               id="fecha_ingreso"
               inputId="fecha_ingreso"
+              formControlName="fechaIngreso"
             ></p-calendar>
             <label class="" for="fecha_ingreso">Fecha de ingreso</label>
           </span>
@@ -121,6 +122,7 @@
           id="rut"
           pInputText
           type="text"
+          formControlName="rut"
         />
         <label for="rut">Rut (12345678-9)</label>
       </span>
@@ -145,6 +147,7 @@
         [(ngModel)]="selectedAgency"
         [disabled]="!selectedEmpresa"
         class="form-select py-3 color-select"
+        formControlName="agenciaId"
       >
         <option [ngValue]="undefined" disabled>Agencia</option>
         <option *ngFor="let agency of agencies" [ngValue]="agency">
@@ -163,6 +166,7 @@
           pInputText
           placeholder="DPC"
           type="text"
+          formControlName="agenciaDpc"
         />
         <label for="dpc">DPC</label>
       </span>
@@ -172,23 +176,24 @@
         <input
           [(ngModel)]="selectedNemonico"
           class="w-100 rounded"
-          disabled
+        
           id="nemonico"
           pInputText
           placeholder="Nemónico"
           type="text"
+          formControlName="agenciaMnemonic"
         />
         <label for="nemonico">Nemónico</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="inventario" pInputText type="Number"/>
+        <input class="w-100 rounded" id="inventario" pInputText type="Number"  formControlName="inventario"/>
         <label for="inventario">N° Inventario</label>
       </span>
     </div>
     <div class="grid-item my-3">
-      <select (change)="onTypeChange()" [(ngModel)]="selectedType" class="form-select py-3 color-select">
+      <select (change)="onTypeChange()" [(ngModel)]="selectedType" class="form-select py-3 color-select" formControlName="tipo">
         <option disabled selected value="">Tipo de Equipo</option>
         <option *ngFor="let type of equipmentTypes" [ngValue]="type.value">{{ type.label }}</option>
       </select>
@@ -217,6 +222,7 @@
         [disabled]="versionesFiltradas.length === 0"
         [ngClass]="{ 'disabled-select': versionesFiltradas.length === 0 }"
         class="form-select py-3 color-select"
+      
       >
         <option disabled value="">Versión</option>
         <option *ngFor="let version of versionesFiltradas" [value]="version">
@@ -225,7 +231,7 @@
       </select>
     </div>
     <div class="grid-item my-3">
-      <select class="form-select py-3 color-select">
+      <select class="form-select py-3 color-select" formControlName="uso">
         <option disabled selected value="">Uso</option>
         <option>Administrativo</option>
         <option>Caja</option>
@@ -239,6 +245,7 @@
           id="marca"
           pInputText
           type="text"
+          formControlName="marca"
         />
         <label for="marca">Marca</label>
       </span>
@@ -251,6 +258,7 @@
           id="modelo"
           pInputText
           type="text"
+          formControlName="modelo"
         />
         <label for="modelo">Modelo</label>
       </span>
@@ -264,6 +272,7 @@
           id="mac"
           pInputText
           type="text"
+          formControlName="mac"
         />
         <label for="mac">MAC (XX:XX:XX:XX:XX:XX)</label>
       </span>
@@ -280,6 +289,7 @@
           id="ip"
           pInputText
           type="text"
+          formControlName="ip"
         />
 
         <label for="ip">IP (IPV4 o IPv6)</label>
@@ -290,7 +300,7 @@
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="maquina" pInputText type="text"/>
+        <input class="w-100 rounded" id="maquina" pInputText type="text" formControlName="nombre"/>
         <label for="maquina">Nombre Máquina </label>
       </span>
     </div>
@@ -304,6 +314,7 @@
           id="procesador"
           pInputText
           type="text"
+          formControlName="procesador"
         />
         <label for="procesador">Procesador</label>
       </span>
@@ -317,7 +328,8 @@
           class="w-100 rounded"
           id="ram"
           pInputText
-          type="text"/>
+          type="text"
+          formControlName="ramGb"/>
         <label for="ram">RAM</label>
         <div *ngIf="!isEquipmentWithNoOptions(selectedType)"
              class="position-absolute"
@@ -334,7 +346,7 @@
         </select>
       </ng-container>
       <ng-template #notPrinterDisk>
-        <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded">
+        <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded "  formControlName="disco">
           <option disabled value="">SSD/HDD</option>
           <option value="SSD">SSD</option>
           <option value="HDD">HDD</option>
@@ -355,6 +367,7 @@
           id="ddlTbk"
           pInputText
           type="text"
+          formControlName="ddllTbk"
         />
         <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
       </span>
@@ -364,7 +377,7 @@
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="serie" pInputText type="text"/>
+        <input class="w-100 rounded" id="serie" pInputText type="text"  formControlName="serie"/>
         <label for="serie">Número de Serie </label>
       </span>
     </div>
@@ -376,19 +389,20 @@
           id="encargado"
           pInputText
           type="text"
+          formControlName="encargadoAgencia"
         />
         <label for="encargado">Encargado Agencia</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="ubicacion" pInputText type="text"/>
+        <input class="w-100 rounded" id="ubicacion" pInputText type="text"  formControlName="ubicacion"/>
         <label for="ubicacion">Ubicación</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="garantia" pInputText type="Number"/>
+        <input class="w-100 rounded" id="garantia" pInputText type="Number" formControlName="garantiaMeses"/>
         <label for="garantia">Garantía</label>
       </span>
     </div>

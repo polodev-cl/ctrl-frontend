@@ -1,6 +1,6 @@
 import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterLink } from "@angular/router";
 import { CalendarModule } from "primeng/calendar";
 import { DividerModule } from "primeng/divider";
@@ -11,6 +11,7 @@ import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.com
 import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
 import { Agency, AgencyService } from './agency.service';
 import { SoService, SOVersion } from './so.service';
+import { EquipmentService } from '../../services/equipment.service';
 
 interface Option {
   value: string;
@@ -30,10 +31,11 @@ interface Option {
     RouterLink,
     CalendarModule,
     FormsModule,
+    ReactiveFormsModule,
     NgForOf,
     InputTextModule,
     NgClass,
-    RutFormatterDirective
+    RutFormatterDirective,
   ]
 })
 export class IngresoIndividualComponent implements OnInit {
@@ -74,8 +76,6 @@ export class IngresoIndividualComponent implements OnInit {
   procesador: string = '';
   ram: string = '';
   tipoDisco: string = '';
-
-  form: FormGroup[] = [];
   ddlTbk: string = '';
   isValidDDLTBK: boolean | null = null;
   macAddress: string = '';
@@ -86,17 +86,50 @@ export class IngresoIndividualComponent implements OnInit {
   mensajeModalExito: string = '';
   mostrarModalExito: boolean = false;
   mostrarModalResumenIngresoIndividual: boolean = false;
+  form: FormGroup;
+
 
   constructor(
     private soService: SoService,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
+    private equipmentService: EquipmentService,
+    private fb: FormBuilder,
+    
   ) {
+    this.form = this.fb.group({
+      fechaIngreso: [''],
+      ordenCompra: [''],
+      rut: [''],
+      agenciaId: [''],
+      agenciaMnemonic:[''],
+      inventario: [''],
+      tipo: [''],
+      sistemaOperativo: [''],
+      sistemaOperativoVersion: [''],
+      uso: [''],
+      marca: [''],
+      modelo: [''],
+      mac: [''],
+      ip: [''],
+      nombre: [''],
+      procesador: [''],
+      ramGb: [''],
+      disco: [''],
+      ddllTbk: [''],
+      serie: [''],
+      encargadoAgencia: [''],
+      ubicacion: [''],
+      garantiaMeses: [''],
+    });
   }
+
 
   ngOnInit() {
     this.loadEmpresas();
     this.loadSOData();
   }
+
+
 
   isEquipmentWithNoOptions(type: string): boolean {
     return [
@@ -238,5 +271,28 @@ export class IngresoIndividualComponent implements OnInit {
 
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
+  }
+
+
+  onSubmit() {
+    if (this.form.valid) {
+      const formData = this.form.value;
+
+      if (this.isEquipmentWithNoOptions(this.selectedType)) {
+        formData.sistemaOperativo = "N/A";
+        formData.sistemaOperativoVersion = "N/A";
+        formData.procesador = "N/A";
+        formData.ramGb = "N/A";
+        formData.disco = "N/A";
+      }
+      this.equipmentService.createEquipment(formData).subscribe(
+        response => {
+          console.log('Equipo creado con éxito', response);
+        },
+        error => {
+          console.error('Error al crear el equipo', error);
+        }
+      );
+    }
   }
 }

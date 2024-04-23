@@ -19,20 +19,19 @@ interface ConfirmPasswordInput {
   providedIn: 'root',
 })
 export class CognitoService {
-  private currentUser: any; // This should ideally be a type that includes user session data
+  private currentUser: any; 
 
   async handleSignIn({ username, password }: SignInInput): Promise<string> {
     const { isSignedIn, nextStep } = await signIn({ username, password });
     if (nextStep) {
-      this.currentUser = nextStep; // Store necessary session info if available
-      return nextStep.signInStep; // Always return a string that indicates the next step
+      this.currentUser = nextStep; 
+      return nextStep.signInStep; 
     } else if (isSignedIn) {
-      return 'SIGNED_IN'; // Indicate successful sign-in
+      return 'SIGNED_IN';
     }
-    throw new Error('Authentication failed with unknown state'); // Handle unexpected cases
+    throw new Error('Authentication failed with unknown state'); 
   }
 
-  // In your CognitoService
   async confirmNewPassword({
     username,
     newPassword,
@@ -40,7 +39,6 @@ export class CognitoService {
     try {
       const confirmInput: ConfirmSignInInput = {
         challengeResponse: newPassword,
-        // Add any additional parameters required for confirmSignIn here
       };
       const confirmResult = await confirmSignIn(confirmInput);
 
@@ -56,14 +54,14 @@ export class CognitoService {
       }
     } catch (error) {
       console.error('Error confirming new password:', error);
-      throw error; // Properly re-throw after logging
+      throw error;
     }
   }
 
   async resetPassword(username: string) {
     try {
       const output = await resetPassword({ username });
-      return output; // Return the output to handle the next steps in the component
+      return output; 
     } catch (error) {
       console.error('Error during password reset:', error);
       throw error;

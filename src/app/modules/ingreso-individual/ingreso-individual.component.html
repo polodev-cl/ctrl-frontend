@@ -188,25 +188,30 @@
       </span>
     </div>
     <div class="grid-item my-3">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>Tipo Equipo</option>
-        <option>Equipo 2</option>
-        <option>Equipo 3</option>
-        <option>Equipo 4</option>
+      <select [(ngModel)]="selectedType" (change)="onTypeChange()" class="form-select py-3 color-select">
+        <option value="" selected disabled>Tipo de Equipo</option>
+        <option *ngFor="let type of equipmentTypes" [ngValue]="type.value">{{ type.label }}</option>
       </select>
     </div>
-    <div class="grid-item my-3">
-      <select
-        [(ngModel)]="selectedSO"
-        (change)="onSOChange()"
-        class="form-select py-3 color-select"
-      >
-        <option value="" disabled>Sistema Operativo</option>
-        <option *ngFor="let so of sistemasOperativos" [value]="so.so">
-          {{ so.so }}
-        </option>
-      </select>
-    </div>
+    
+  <div class="grid-item my-3">
+  <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notSpecialEquipment">
+    <select [(ngModel)]="selectedSO" disabled class="form-select py-3 color-select">
+      <option value="N/A">N/A</option>
+    </select>
+  </ng-container>
+  <ng-template #notSpecialEquipment>
+    <select [(ngModel)]="selectedSO" (change)="onSOChange()" class="form-select py-3 color-select">
+      <option value="" disabled>Sistema Operativo</option>
+      <option *ngFor="let so of sistemasOperativos" [value]="so.so">
+        {{ so.so }}
+      </option>
+    </select>
+  </ng-template>
+</div>
+
+    
+    
     <div class="grid-item my-3">
       <select
         [(ngModel)]="selectedVersion"
@@ -292,59 +297,73 @@
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          class="w-100 rounded"
-          id="procesador"
-          type="text"
-          pInputText
-          autocomplete="on"
-        />
+    class="w-100 rounded"
+    id="procesador"
+    type="text"
+    pInputText
+    [(ngModel)]="procesador"
+    [disabled]="isEquipmentWithNoOptions(selectedType)"
+    [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : procesador"
+  />
         <label for="procesador">Procesador</label>
       </span>
     </div>
     <div class="grid-item my-3">
       <div class="p-float-label position-relative">
-        <input class="w-100 rounded" id="ram" pInputText type="text" />
+        <input 
+          class="w-100 rounded" 
+          id="ram" 
+          pInputText 
+          type="text" 
+          [(ngModel)]="ram" 
+          [disabled]="isEquipmentWithNoOptions(selectedType)" 
+          [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : ram"/>
         <label for="ram">RAM</label>
-        <div
+        <div *ngIf="!isEquipmentWithNoOptions(selectedType)"
           class="position-absolute"
-          style="
-            top: 0;
-            right: 10px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            pointer-events: none;
-          "
-        >
+          style="top: 0; right: 10px; height: 100%; display: flex; align-items: center; pointer-events: none;">
           GB
         </div>
       </div>
     </div>
-    <div class="grid-item my-3">
-      <select class="form-select py-3 color-select">
-        <option value="" selected disabled>SSD / HDD</option>
-        <option>SSD</option>
-        <option>HDD</option>
-      </select>
-    </div>
-    <div class="grid-item my-3">
-      <span class="p-float-label">
-        <input
-          [(ngModel)]="ddlTbk"
-          (keyup)="onDDLTBKInput()"
-          appLimitInput
-          pInputText
-          type="text"
-          class="w-100 rounded"
-          id="ddlTbk"
-        />
+    
+   <div class="grid-item my-3">
+  <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notPrinterDisk">
+    <select [(ngModel)]="tipoDisco" disabled class="form-select py-3 color-select w-100 rounded">
+      <option value="N/A">N/A</option>
+    </select>
+  </ng-container>
+  <ng-template #notPrinterDisk>
+    <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded">
+      <option value="" disabled>SSD/HDD</option>
+      <option value="SSD">SSD</option>
+      <option value="HDD">HDD</option>
+    </select>
+  </ng-template>
+</div>
 
-        <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
-      </span>
-      <div *ngIf="isValidDDLTBK === false" class="text-danger">
-        Formato DDL/TBK no válido
-      </div>
-    </div>
+<div class="grid-item my-3">
+  <span class="p-float-label">
+    <input
+      [(ngModel)]="ddlTbk"
+      (keyup)="onDDLTBKInput()"
+      appLimitInput
+      pInputText
+      type="text"
+      class="w-100 rounded"
+      id="ddlTbk"
+      [disabled]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK'"
+      [value]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK' ? 'N/A' : ddlTbk"
+    />
+    <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
+  </span>
+  <div *ngIf="isValidDDLTBK === false" class="text-danger">
+    Formato DDL/TBK no válido
+  </div>
+</div>
+
+
+
     <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="serie" type="text" pInputText />

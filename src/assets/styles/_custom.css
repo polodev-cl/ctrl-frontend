@@ -1,3 +1,19 @@
+/*
+HTML CUSTOM
+ */
+
+/*REMOVE ARROW FROM NUMBER INPUTS*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 /* Botón redondeado */
 .p-button-rounded {
   color: #5D5D5D;
@@ -80,4 +96,25 @@
   .mat-form-field-ripple {
     background-color: #ff33cc;
   }
+}
+
+.mdc-notched-outline__trailing {
+  border: none !important;
+}
+
+.mdc-notched-outline__leading {
+  border: none !important;
+}
+
+.mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
+  border: none !important;
+}
+
+.mdc-notched-outline {
+  background-color: #21212114;
+  border-radius: var(--bs-border-radius) !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label, .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label--float-above {
+  color: inherit !important;
 }

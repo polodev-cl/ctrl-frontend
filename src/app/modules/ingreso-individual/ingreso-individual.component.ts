@@ -1,4 +1,4 @@
-import { NgClass, NgForOf, NgIf } from "@angular/common";
+import { JsonPipe, NgClass, NgForOf, NgIf } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatLabel } from "@angular/material/form-field";
@@ -10,7 +10,8 @@ import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
 import { lastValueFrom } from "rxjs";
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
-import { RutFormatterDirective } from "../../directives/rut-formatter.directive";
+import { RutFormatterDirective } from "../../core/directives/rut-formatter.directive";
+import { RutPipe } from "../../core/pipes/rut.pipe";
 import { formatDDLTBK, formatMAC, IPV4_PATTERN, MAC_PATTERN, } from '../../utils/utils';
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
 import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
@@ -44,7 +45,9 @@ interface Option {
     MatFormField,
     MatSelect,
     MatOption,
-    MatLabel
+    MatLabel,
+    JsonPipe,
+    RutPipe
   ]
 })
 export class IngresoIndividualComponent implements OnInit {
@@ -55,7 +58,6 @@ export class IngresoIndividualComponent implements OnInit {
 
   // empresas y agencias
   selectedType: string = '';
-  selectedEmpresa: string | undefined = undefined;
 
   equipmentTypes: Option[] = [
     { value: 'PC', label: 'PC' },
@@ -93,7 +95,7 @@ export class IngresoIndividualComponent implements OnInit {
       fechaIngreso: [ undefined, [ Validators.required ] ],
       ordenCompra: [ undefined, [ Validators.required ] ],
       rut: [ undefined ],
-      agenciaId: [],
+      agenciaId: [ { value: undefined, disabled: true } ],
       agenciaMnemonic: [ { value: undefined, disabled: true } ],
       agenciaDpc: [ { value: undefined, disabled: true } ],
       inventario: [ undefined, [ Validators.min(0) ] ],
@@ -109,17 +111,20 @@ export class IngresoIndividualComponent implements OnInit {
       procesador: [ undefined ],
       ramGb: [ undefined, [ Validators.min(1) ] ],
       disco: [ undefined ],
-      ddllTbk: [ undefined ],
+      ddllTbk: [ { value: undefined, disabled: true } ],
       serie: [ undefined ],
       encargadoAgencia: [ undefined, [ Validators.required ] ],
       ubicacion: [ undefined, [ Validators.required ] ],
       garantiaMeses: [ undefined, [ Validators.required, Validators.min(1) ] ],
+      estado: [1],
     });
   }
 
   ngOnInit() {
     this.loadEmpresas();
-    this.loadSOData();
+    console.log(this.ingresoIndividualForm.get('agenciaDpc')?.value)
+    this.ingresoIndividualForm.get('agenciaDpc')?.valueChanges.subscribe(console.log);
+    // this.loadSOData();
   }
 
   isEquipmentWithNoOptions(type: string): boolean {
@@ -145,8 +150,7 @@ export class IngresoIndividualComponent implements OnInit {
         console.log('Empresas', this.selectorEmpresas)
       }).catch(console.error);
 
-  onEmpresaChange(target: any): void {
-    const value = target.value;
+  onEmpresaChange(value: any): void {
     if ( value )
       lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value)).then((agencies) => {
         console.log('Agencias', agencies)
@@ -158,6 +162,7 @@ export class IngresoIndividualComponent implements OnInit {
           agenciaDpc: undefined,
           agenciaMnemonic: undefined,
         });
+        this.ingresoIndividualForm.get('agenciaId')?.enable();
       }).catch(console.error);
   }
 
@@ -180,8 +185,8 @@ export class IngresoIndividualComponent implements OnInit {
     });
   }
 
-  onTypeChange(): void {
-    if ( this.isEquipmentWithNoOptions(this.selectedType) ) {
+  onTypeChange(value: string): void {
+    if ( this.isEquipmentWithNoOptions(value) ) {
       this.ingresoIndividualForm.patchValue({
         // sistemaOperativo: { value: undefined, disabled: true },
         sistemaOperativo: undefined,
@@ -198,19 +203,36 @@ export class IngresoIndividualComponent implements OnInit {
       this.ingresoIndividualForm.get('disco')?.disable();
       this.ingresoIndividualForm.get('ddllTbk')?.disable();
 
-      if ( this.selectedType !== 'TBK' ) {
+      if ( value === 'TBK' ) {
         this.ingresoIndividualForm.patchValue({
           ddllTbk: undefined,
         });
-        this.ingresoIndividualForm.get('ddllTbk')?.disable();
+        this.ingresoIndividualForm.get('ddllTbk')?.enable();
       }
     } else {
-      this.loadSOData();
+      this.loadSOData().then(() => {
+        this.ingresoIndividualForm.patchValue({
+          // sistemaOperativo: { value: undefined, disabled: true },
+          sistemaOperativo: undefined,
+          sistemaOperativoVersion: undefined,
+          procesador: undefined,
+          ramGb: undefined,
+          disco: undefined
+        });
+
+        this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
+        this.ingresoIndividualForm.get('sistemaOperativoVersion')?.enable();
+        this.ingresoIndividualForm.get('procesador')?.enable();
+        this.ingresoIndividualForm.get('ramGb')?.enable();
+        this.ingresoIndividualForm.get('disco')?.enable();
+        this.ingresoIndividualForm.get('ddllTbk')?.disable();
+      });
+
     }
   }
 
   loadSOData = () =>
-    lastValueFrom(this.soService.getSODataByType(this.selectedType)).then((soOptions) => {
+    lastValueFrom(this.soService.getSODataByType(this.ingresoIndividualForm.get('tipo')?.value)).then((soOptions) => {
       this.selectorSistemasOperativos = soOptions;
       this.ingresoIndividualForm.patchValue({
         sistemaOperativoVersion: undefined,
@@ -220,13 +242,9 @@ export class IngresoIndividualComponent implements OnInit {
       });
     })
 
-  getSelectedType(): string {
-    return this.selectedType;
-  }
-
-  onSOChange(): void {
+  onSOChange(value: string): void {
     const soSeleccionado = this.selectorSistemasOperativos.find(
-      (so) => so.so === this.ingresoIndividualForm.get('sistemaOperativo')?.value
+      (so) => so.so === value
     );
 
     this.selectorVersionesFiltradas = soSeleccionado ? soSeleccionado.versiones : [];
@@ -265,7 +283,8 @@ export class IngresoIndividualComponent implements OnInit {
 
   onSubmit() {
     if ( this.ingresoIndividualForm.valid ) {
-      const formData = this.ingresoIndividualForm.value;
+      const formData = this.ingresoIndividualForm.getRawValue();
+      console.log('Formulario válido', formData);
 
       if ( this.isEquipmentWithNoOptions(this.selectedType) ) {
         formData.sistemaOperativo = "N/A";

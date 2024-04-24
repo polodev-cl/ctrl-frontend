@@ -17,6 +17,7 @@ import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.com
 import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
 import { Agency, AgencyService } from './agency.service';
 import { SoService, SOVersion } from './so.service';
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 interface Option {
   value: string | number;
@@ -47,7 +48,8 @@ interface Option {
     MatOption,
     MatLabel,
     JsonPipe,
-    RutPipe
+    RutPipe,
+    NavbarComponent
   ]
 })
 export class IngresoIndividualComponent implements OnInit {
@@ -55,8 +57,6 @@ export class IngresoIndividualComponent implements OnInit {
     { text: 'Home', link: '/home' },
     { text: 'Ingreso individual', link: '/ingreso-individual' },
   ];
-
-  // empresas y agencias
   selectedType: string = '';
 
   equipmentTypes: Option[] = [

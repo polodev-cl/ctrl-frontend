@@ -4,7 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
-import { Consulta, TablaEquiposDuplicadosComponent } from '../tabla-equipos-duplicados/tabla-equipos-duplicados.component'; // Asegúrate de importar el tipo de datos Consulta
+import { Consulta, TablaEquiposDuplicadosComponent } from '../tabla-equipos-duplicados/tabla-equipos-duplicados.component'; 
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 @Component({
   selector: 'app-equipos-duplicados',
@@ -18,7 +19,8 @@ import { Consulta, TablaEquiposDuplicadosComponent } from '../tabla-equipos-dupl
     RouterLink,
     TablaEquiposDuplicadosComponent,
     ButtonModule,
-    NgForOf
+    NgForOf,
+    NavbarComponent
   ]
 })
 export class EquiposDuplicadosComponent {

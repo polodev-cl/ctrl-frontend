@@ -4,6 +4,7 @@ import { RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
 import { ModalConsultaIndividualComponent } from "../Custom/modal-consulta-individual/modal-consulta-individual.component";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 @Component({
   selector: 'app-consulta-individual',
@@ -16,7 +17,8 @@ import { ModalConsultaIndividualComponent } from "../Custom/modal-consulta-indiv
     NgForOf,
     RouterLink,
     NgIf,
-    ButtonModule
+    ButtonModule,
+    NavbarComponent
   ]
 })
 export class ConsultaIndividualComponent {

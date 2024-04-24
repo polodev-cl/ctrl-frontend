@@ -1,0 +1,27 @@
+.navbar {
+    z-index: 900;
+}
+
+.navbar-nav .text-end {
+    margin: 0 .5rem;
+    padding: 0 .5rem;
+}
+
+.d-flex li {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+
+}
+
+.profile-text {
+    text-align: right;
+}
+
+.user-icon {
+    /* margin-right: 1rem; */
+}
+
+.p-divider.p-divider-vertical::before {
+    border-left: 1px rgb(0, 0, 0)
+}

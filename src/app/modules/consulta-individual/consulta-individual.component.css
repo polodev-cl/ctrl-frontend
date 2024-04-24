@@ -19,11 +19,3 @@
   background-color: #3072BF; /* Un azul más oscuro para el hover */
   border-color: #3072BF; /* Asegúrate de que el color del borde también cambie para mantener la consistencia */
 }
-
-.back-button {
-  border: 1px solid #F3B04E;
-  border-radius: 100px;
-  background: white;
-  color: #222;
-  font-family: 'Roboto';
-}

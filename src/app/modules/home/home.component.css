@@ -2,46 +2,22 @@
   padding: 0 20px !important;
 }
 
-.d-flex li {
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-
-}
 
 .consultar-button {
-  background: #388CD9; /* Estados/avanzar */
+  background: #388CD9;
   border-radius: 100px;
 
 }
 
 .consultar-button:hover {
-  background-color: #3072BF; /* Un azul más oscuro para el hover */
-  border-color: #3072BF; /* Asegúrate de que el color del borde también cambie para mantener la consistencia */
-}
+  background-color: #3072BF;
+  border-color: #3072BF;
 
-.profile-text {
-  text-align: right;
-}
-
-.user-icon {
-  /* margin-right: 1rem; */
-}
-
-.navbar-nav .text-end {
-  margin: 0 .5rem;
-  padding: 0 .5rem;
-}
-
-.navbar-shadow-box {
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
 }
 
 .card-shadow-box {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  /* Añade una sombra suave */
 }
-
 
 .header-individual {
   background-color: #01A2AE;
@@ -59,7 +35,6 @@
   border: 1px solid #D96A64;
 }
 
-
 .header-ingreso {
   background-color: #F4B14F;
   color: #fff;
@@ -68,8 +43,7 @@
   border: 1px solid #F4B14F;
 }
 
-
 .btn-container {
   display: flex;
-  justify-content: space-around; /* Ajusta según necesites */
+  justify-content: space-around;
 }

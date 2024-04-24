@@ -8,6 +8,7 @@ import { DividerModule } from "primeng/divider";
 import { InputTextModule } from "primeng/inputtext";
 import { UserProfileComponent } from "../../user-profile/user-profile.component";
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 @Component({
   selector: 'app-ingresar-usuario',
@@ -23,7 +24,8 @@ import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.com
     FormsModule,
     InputTextModule,
     ButtonModule,
-    NgForOf
+    NgForOf,
+    NavbarComponent
   ]
 })
 export class IngresarUsuarioComponent {

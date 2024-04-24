@@ -1,61 +1,10 @@
-<nav class="navbar navbar-light bg-light navbar-expand-lg sticky-top navbar-shadow-box">
-  <div class="container-md">
-    <app-modal-exitoso
-      (cerrar)="cerrarModalExito()"
-      *ngIf="mostrarModalExito"
-      [mensajeModal]="mensajeModalExito"
-      [titulo]="tituloModalExito"
-    ></app-modal-exitoso>
-    <a class="navbar-brand" href="home">
-      <img
-        alt="User Icon"
-        class="d-inline-block align-text-top user-logo"
-        height="40"
-        src="../../../assets/image/Logo.svg"
-        width="100"
-      />
-    </a>
-    <button
-      class="navbar-toggler"
-      data-bs-target="#navbarCollapse"
-      data-bs-toggle="collapse"
-      type="button"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div
-      class="collapse navbar-collapse justify-content-end"
-      id="navbarCollapse"
-    >
-      <ul class="navbar-nav">
-        <li class="d-none d-lg-block">
-          <p-divider layout="vertical"></p-divider>
-        </li>
-        <li class="navbar-item d-lg-block d-none">
-          <p class="nav-link text-end">Perfil</p>
-          <ul class="navbar-nav">
-            <li class="navbar-item">
-              <app-user-profile></app-user-profile>
-            </li>
-          </ul>
-        </li>
-        <!-- Mostrar solo "Perfil" en pantallas pequeñas -->
-        <li class="navbar-item">
-          <a class="nav-link d-lg-none" href="#">Perfil Juan Perez</a>
-        </li>
-        <li
-          class="navbar-item d-flex justify-content-center align-items-center"
-        >
-          <img
-            alt="User Icon"
-            class="user-icon"
-            src="../../../assets/image/user.png"
-          />
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<app-navbar></app-navbar>
+<app-modal-exitoso
+  (cerrar)="cerrarModalExito()"
+  *ngIf="mostrarModalExito"
+  [mensajeModal]="mensajeModalExito"
+  [titulo]="tituloModalExito"
+></app-modal-exitoso>
 
 <div class="container-md">
   <div class="frame mt-3" id="frame_middletop">
@@ -87,14 +36,24 @@
     <div class="row">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <span class="p-float-label">
-          <input [(ngModel)]="nombreUsuario" class="w-100 rounded" id="nombreUsuario" pInputText type="text"/>
+          <input
+            [(ngModel)]="nombreUsuario"
+            class="w-100 rounded"
+            id="nombreUsuario"
+            pInputText
+            type="text"
+          />
           <label for="nombreUsuario">Nombre de usuario</label>
-
         </span>
       </div>
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <span class="p-float-label">
-          <input class="w-100 rounded" id="nivelUsuario" pInputText type="text"/>
+          <input
+            class="w-100 rounded"
+            id="nivelUsuario"
+            pInputText
+            type="text"
+          />
           <label for="nivelUsuario">Nivel de usuario</label>
         </span>
       </div>
@@ -102,13 +61,20 @@
     <div class="row">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <span class="p-float-label">
-          <input class="w-100 rounded" id="rutUsuario" pInputText type="text"/>
+          <input class="w-100 rounded" id="rutUsuario" pInputText type="text" />
           <label for="rutUsuario">Rut</label>
         </span>
       </div>
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <span class="p-float-label">
-          <input [(ngModel)]="email" class="w-100 rounded" id="correo" pInputText required type="email"/>
+          <input
+            [(ngModel)]="email"
+            class="w-100 rounded"
+            id="correo"
+            pInputText
+            required
+            type="email"
+          />
           <label for="correo">Correo Electrónico</label>
         </span>
       </div>
@@ -116,15 +82,20 @@
         <!-- <button pButton type="button" class="search-button px-5 py-2 mb-3" (click)="abrirModalExito()">
           Ingresar
         </button> -->
-        <button (click)="registrarUsuario()" class="search-button px-5 py-2 mb-3" pButton type="button">
+        <button
+          (click)="registrarUsuario()"
+          class="search-button px-5 py-2 mb-3"
+          pButton
+          type="button"
+        >
           Registrar
         </button>
       </div>
     </div>
     <div class="container-fluid no-tabla my-2 px-0">
-      <hr/>
+      <hr />
       <div class="row my-4">
-        <div class="col-md-2 col-12 ">
+        <div class="col-md-2 col-12">
           <button
             class="back-button p-2 w-100"
             label="Volver"

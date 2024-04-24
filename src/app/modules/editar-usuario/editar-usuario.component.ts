@@ -5,6 +5,7 @@ import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
 import { InputTextModule } from "primeng/inputtext";
 import { TablasEditarUsuarioComponent } from "../tablas-editar-usuario/tablas-editar-usuario.component";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 
 @Component({
@@ -19,7 +20,8 @@ import { TablasEditarUsuarioComponent } from "../tablas-editar-usuario/tablas-ed
     NgIf,
     TablasEditarUsuarioComponent,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    NavbarComponent
   ]
 })
 export class EditarUsuarioComponent {

@@ -5,6 +5,7 @@ import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
 import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/modal-historial-equipo.component";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 @Component({
   selector: 'app-numero-inventario',
@@ -17,7 +18,8 @@ import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/
     DividerModule,
     RouterLink,
     NgForOf,
-    ButtonModule
+    ButtonModule,
+    NavbarComponent
   ]
 })
 export class NumeroInventarioComponent {

@@ -10,6 +10,7 @@ import { ModalConsultaMasivaComponent } from "../Custom/modal-consulta-masiva/mo
 import { ModalDuplicadoComponent } from "../Custom/modal-duplicado/modal-duplicado.component";
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
 import { ModalGestionUsuarioComponent } from "../Custom/modal-gestion-usuario/modal-gestion-usuario.component";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ import { ModalGestionUsuarioComponent } from "../Custom/modal-gestion-usuario/mo
     DividerModule,
     RouterLink,
     ButtonModule,
-    NgForOf
+    NgForOf,
+    NavbarComponent
   ]
 })
 export class HomeComponent implements OnInit {

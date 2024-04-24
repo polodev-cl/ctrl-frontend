@@ -7,6 +7,7 @@ import { DividerModule } from "primeng/divider";
 import { ConsultaMasivaService } from '../../common/equipment/services/consulta-masiva.service';
 import { FiltrosMasivaService } from '../../services/filtros-masiva.service';
 import { TablasComponent } from '../Custom/tablas/tablas.component';
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 interface EquipmentType {
   name: string;
@@ -31,7 +32,8 @@ interface OperatingSystem {
     NgForOf,
     ButtonModule,
     TablasComponent,
-    FormsModule // Importa FormsModule aquí
+    FormsModule,
+    NavbarComponent
   ]
 })
 export class ConsultaMasivaComponent implements OnInit {

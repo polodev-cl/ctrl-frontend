@@ -3,11 +3,11 @@
 >
   <div class="container-md">
     <app-modal-resumen-ingreso-individual
-      (cerrar)="cerrarModalResumenIngresoIndividual()"
-      (exito)="abrirModalExito()"
-      *ngIf="mostrarModalResumenIngresoIndividual"
-    >
-    </app-modal-resumen-ingreso-individual>
+    *ngIf="mostrarModalResumenIngresoIndividual"
+    [datosModal]="datosParaModal"
+    (cerrar)="cerrarModalResumenIngresoIndividual()"
+    (exito)="abrirModalExito()"
+  ></app-modal-resumen-ingreso-individual>
     <app-modal-exitoso
       (cerrar)="cerrarModalExito()"
       *ngIf="mostrarModalExito"
@@ -251,7 +251,7 @@
       <div class="grid-item my-3">
         <span class="p-float-label">
           <input
-            [value]="onMacInput()"
+            
             class="w-100 rounded"
             formControlName="mac"
             id="mac"

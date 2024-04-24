@@ -95,7 +95,7 @@
 
     <div class="row mt-4 mb-3">
       <div *ngFor="let equipment of equipments; let i = index" class="col-md-6 mb-4">
-        <div class="card border rounded card-shadow-box">
+        <div class="card border rounded card-shadow-box-datas">
           <div class="card-body">
             <div class="row">
               <div class="col">
@@ -108,23 +108,21 @@
               </div>
             </div>
             <div class="row mt-3">
-              <div class="col-4">
+              <div class="col">
                 <p><strong>Equipo:</strong> {{ equipment.tipo }}</p>
                 <p><strong>Marca:</strong> {{ equipment.marca }}</p>
                 <p><strong>Modelo:</strong> {{ equipment.modelo }}</p>
                 <p><strong>Uso:</strong> {{ equipment.uso }}</p>
                 <p><strong>Ubicación:</strong> {{ equipment.ubicacion }}</p>
               </div>
-              <div class="col-4">
+              <div class="col">
                 <p><strong>Número CI:</strong> {{ equipment.inventario }}</p>
                 <p><strong>Agencia:</strong> {{ equipment.ageNemonico }}</p>
                 <p><strong>DPC:</strong> {{ equipment.ageDpc }}</p>
                 <p><strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }}</p>
                 <p><strong>Estado:</strong> {{ equipment.estado === 1 ? 'Activo' : 'Inactivo' }}</p>
               </div>
-              <div class="col-4">
-                <img alt="Imagen del equipo" class="team-image img-fluid" src="../../../assets/image/placeholder.jpg"/>
-              </div>
+             
             </div>
             <div class="row mt-3">
               <div class="col-12 col-md-4 mb-3 pe-md-0">

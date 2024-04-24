@@ -1,6 +1,7 @@
 import { NgForOf, NgIf } from "@angular/common";
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
 import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/modal-historial-equipo.component";
@@ -15,7 +16,8 @@ import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/
     NgIf,
     DividerModule,
     RouterLink,
-    NgForOf
+    NgForOf,
+    ButtonModule
   ]
 })
 export class NumeroInventarioComponent {

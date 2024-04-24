@@ -118,3 +118,24 @@ input[type=number] {
 .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label, .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label--float-above {
   color: inherit !important;
 }
+
+
+.historial-button {
+  background: #388CD9; 
+  border-radius: 100px;
+}
+
+.historial-button:hover {
+  background-color: #3072BF; 
+  border-color: #3072BF; 
+}
+
+
+.tiempo-garantia {
+  background-color: #D9D9D9 !important;
+  color: #000000;
+}
+
+.card-shadow-box-datas {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}

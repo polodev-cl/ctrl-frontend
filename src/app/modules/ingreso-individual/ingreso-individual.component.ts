@@ -78,11 +78,13 @@ export class IngresoIndividualComponent implements OnInit {
   selectorNemonicoOptions: Option[] = [];
   selectorSistemasOperativos: SOVersion[] = [];
   selectorVersionesFiltradas: string[] = [];
+  
 
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
   mostrarModalExito: boolean = false;
   mostrarModalResumenIngresoIndividual: boolean = false;
+  datosParaModal: any = {};
   ingresoIndividualForm: FormGroup;
 
   constructor(
@@ -105,7 +107,8 @@ export class IngresoIndividualComponent implements OnInit {
       uso: [ undefined, [ Validators.required ] ],
       marca: [ undefined, [ Validators.required ] ],
       modelo: [ undefined, [ Validators.required ] ],
-      mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
+      // mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
+      mac : ["00:1B:44:11:3A:B7"],
       ip: [ undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
       nombre: [ undefined, [ Validators.required ] ],
       procesador: [ undefined ],
@@ -270,9 +273,9 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   abrirModalResumenIngresoIndividual(): void {
+    this.datosParaModal = this.ingresoIndividualForm.getRawValue(); // Preparar los datos para el modal
     this.mostrarModalResumenIngresoIndividual = true;
   }
-
   cerrarModalResumenIngresoIndividual(): void {
     this.mostrarModalResumenIngresoIndividual = false;
   }

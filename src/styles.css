@@ -38,3 +38,7 @@ app-root {
 .c-pointer {
   cursor: pointer;
 }
+
+.rounded-xl {
+  border-radius: 100px;
+}

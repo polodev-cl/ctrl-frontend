@@ -1,0 +1,83 @@
+/* Botón redondeado */
+.p-button-rounded {
+  color: #5D5D5D;
+  gap: 8px;
+  background: #F3B04E;
+  border-radius: 100px;
+}
+
+/* Opcional: Cambiar el color del texto del p-float-label a gris claro */
+.p-float-label.focused label {
+  color: #c0c0c0;
+}
+
+.p-card {
+  box-shadow: none;
+  width: 400px;
+}
+
+/* Opcional: Cambiar el color del texto del p-float-label a gris claro */
+.p-float-label.focused label {
+  color: #c0c0c0;
+}
+
+/*
+  Material custom styles
+ */
+.mat-form-field {
+  .mat-input-element {
+    color: slategray;
+  }
+
+  .mat-form-field-label {
+    color: slategray;
+  }
+
+  .mat-form-field-underline {
+    background-color: slategray;
+  }
+
+  .mat-form-field-ripple {
+    background-color: slategray;
+  }
+
+  .mat-form-field-required-marker {
+    color: slategray;
+  }
+}
+
+.mat-form-field.mat-focused {
+  .mat-form-field-label {
+    color: #ff884d;
+  }
+
+  .mat-form-field-ripple {
+    background-color: #ff884d;
+  }
+
+  .mat-form-field-required-marker {
+    color: #ff884d;
+  }
+
+  .mat-input-element {
+    color: #ff884d;
+  }
+}
+
+.mat-form-field.mat-form-field-invalid {
+  .mat-input-element {
+    color: #ff33cc;
+  }
+
+  .mat-form-field-label {
+    color: #ff33cc;
+
+    .mat-form-field-required-marker {
+      color: #ff33cc;
+    }
+  }
+
+  .mat-form-field-ripple {
+    background-color: #ff33cc;
+  }
+}

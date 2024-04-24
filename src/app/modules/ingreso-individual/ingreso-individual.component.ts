@@ -1,20 +1,24 @@
 import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatOption, MatSelect } from "@angular/material/select";
 import { RouterLink } from "@angular/router";
 import { CalendarModule } from "primeng/calendar";
 import { DividerModule } from "primeng/divider";
+import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
+import { lastValueFrom } from "rxjs";
+import { EquipmentService } from '../../common/equipment/services/equipment.service';
 import { RutFormatterDirective } from "../../directives/rut-formatter.directive";
-import { checkIpAddress, formatAndValidateDDLTBK, formatAndValidateMAC, } from '../../utils/utils';
+import { formatDDLTBK, formatMAC, IPV4_PATTERN, MAC_PATTERN, } from '../../utils/utils';
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
 import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
 import { Agency, AgencyService } from './agency.service';
 import { SoService, SOVersion } from './so.service';
-import { EquipmentService } from '../../services/equipment.service';
 
 interface Option {
-  value: string;
+  value: string | number;
   label: string;
 }
 
@@ -36,6 +40,11 @@ interface Option {
     InputTextModule,
     NgClass,
     RutFormatterDirective,
+    FloatLabelModule,
+    MatFormField,
+    MatSelect,
+    MatOption,
+    MatLabel
   ]
 })
 export class IngresoIndividualComponent implements OnInit {
@@ -47,7 +56,6 @@ export class IngresoIndividualComponent implements OnInit {
   // empresas y agencias
   selectedType: string = '';
   selectedEmpresa: string | undefined = undefined;
-  empresaOptions: Option[] = [];
 
   equipmentTypes: Option[] = [
     { value: 'PC', label: 'PC' },
@@ -61,75 +69,58 @@ export class IngresoIndividualComponent implements OnInit {
     { value: 'Print Server', label: 'Print Server' },
     { value: 'TBK', label: 'TBK' },
   ];
-  agencies: Agency[] = [];
-  selectedAgency?: Agency;
-  dpcOptions: Option[] = [];
-  nemonicoOptions: Option[] = [];
-  selectedDPC: string = '';
-  selectedNemonico: string = '';
 
-  // equipo
-  sistemasOperativos: SOVersion[] = [];
-  selectedSO: string = '';
-  versionesFiltradas: string[] = [];
-  selectedVersion: string = '';
-  procesador: string = '';
-  ram: string = '';
-  tipoDisco: string = '';
-  ddlTbk: string = '';
-  isValidDDLTBK: boolean | null = null;
-  macAddress: string = '';
-  ipAddress: string = '';
-  isValidIP: boolean | null = null;
-  isValidMAC: boolean | null = null;
+  selectorEmpresas: Option[] = [];
+  selectorAgencies: Agency[] = [];
+  selectorDpcOptions: Option[] = [];
+  selectorNemonicoOptions: Option[] = [];
+  selectorSistemasOperativos: SOVersion[] = [];
+  selectorVersionesFiltradas: string[] = [];
+
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
   mostrarModalExito: boolean = false;
   mostrarModalResumenIngresoIndividual: boolean = false;
-  form: FormGroup;
-
+  ingresoIndividualForm: FormGroup;
 
   constructor(
     private soService: SoService,
     private agencyService: AgencyService,
     private equipmentService: EquipmentService,
     private fb: FormBuilder,
-    
   ) {
-    this.form = this.fb.group({
-      fechaIngreso: [''],
-      ordenCompra: [''],
-      rut: [''],
-      agenciaId: [''],
-      agenciaMnemonic:[''],
-      inventario: [''],
-      tipo: [''],
-      sistemaOperativo: [''],
-      sistemaOperativoVersion: [''],
-      uso: [''],
-      marca: [''],
-      modelo: [''],
-      mac: [''],
-      ip: [''],
-      nombre: [''],
-      procesador: [''],
-      ramGb: [''],
-      disco: [''],
-      ddllTbk: [''],
-      serie: [''],
-      encargadoAgencia: [''],
-      ubicacion: [''],
-      garantiaMeses: [''],
+    this.ingresoIndividualForm = this.fb.group({
+      fechaIngreso: [ undefined, [ Validators.required ] ],
+      ordenCompra: [ undefined, [ Validators.required ] ],
+      rut: [ undefined ],
+      agenciaId: [],
+      agenciaMnemonic: [ { value: undefined, disabled: true } ],
+      agenciaDpc: [ { value: undefined, disabled: true } ],
+      inventario: [ undefined, [ Validators.min(0) ] ],
+      tipo: [ undefined, [ Validators.required ] ],
+      sistemaOperativo: [ undefined ],
+      sistemaOperativoVersion: [ undefined ],
+      uso: [ undefined, [ Validators.required ] ],
+      marca: [ undefined, [ Validators.required ] ],
+      modelo: [ undefined, [ Validators.required ] ],
+      mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
+      ip: [ undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
+      nombre: [ undefined, [ Validators.required ] ],
+      procesador: [ undefined ],
+      ramGb: [ undefined, [ Validators.min(1) ] ],
+      disco: [ undefined ],
+      ddllTbk: [ undefined ],
+      serie: [ undefined ],
+      encargadoAgencia: [ undefined, [ Validators.required ] ],
+      ubicacion: [ undefined, [ Validators.required ] ],
+      garantiaMeses: [ undefined, [ Validators.required, Validators.min(1) ] ],
     });
   }
-
 
   ngOnInit() {
     this.loadEmpresas();
     this.loadSOData();
   }
-
-
 
   isEquipmentWithNoOptions(type: string): boolean {
     return [
@@ -144,114 +135,113 @@ export class IngresoIndividualComponent implements OnInit {
     ].includes(type);
   }
 
-  loadEmpresas(): void {
-    this.agencyService.getCompanies().subscribe({
-      next: (companies) => {
-        this.empresaOptions = companies.map((company) => ({
-          value: company.id.toString(),
+  loadEmpresas = () =>
+    lastValueFrom(this.agencyService.getCompanies())
+      .then((companies) => {
+        this.selectorEmpresas = companies.map((company) => ({
+          value: company.id,
           label: company.razonSocial,
         }));
-        console.log('Opciones de empresa configuradas:', this.empresaOptions);
-      },
-      error: (error) => {
-        console.error('Error al cargar empresas:', error);
-      },
-    });
-  }
+        console.log('Empresas', this.selectorEmpresas)
+      }).catch(console.error);
 
-  onEmpresaChange(): void {
-    if ( this.selectedEmpresa ) {
-      this.agencyService
-        .getAgenciesByCompanyId(+this.selectedEmpresa)
-        .subscribe((agencies) => {
-          this.agencies = agencies;
-          this.selectedAgency = undefined;
-          this.dpcOptions = [];
-          this.nemonicoOptions = [];
-          this.selectedDPC = '';
-          this.selectedNemonico = '';
+  onEmpresaChange(target: any): void {
+    const value = target.value;
+    if ( value )
+      lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value)).then((agencies) => {
+        console.log('Agencias', agencies)
+        this.selectorAgencies = agencies;
+        this.selectorDpcOptions = [];
+        this.selectorNemonicoOptions = [];
+        this.ingresoIndividualForm.patchValue({
+          agenciaId: undefined,
+          agenciaDpc: undefined,
+          agenciaMnemonic: undefined,
         });
-    }
+      }).catch(console.error);
   }
 
   onAgencyChange(): void {
-    if ( this.selectedAgency ) {
-      this.selectedDPC = this.selectedAgency.dpc.toString();
-      this.selectedNemonico = this.selectedAgency.nemonico;
+    const agencyId = this.ingresoIndividualForm.get('agenciaId')?.value;
+
+    if ( agencyId ) {
+      const agency = this.selectorAgencies.find((agency) => agency.id === agencyId);
+      this.ingresoIndividualForm.patchValue({
+        agenciaDpc: agency?.dpc,
+        agenciaMnemonic: agency?.nemonico,
+      })
     }
   }
 
-  resetSelections(): void {
-    this.selectedDPC = '';
-    this.selectedEmpresa = '';
-    this.selectedNemonico = '';
-  }
-
-  onDDLTBKInput(): void {
-    const { formatted, isValid } = formatAndValidateDDLTBK(this.ddlTbk);
-    this.ddlTbk = formatted;
-    this.isValidDDLTBK = isValid;
+  onDDLTBKInput(): void { // TODO: usar valueChanges
+    const formatDDLTBKValue = formatDDLTBK(this.ingresoIndividualForm.get('ddlTbk')?.value);
+    this.ingresoIndividualForm.patchValue({
+      ddllTbk: formatDDLTBK(this.ingresoIndividualForm.get('ddlTbk')?.value),
+    });
   }
 
   onTypeChange(): void {
     if ( this.isEquipmentWithNoOptions(this.selectedType) ) {
-      this.selectedSO = 'N/A';
-      this.selectedVersion = 'N/A';
-      this.procesador = 'N/A';
-      this.ram = 'N/A';
-      this.tipoDisco = 'N/A';
+      this.ingresoIndividualForm.patchValue({
+        // sistemaOperativo: { value: undefined, disabled: true },
+        sistemaOperativo: undefined,
+        sistemaOperativoVersion: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined
+      });
+
+      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
+      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
+      this.ingresoIndividualForm.get('procesador')?.disable();
+      this.ingresoIndividualForm.get('ramGb')?.disable();
+      this.ingresoIndividualForm.get('disco')?.disable();
+      this.ingresoIndividualForm.get('ddllTbk')?.disable();
+
       if ( this.selectedType !== 'TBK' ) {
-        this.ddlTbk = 'N/A';
+        this.ingresoIndividualForm.patchValue({
+          ddllTbk: undefined,
+        });
+        this.ingresoIndividualForm.get('ddllTbk')?.disable();
       }
     } else {
       this.loadSOData();
     }
   }
 
-  resetFields(): void {
-    this.ddlTbk = this.selectedType === 'TBK' ? this.ddlTbk : 'N/A';
-  }
-
-  loadSOData(): void {
-    this.soService
-      .getSODataByType(this.selectedType)
-      .subscribe((soOptions: SOVersion[]) => {
-        this.sistemasOperativos = soOptions;
-        this.selectedSO = '';
-        this.versionesFiltradas = [];
-        this.selectedVersion = '';
-        this.procesador = '';
-        this.ram = '';
-        this.tipoDisco = '';
+  loadSOData = () =>
+    lastValueFrom(this.soService.getSODataByType(this.selectedType)).then((soOptions) => {
+      this.selectorSistemasOperativos = soOptions;
+      this.ingresoIndividualForm.patchValue({
+        sistemaOperativoVersion: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined
       });
-  }
+    })
 
   getSelectedType(): string {
     return this.selectedType;
   }
 
   onSOChange(): void {
-    const soSeleccionado = this.sistemasOperativos.find(
-      (so) => so.so === this.selectedSO
+    const soSeleccionado = this.selectorSistemasOperativos.find(
+      (so) => so.so === this.ingresoIndividualForm.get('sistemaOperativo')?.value
     );
-    this.versionesFiltradas = soSeleccionado ? soSeleccionado.versiones : [];
-    this.selectedVersion = '';
+
+    this.selectorVersionesFiltradas = soSeleccionado ? soSeleccionado.versiones : [];
+    this.ingresoIndividualForm.patchValue({ sistemaOperativoVersion: undefined });
   }
 
   limitAndValidateIP(): void {
-    if ( this.ipAddress && this.ipAddress.length > 39 ) {
-      this.ipAddress = this.ipAddress.substring(0, 39);
-    }
-
-    this.isValidIP = checkIpAddress(this.ipAddress);
+    const value = this.ingresoIndividualForm.get('ip')?.value;
+    if ( value && value.length > 39 )
+      this.ingresoIndividualForm.patchValue({ ip: value.substring(0, 39) });
   }
 
-  onMacInput(event: KeyboardEvent): void {
-    const input = event.target as HTMLInputElement;
-    let value = input.value;
-    const { formattedMAC, isValid } = formatAndValidateMAC(value);
-    this.macAddress = formattedMAC;
-    this.isValidMAC = isValid;
+  onMacInput() {
+    const value = this.ingresoIndividualForm.get('mac')?.value;
+    return value ? formatMAC(value) : value;
   }
 
   abrirModalExito(): void {
@@ -273,12 +263,11 @@ export class IngresoIndividualComponent implements OnInit {
     this.mostrarModalExito = false;
   }
 
-
   onSubmit() {
-    if (this.form.valid) {
-      const formData = this.form.value;
+    if ( this.ingresoIndividualForm.valid ) {
+      const formData = this.ingresoIndividualForm.value;
 
-      if (this.isEquipmentWithNoOptions(this.selectedType)) {
+      if ( this.isEquipmentWithNoOptions(this.selectedType) ) {
         formData.sistemaOperativo = "N/A";
         formData.sistemaOperativoVersion = "N/A";
         formData.procesador = "N/A";

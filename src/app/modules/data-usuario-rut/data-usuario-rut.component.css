@@ -34,14 +34,11 @@
 .tiempo-garantia {
   background-color: #D9D9D9 !important;
   color: #000000;
-
-
 }
 
 .historial-button {
   background: #388CD9; /* Estados/avanzar */
   border-radius: 100px;
-
 }
 
 .historial-button:hover {

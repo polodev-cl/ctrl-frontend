@@ -81,24 +81,23 @@
 
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li
-              *ngFor="let crumb of breadcrumbs; let last = last"
-              [class.active]="last"
-              class="breadcrumb-item"
-            >
-              <a *ngIf="!last" [routerLink]="crumb.link">{{ crumb.text }}</a>
-              <span *ngIf="last">{{ crumb.text }}</span>
-            </li>
+            @for (crumb of breadcrumbs; track crumb.text) {
+              <li class="breadcrumb-item" [class.active]="$last">
+                <a *ngIf="!$last" [routerLink]="crumb.link">{{ crumb.text }}</a>
+                <span *ngIf="$last">{{ crumb.text }}</span>
+              </li>
+            }
           </ol>
         </nav>
       </div>
     </div>
   </div>
 
-  <div class="grid-container gap-3">
-    <div class="grid-item my-3">
-      <div class="card flex flex-wrap gap-3 p-fluid border-0">
-        <div class="flex-auto">
+  <form [formGroup]="ingresoIndividualForm" class="mt-4">
+    <div class="grid-container gap-3">
+      <div class="grid-item my-3">
+        <div class="card flex flex-wrap gap-3 p-fluid border-0">
+          <div class="flex-auto">
           <span class="p-float-label">
             <p-calendar
               [iconDisplay]="'input'"
@@ -110,10 +109,10 @@
             ></p-calendar>
             <label class="" for="fecha_ingreso">Fecha de ingreso</label>
           </span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="grid-item my-3">
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           appRutFormatter
@@ -126,42 +125,46 @@
         />
         <label for="rut">Rut (12345678-9)</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
-      <select
-        (change)="onEmpresaChange()"
-        [(ngModel)]="selectedEmpresa"
-        class="form-select py-3 color-select"
-      >
-        <option [ngValue]="undefined" disabled>Empresa</option>
-        <option *ngFor="let empresa of empresaOptions" [ngValue]="empresa.value">
-          {{ empresa.label }}
-        </option>
+      </div>
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Choose an option</mat-label>
+          <mat-select [disabled]="false">
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option disabled value="option2">Option 2 (disabled)</mat-option>
+            <mat-option value="option3">Option 3</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="grid-item my-3">
+        <select
+          (change)="onEmpresaChange($event.target)"
+          class="form-select py-3 color-select"
+          pInputText
+        >
+          <option [value]="undefined" disabled selected>Empresa</option>
+          @for (empresa of selectorEmpresas; track empresa.value) {
+            <option [value]="empresa.value">{{ empresa.label }}</option>
+          }
+        </select>
+      </div>
 
-      </select>
-    </div>
-
-    <div class="grid-item my-3">
-      <select
-        (change)="onAgencyChange()"
-        [(ngModel)]="selectedAgency"
-        [disabled]="!selectedEmpresa"
-        class="form-select py-3 color-select"
-        formControlName="agenciaId"
-      >
-        <option [ngValue]="undefined" disabled>Agencia</option>
-        <option *ngFor="let agency of agencies" [ngValue]="agency">
-          {{ agency.nombre }}
-        </option>
-
-      </select>
-    </div>
-    <div class="grid-item my-3">
+      <div class="grid-item my-3">
+        <select
+          (change)="onAgencyChange()"
+          class="form-select py-3 color-select"
+          formControlName="agenciaId"
+        >
+          <option disabled selected>Agencia</option>
+          @for (agency of selectorAgencies; track agency.id) {
+            <option [value]="agency.id">{{ agency.nombre }}</option>
+          }
+        </select>
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          [(ngModel)]="selectedDPC"
           class="w-100 rounded"
-          disabled
           id="dpc"
           pInputText
           placeholder="DPC"
@@ -170,13 +173,11 @@
         />
         <label for="dpc">DPC</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          [(ngModel)]="selectedNemonico"
           class="w-100 rounded"
-        
           id="nemonico"
           pInputText
           placeholder="Nemónico"
@@ -185,59 +186,61 @@
         />
         <label for="nemonico">Nemónico</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="inventario" pInputText type="Number"  formControlName="inventario"/>
+        <input class="w-100 rounded" formControlName="inventario" id="inventario" pInputText type="Number"/>
         <label for="inventario">N° Inventario</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
-      <select (change)="onTypeChange()" [(ngModel)]="selectedType" class="form-select py-3 color-select" formControlName="tipo">
-        <option disabled selected value="">Tipo de Equipo</option>
-        <option *ngFor="let type of equipmentTypes" [ngValue]="type.value">{{ type.label }}</option>
-      </select>
-    </div>
+      </div>
+      <div class="grid-item my-3">
+        <select (change)="onTypeChange()" class="form-select py-3 color-select" formControlName="tipo">
+          <option disabled selected>Tipo de Equipo</option>
 
-    <div class="grid-item my-3">
-      <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notSpecialEquipment">
-        <select [(ngModel)]="selectedSO" class="form-select py-3 color-select" disabled>
-          <option value="N/A">N/A</option>
+          @for (type of equipmentTypes; track type.value) {
+            <option [ngValue]="type.value">{{ type.label }}</option>
+          }
         </select>
-      </ng-container>
-      <ng-template #notSpecialEquipment>
-        <select (change)="onSOChange()" [(ngModel)]="selectedSO" class="form-select py-3 color-select">
-          <option disabled value="">Sistema Operativo</option>
-          <option *ngFor="let so of sistemasOperativos" [value]="so.so">
-            {{ so.so }}
-          </option>
+      </div>
+
+      <div class="grid-item my-3">
+        <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notSpecialEquipment">
+          <select class="form-select py-3 color-select" disabled>
+            <option value="N/A">N/A</option>
+          </select>
+        </ng-container>
+        <ng-template #notSpecialEquipment>
+          <select (change)="onSOChange()" class="form-select py-3 color-select">
+            <option disabled value="">Sistema Operativo</option>
+
+            @for (so of selectorSistemasOperativos; track so.so) {
+              <option [ngValue]="so.so">{{ so.so }}</option>
+            }
+          </select>
+        </ng-template>
+      </div>
+
+
+      <div class="grid-item my-3">
+        <select
+          [disabled]="selectorVersionesFiltradas.length === 0"
+          [ngClass]="{ 'disabled-select': selectorVersionesFiltradas.length === 0 }"
+          class="form-select py-3 color-select"
+        >
+          <option disabled value="">Versión</option>
+          @for (version of selectorVersionesFiltradas; track version) {
+            <option [ngValue]="version">{{ version }}</option>
+          }
         </select>
-      </ng-template>
-    </div>
-
-
-    <div class="grid-item my-3">
-      <select
-        [(ngModel)]="selectedVersion"
-        [disabled]="versionesFiltradas.length === 0"
-        [ngClass]="{ 'disabled-select': versionesFiltradas.length === 0 }"
-        class="form-select py-3 color-select"
-      
-      >
-        <option disabled value="">Versión</option>
-        <option *ngFor="let version of versionesFiltradas" [value]="version">
-          {{ version }}
-        </option>
-      </select>
-    </div>
-    <div class="grid-item my-3">
-      <select class="form-select py-3 color-select" formControlName="uso">
-        <option disabled selected value="">Uso</option>
-        <option>Administrativo</option>
-        <option>Caja</option>
-      </select>
-    </div>
-    <div class="grid-item my-3">
+      </div>
+      <div class="grid-item my-3">
+        <select class="form-select py-3 color-select" formControlName="uso">
+          <option disabled selected value="">Uso</option>
+          <option>Administrativo</option>
+          <option>Caja</option>
+        </select>
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           autocomplete="on"
@@ -249,8 +252,8 @@
         />
         <label for="marca">Marca</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           autocomplete="on"
@@ -262,126 +265,111 @@
         />
         <label for="modelo">Modelo</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
-      <span class="p-float-label">
-        <input
-          (keyup)="onMacInput($event)"
-          [(ngModel)]="macAddress"
-          class="w-100 rounded"
-          id="mac"
-          pInputText
-          type="text"
-          formControlName="mac"
-        />
-        <label for="mac">MAC (XX:XX:XX:XX:XX:XX)</label>
-      </span>
-      <div *ngIf="isValidMAC === false" class="text-danger">
-        Dirección MAC no válida
       </div>
-    </div>
-    <div class="grid-item my-3">
-      <span class="p-float-label">
-        <input
-          (keyup)="limitAndValidateIP()"
-          [(ngModel)]="ipAddress"
-          class="w-100 rounded"
-          id="ip"
-          pInputText
-          type="text"
-          formControlName="ip"
-        />
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            [value]="onMacInput()"
+            class="w-100 rounded"
+            formControlName="mac"
+            id="mac"
+            pInputText
+            type="text"
+          />
+          <label for="mac">MAC (XX:XX:XX:XX:XX:XX)</label>
+        </span>
+        <!--        <div *ngIf="isValidMAC === false" class="text-danger">-->
+        <!--          Dirección MAC no válida-->
+        <!--        </div>-->
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            (keyup)="limitAndValidateIP()"
+            class="w-100 rounded"
+            formControlName="ip"
+            id="ip"
+            pInputText
+            type="text"
+          />
 
-        <label for="ip">IP (IPV4 o IPv6)</label>
-      </span>
-      <div *ngIf="isValidIP === false" class="text-danger">
-        Dirección IP no válida
+          <label for="ip">IP (IPV4 o IPv6)</label>
+        </span>
+        <!--        <div *ngIf="isValidIP === false" class="text-danger"> &lt;!&ndash; TODO: implementar mat-error &ndash;&gt;-->
+        <!--          Dirección IP no válida-->
+        <!--        </div>-->
       </div>
-    </div>
-    <div class="grid-item my-3">
-      <span class="p-float-label">
-        <input class="w-100 rounded" id="maquina" pInputText type="text" formControlName="nombre"/>
-        <label for="maquina">Nombre Máquina </label>
-      </span>
-    </div>
-    <div class="grid-item my-3">
-      <span class="p-float-label">
-        <input
-          [(ngModel)]="procesador"
-          [disabled]="isEquipmentWithNoOptions(selectedType)"
-          [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : procesador"
-          class="w-100 rounded"
-          id="procesador"
-          pInputText
-          type="text"
-          formControlName="procesador"
-        />
-        <label for="procesador">Procesador</label>
-      </span>
-    </div>
-    <div class="grid-item my-3">
-      <div class="p-float-label position-relative">
-        <input
-          [(ngModel)]="ram"
-          [disabled]="isEquipmentWithNoOptions(selectedType)"
-          [value]="isEquipmentWithNoOptions(selectedType) ? 'N/A' : ram"
-          class="w-100 rounded"
-          id="ram"
-          pInputText
-          type="text"
-          formControlName="ramGb"/>
-        <label for="ram">RAM</label>
-        <div *ngIf="!isEquipmentWithNoOptions(selectedType)"
-             class="position-absolute"
-             style="top: 0; right: 10px; height: 100%; display: flex; align-items: center; pointer-events: none;">
-          GB
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input class="w-100 rounded" formControlName="nombre" id="maquina" pInputText type="text"/>
+          <label for="maquina">Nombre Máquina </label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            formControlName="procesador"
+            id="procesador"
+            pInputText
+            type="text"
+          />
+          <label for="procesador">Procesador</label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <div class="p-float-label position-relative">
+          <input
+            class="w-100 rounded"
+            formControlName="ramGb"
+            id="ram"
+            pInputText
+            type="text"/>
+          <label for="ram">RAM</label>
+          <div *ngIf="!isEquipmentWithNoOptions(selectedType)"
+               class="position-absolute"
+               style="top: 0; right: 10px; height: 100%; display: flex; align-items: center; pointer-events: none;">
+            GB
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="grid-item my-3">
-      <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notPrinterDisk">
-        <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded" disabled>
-          <option value="N/A">N/A</option>
+      <div class="grid-item my-3">
+        <select class="form-select py-3 color-select w-100 rounded " formControlName="disco">
+          @if (!isEquipmentWithNoOptions(selectedType)) {
+            <option disabled>SSD/HDD</option>
+            <option value="SSD">SSD</option>
+            <option value="HDD">HDD</option>
+          }
         </select>
-      </ng-container>
-      <ng-template #notPrinterDisk>
-        <select [(ngModel)]="tipoDisco" class="form-select py-3 color-select w-100 rounded "  formControlName="disco">
-          <option disabled value="">SSD/HDD</option>
-          <option value="SSD">SSD</option>
-          <option value="HDD">HDD</option>
-        </select>
-      </ng-template>
-    </div>
-
-    <div class="grid-item my-3">
-      <!-- TODO: revisar appLimitInput, a que corresponde -->
-      <span class="p-float-label">
-        <input
-          (keyup)="onDDLTBKInput()"
-          [(ngModel)]="ddlTbk"
-          [disabled]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK'"
-          [value]="isEquipmentWithNoOptions(selectedType) && selectedType !== 'TBK' ? 'N/A' : ddlTbk"
-          appLimitInput
-          class="w-100 rounded"
-          id="ddlTbk"
-          pInputText
-          type="text"
-          formControlName="ddllTbk"
-        />
-        <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
-      </span>
-      <div *ngIf="isValidDDLTBK === false" class="text-danger">
-        Formato DDL/TBK no válido
       </div>
-    </div>
-    <div class="grid-item my-3">
-      <span class="p-float-label">
-        <input class="w-100 rounded" id="serie" pInputText type="text"  formControlName="serie"/>
-        <label for="serie">Número de Serie </label>
-      </span>
-    </div>
-    <div class="grid-item my-3">
+
+      <div class="grid-item my-3">
+        <!-- TODO: revisar appLimitInput, a que corresponde -->
+        <span class="p-float-label">
+
+          <!-- TODO: usar valueChanges -->
+          <input
+            appLimitInput
+            class="w-100 rounded"
+            formControlName="ddllTbk"
+            id="ddlTbk"
+            pInputText
+            type="text"
+          />
+          <label for="ddlTbk">DDL/TBK (XXX-XXX-XXX)</label>
+        </span>
+        <!--        <div *ngIf="isValidDDLTBK === false" class="text-danger">-->
+        <!--          Formato DDL/TBK no válido-->
+        <!--        </div>-->
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input class="w-100 rounded" formControlName="serie" id="serie" pInputText type="text"/>
+          <label for="serie">Número de Serie </label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           autocomplete="on"
@@ -393,20 +381,20 @@
         />
         <label for="encargado">Encargado Agencia</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
-        <input class="w-100 rounded" id="ubicacion" pInputText type="text"  formControlName="ubicacion"/>
+        <input class="w-100 rounded" formControlName="ubicacion" id="ubicacion" pInputText type="text"/>
         <label for="ubicacion">Ubicación</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="garantia" pInputText type="Number" formControlName="garantiaMeses"/>
         <label for="garantia">Garantía</label>
       </span>
-    </div>
-    <div class="grid-item my-3">
+      </div>
+      <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           autocomplete="on"
@@ -417,8 +405,9 @@
         />
         <label for="orden_compra">Orden de compra</label>
       </span>
+      </div>
     </div>
-  </div>
+  </form>
 
   <div class="row">
     <div class="col">
@@ -441,6 +430,7 @@
           (click)="abrirModalResumenIngresoIndividual()"
           class="search-button px-5 py-2"
           label="Ingresar"
+          [disabled]="!ingresoIndividualForm.valid"
           pButton
           type="button"
         ></button>

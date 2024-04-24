@@ -8,16 +8,12 @@
 
 .search-button:hover {
   background-color: #2C8C40;
-
   border-color: #2C8C40;
-
 }
 
 .large-checkbox {
   width: 1.5em;
-
   height: 1.5em;
-
 }
 
 .large-label {
@@ -35,7 +31,6 @@
   background-color: #EAEAEA;
 }
 
-
 .color-input-label::after {
   background-color: #EAEAEA;
 }
@@ -44,13 +39,10 @@
   display: none;
 }
 
-
 .p-inputtext {
   border: none !important;
   box-shadow: none !important;
   color: black !important;
-
-
 }
 
 .p-float-label .p-inputtext:not(:placeholder-shown) + label,
@@ -77,7 +69,6 @@
   color: black !important;
 }
 
-
 input[type=number] {
   -moz-appearance: textfield;
 }
@@ -85,7 +76,6 @@ input[type=number] {
 .p-calendar .p-inputtext {
   border: none !important;
 }
-
 
 .p-calendar .p-button {
   background-color: transparent;
@@ -98,17 +88,12 @@ input[type=number] {
   background-color: #f8f8f8;
   color: #6c757d;
   border: none;
-
-
 }
-
 
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
 }
-
 
 @media (max-width: 768px) {
   .grid-container {

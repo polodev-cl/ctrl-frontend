@@ -28,7 +28,7 @@
     "bootstrap": "^5.3.3",
     "dropzone": "^6.0.0-beta.2",
     "feather-icons": "^4.29.1",
-    "primeng": "^17.7.0",
+    "primeng": "^17.14.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",

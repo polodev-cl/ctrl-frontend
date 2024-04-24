@@ -30,9 +30,7 @@
         <li class="navbar-item d-lg-block d-none">
           <p class="nav-link text-end">Perfil</p>
           <ul class="navbar-nav">
-            <li class="navbar-item">
-
-            </li>
+            <li class="navbar-item"></li>
           </ul>
         </li>
         <!-- Mostrar solo "Perfil" en pantallas pequeñas -->
@@ -83,17 +81,31 @@
 
     <div class="row mb-3">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <select class="form-select py-3 color-select" [(ngModel)]="selectedMachineType" (change)="onEquipmentTypeChange()">
+        <select
+          class="form-select py-3 color-select"
+          [(ngModel)]="selectedMachineType"
+          (change)="onEquipmentTypeChange()"
+        >
           <option disabled selected value="">Seleccione tipo de equipo</option>
-          <option *ngFor="let equipment of equipmentTypes" [value]="equipment.name">{{ equipment.name }}</option>
+          <option
+            *ngFor="let equipment of equipmentTypes"
+            [value]="equipment.name"
+          >
+            {{ equipment.name }}
+          </option>
         </select>
-        
       </div>
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <select class="form-select py-3 color-select" [(ngModel)]="selectedSystem">
-
-        <option disabled selected value="">Seleccione sistema operativo</option>
-          <option *ngIf="!systems || systems.length === 0" [value]="'N/A'">N/A</option>
+        <select
+          class="form-select py-3 color-select"
+          [(ngModel)]="selectedSystem"
+        >
+          <option disabled selected value="">
+            Seleccione sistema operativo
+          </option>
+          <option *ngIf="!systems || systems.length === 0" [value]="'N/A'">
+            N/A
+          </option>
           <ng-container *ngFor="let system of systems">
             <option [value]="system.name">{{ system.name }}</option>
           </ng-container>
@@ -102,16 +114,27 @@
     </div>
     <div class="row mb-3">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <select class="form-select py-3 color-select" [(ngModel)]="selectedVersion">
+        <select
+          class="form-select py-3 color-select"
+          [(ngModel)]="selectedVersion"
+        >
           <option disabled selected value="">Seleccione versión</option>
-          <option *ngIf="!getVersions() || getVersions().length === 0" [value]="'N/A'">N/A</option>
+          <option
+            *ngIf="!getVersions() || getVersions().length === 0"
+            [value]="'N/A'"
+          >
+            N/A
+          </option>
           <ng-container *ngFor="let version of getVersions()">
             <option [value]="version">{{ version }}</option>
           </ng-container>
         </select>
-      </div>  
+      </div>
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <select class="form-select py-3 color-select" [(ngModel)]="selectedUsage">
+        <select
+          class="form-select py-3 color-select"
+          [(ngModel)]="selectedUsage"
+        >
           <option disabled selected value="">Seleccione uso</option>
           <option *ngFor="let use of usages" [value]="use">{{ use }}</option>
         </select>
@@ -129,11 +152,10 @@
     </div>
   </div>
   <div class="container-fluid tabla my-2 px-0">
-    <hr *ngIf="!showTable"/>
-    <!-- TODO: Ver por que exporta un evento "exportRequest" pero no existe @Pinkq1 -->
-    <app-tablas #tablasComponent (exportRequest)="tablasComponent.exportToExcel()" *ngIf="showTable"></app-tablas>
+    <hr *ngIf="!showTable" />
+    <app-tablas *ngIf="showTable"  [data]="equipamientoFiltrado" ></app-tablas>
     <div class="row my-4 d-flex justify-content-between">
-      <div class="col-12 col-md-2 mb-3 ">
+      <div class="col-12 col-md-2 mb-3">
         <button
           class="back-button p-2 w-100"
           label="Volver"

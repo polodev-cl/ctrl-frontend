@@ -1,6 +1,25 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  ViewChild,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource, } from '@angular/material/table';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { ConsultaMasivaService } from '../../../common/equipment/services/consulta-masiva.service';
 
@@ -33,7 +52,7 @@ interface Consulta {
     MatPaginator,
   ],
 })
-export class TablasComponent implements AfterViewInit {
+export class TablasComponent implements OnChanges, AfterViewInit {
   displayedColumns: string[] = [
     'inventario',
     'equipo',
@@ -43,9 +62,11 @@ export class TablasComponent implements AfterViewInit {
     'usuario',
     'modelo',
   ];
-  dataSource = new MatTableDataSource<Consulta>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  @Input() data: Consulta[] = [];
+  dataSource = new MatTableDataSource<Consulta>();
 
   private columns = [
     { header: 'Empresa', wch: 20 },
@@ -74,25 +95,51 @@ export class TablasComponent implements AfterViewInit {
   ];
 
   constructor(private consultaMasivaService: ConsultaMasivaService) {}
-
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] && changes['data'].currentValue) {
+      console.log(
+        'ngOnChanges: Actualizando datos en dataSource debido a cambios en @Input data.',
+        changes['data'].currentValue
+      );
+      this.dataSource.data = changes['data'].currentValue;
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+      }
+    }
+  }
+
+  public cargarDatos(data: Consulta[]) {
+    console.log(
+      'Datos recibidos en TablasComponent para cargar en la tabla:',
+      data
+    );
+    this.dataSource.data = data;
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+  }
+
   exportToExcel() {
-    this.consultaMasivaService.obtenerEquipamientoCompleto().subscribe({
-      next: (data) => {
-        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
-        XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
-          origin: 'A1',
-        });
-        XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
-        ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
-        const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
-        XLSX.writeFile(wb, 'ReporteCompleto.xlsx');
-      },
-      error: (error) => console.error('Error al exportar los datos:', error),
+    // Usar dataSource.data para obtener los datos actuales mostrados en la tabla
+    const data = this.dataSource.data;
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
+      origin: 'A1',
     });
+  
+    // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
+    XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
+  
+    // Configurar las anchuras de las columnas basadas en la configuración privada de 'columns'
+    ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
+  
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
+    XLSX.writeFile(wb, 'ReporteFiltrado.xlsx');
   }
 }

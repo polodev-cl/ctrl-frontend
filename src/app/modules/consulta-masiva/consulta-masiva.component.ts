@@ -35,7 +35,8 @@ interface OperatingSystem {
   ]
 })
 export class ConsultaMasivaComponent implements OnInit {
-  @ViewChild(TablasComponent) tablasComponent!: TablasComponent;
+  @ViewChild(TablasComponent, { static: false }) tablasComponent!: TablasComponent;
+
 
 
   breadcrumbs = [
@@ -89,14 +90,7 @@ export class ConsultaMasivaComponent implements OnInit {
     }
   }
 
-
   onSearch() {
-    console.log('Realizando búsqueda con los siguientes parámetros:');
-    console.log('Tipo:', this.selectedMachineType);
-    console.log('Sistema Operativo:', this.selectedSystem);
-    console.log('Versión del Sistema Operativo:', this.selectedVersion);
-    console.log('Uso:', this.selectedUsage);
-
     this.consultaMasivaService.obtenerEquipamientoFiltrado(
       this.selectedMachineType,
       this.selectedSystem,
@@ -104,13 +98,24 @@ export class ConsultaMasivaComponent implements OnInit {
       this.selectedUsage
     ).subscribe({
       next: (equipamiento) => {
-        console.log('Equipamiento filtrado:', equipamiento);
+        console.log('Equipamiento filtrado recibido del servicio:', equipamiento);
+        this.showTable = true;
+        setTimeout(() => {
+          if (this.tablasComponent) {
+            this.tablasComponent.cargarDatos(equipamiento);
+          } else {
+            console.error('TablasComponent no está disponible.');
+          }
+        });
       },
-      error: (error) => console.error('Error al obtener el equipamiento filtrado:', error)
+      error: (error) => {
+        console.error('Error al obtener el equipamiento filtrado:', error);
+        this.showTable = false;
+      }
     });
-
-    this.showTable = true;
   }
+  
+
 
 
 }

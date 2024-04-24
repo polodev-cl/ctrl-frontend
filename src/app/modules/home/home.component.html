@@ -64,13 +64,16 @@
           <p class="nav-link text-end">Perfil</p>
           <ul class="navbar-nav">
             <li class="navbar-item">
-
-              <a (click)="cerrarSesion()" class="nav-link c-pointer">Cerrar sesión</a>
+              <a (click)="cerrarSesion()" class="nav-link c-pointer"
+                >Cerrar sesión</a
+              >
             </li>
           </ul>
         </li>
         <li class="navbar-item">
-          <a (click)="cerrarSesion()" class="nav-link d-lg-none c-pointer">Cerrar sesión</a>
+          <a (click)="cerrarSesion()" class="nav-link d-lg-none c-pointer"
+            >Cerrar sesión</a
+          >
         </li>
         <li
           class="navbar-item d-flex justify-content-center align-items-center"
@@ -154,22 +157,12 @@
           <div class="card-header px-5 py-1 header-individual">
             Consulta Individual
           </div>
-
           <div class="card-body p-md-4 p-3">
             <div class="row mt-1">
-              <div class="col d-flex">
-                <img
-                  alt="Imagen del equipo"
-                  class="team-image img-fluid"
-                  src="../../../assets/image/placeholder.jpg"
-                />
-                <p-divider class="px-0 mx-0" layout="vertical"></p-divider>
-              </div>
-              <div class="col-1 px-0 mx-0"></div>
-              <div class="col ps-0">
+              <div class="col">
                 <div class="d-flex flex-column h-100">
                   <div class="mb-auto">
-                    <p class="m-auto">Contenido de la consulta individual</p>
+                    <p class="m-auto text-center my-5">Contenido de la Consulta Individual</p>
                   </div>
                   <div class="mt-auto">
                     <button
@@ -189,24 +182,16 @@
       <div class="col-md-6 mb-3">
         <div class="card border rounded card-shadow-box">
           <div class="card-header px-5 py-1 header-masiva">Consulta masiva</div>
-
           <div class="card-body p-md-4 p-3">
             <div class="row mt-1">
-              <div class="col d-flex">
-                <img
-                  alt="Imagen del equipo"
-                  class="team-image img-fluid"
-                  src="../../../assets/image/placeholder.jpg"
-                />
-                <p-divider class="px-0 mx-0" layout="vertical"></p-divider>
-              </div>
-              <div class="col-1 px-0 mx-0"></div>
-              <div class="col ps-0">
+              <div class="col">
                 <div class="d-flex flex-column h-100">
                   <!-- Contenedor de texto y botón -->
                   <div class="mb-auto">
                     <!-- Texto -->
-                    <p class="m-auto">Contenido de la consulta masiva</p>
+                    <p class="m-auto text-center my-5">
+                      Contenido de la consulta masiva
+                    </p>
                   </div>
                   <div class="mt-auto">
                     <button
@@ -226,26 +211,18 @@
       <div class="col-md-6 mb-3">
         <div class="card border rounded card-shadow-box">
           <div class="card-header px-5 py-1 header-ingreso">
-            ingreso individual
+            Ingreso Individual
           </div>
-
           <div class="card-body p-md-4 p-3">
             <div class="row mt-1">
-              <div class="col d-flex">
-                <img
-                  alt="Imagen del equipo"
-                  class="team-image img-fluid"
-                  src="../../../assets/image/placeholder.jpg"
-                />
-                <p-divider class="px-0 mx-0" layout="vertical"></p-divider>
-              </div>
-              <div class="col-1 px-0 mx-0"></div>
-              <div class="col ps-0">
+              <div class="col">
                 <div class="d-flex flex-column h-100">
                   <!-- Contenedor de texto y botón -->
                   <div class="mb-auto">
                     <!-- Texto -->
-                    <p class="m-auto">Contenido de ingreso individual</p>
+                    <p class="m-auto text-center my-5">
+                      Contenido de Ingreso Individual
+                    </p>
                   </div>
                   <div class="mt-auto">
                     <button
@@ -263,11 +240,8 @@
         </div>
       </div>
       <div *ngIf="empresa" class="row">
-        <div class="col-md-12">
-
-        </div>
+        <div class="col-md-12"></div>
       </div>
-
     </div>
   </div>
 </div>

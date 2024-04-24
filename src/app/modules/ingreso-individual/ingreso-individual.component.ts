@@ -116,6 +116,7 @@ export class IngresoIndividualComponent implements OnInit {
       encargadoAgencia: [ undefined, [ Validators.required ] ],
       ubicacion: [ undefined, [ Validators.required ] ],
       garantiaMeses: [ undefined, [ Validators.required, Validators.min(1) ] ],
+      estado: [1],
     });
   }
 

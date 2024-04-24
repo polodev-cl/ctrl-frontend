@@ -128,14 +128,27 @@
       </div>
       <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Choose an option</mat-label>
-          <mat-select [disabled]="false">
-            <mat-option value="option1">Option 1</mat-option>
-            <mat-option disabled value="option2">Option 2 (disabled)</mat-option>
-            <mat-option value="option3">Option 3</mat-option>
+          <mat-label>Empresa</mat-label>
+          <mat-select (selectionChange)="onEmpresaChange($event.value)">
+          
+            @for (empresa of selectorEmpresas; track empresa.value) {
+              <mat-option [value]="empresa.value">{{ empresa.label }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Agencia</mat-label>
+          <mat-select (selectionChange)="onAgencyChange()" formControlName="agenciaId">
+          
+            @for (agency of selectorAgencies; track agency.id) {
+              <mat-option [value]="agency.id">{{ agency.nombre }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
       <div class="grid-item my-3">
         <select
           (change)="onEmpresaChange($event.target)"

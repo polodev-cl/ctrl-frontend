@@ -115,12 +115,13 @@
       <div class="grid-item my-3">
       <span class="p-float-label">
         <input
-          appRutFormatter
           autocomplete="on"
           class="w-100 rounded"
           id="rut"
           pInputText
+          #rut
           type="text"
+          [value]="rut.value | rutPipe"
           formControlName="rut"
         />
         <label for="rut">Rut (12345678-9)</label>
@@ -130,7 +131,6 @@
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Empresa</mat-label>
           <mat-select (selectionChange)="onEmpresaChange($event.value)">
-          
             @for (empresa of selectorEmpresas; track empresa.value) {
               <mat-option [value]="empresa.value">{{ empresa.label }}</mat-option>
             }
@@ -141,39 +141,13 @@
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Agencia</mat-label>
           <mat-select (selectionChange)="onAgencyChange()" formControlName="agenciaId">
-          
             @for (agency of selectorAgencies; track agency.id) {
               <mat-option [value]="agency.id">{{ agency.nombre }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
       </div>
-      
-      <div class="grid-item my-3">
-        <select
-          (change)="onEmpresaChange($event.target)"
-          class="form-select py-3 color-select"
-          pInputText
-        >
-          <option [value]="undefined" disabled selected>Empresa</option>
-          @for (empresa of selectorEmpresas; track empresa.value) {
-            <option [value]="empresa.value">{{ empresa.label }}</option>
-          }
-        </select>
-      </div>
 
-      <div class="grid-item my-3">
-        <select
-          (change)="onAgencyChange()"
-          class="form-select py-3 color-select"
-          formControlName="agenciaId"
-        >
-          <option disabled selected>Agencia</option>
-          @for (agency of selectorAgencies; track agency.id) {
-            <option [value]="agency.id">{{ agency.nombre }}</option>
-          }
-        </select>
-      </div>
       <div class="grid-item my-3">
       <span class="p-float-label">
         <input
@@ -207,51 +181,46 @@
       </span>
       </div>
       <div class="grid-item my-3">
-        <select (change)="onTypeChange()" class="form-select py-3 color-select" formControlName="tipo">
-          <option disabled selected>Tipo de Equipo</option>
-
-          @for (type of equipmentTypes; track type.value) {
-            <option [ngValue]="type.value">{{ type.label }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="grid-item my-3">
-        <ng-container *ngIf="isEquipmentWithNoOptions(selectedType); else notSpecialEquipment">
-          <select class="form-select py-3 color-select" disabled>
-            <option value="N/A">N/A</option>
-          </select>
-        </ng-container>
-        <ng-template #notSpecialEquipment>
-          <select (change)="onSOChange()" class="form-select py-3 color-select">
-            <option disabled value="">Sistema Operativo</option>
-
-            @for (so of selectorSistemasOperativos; track so.so) {
-              <option [ngValue]="so.so">{{ so.so }}</option>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Tipo de Equipo</mat-label>
+          <mat-select (selectionChange)="onTypeChange($event.value)" formControlName="tipo">
+            @for (type of equipmentTypes; track type.value) {
+              <mat-option [value]="type.value">{{ type.label }}</mat-option>
             }
-          </select>
-        </ng-template>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Sistema Operativo</mat-label>
+          <mat-select (selectionChange)="onSOChange($event.value)" formControlName="sistemaOperativo">
+            @for (so of selectorSistemasOperativos; track so.so) {
+              <mat-option [value]="so.so">{{ so.so }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
       </div>
 
 
       <div class="grid-item my-3">
-        <select
-          [disabled]="selectorVersionesFiltradas.length === 0"
-          [ngClass]="{ 'disabled-select': selectorVersionesFiltradas.length === 0 }"
-          class="form-select py-3 color-select"
-        >
-          <option disabled value="">Versión</option>
-          @for (version of selectorVersionesFiltradas; track version) {
-            <option [ngValue]="version">{{ version }}</option>
-          }
-        </select>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Modelo</mat-label>
+          <mat-select formControlName="sistemaOperativoVersion">
+            @for (version of selectorVersionesFiltradas; track version) {
+              <mat-option [value]="version">{{ version }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
       </div>
       <div class="grid-item my-3">
-        <select class="form-select py-3 color-select" formControlName="uso">
-          <option disabled selected value="">Uso</option>
-          <option>Administrativo</option>
-          <option>Caja</option>
-        </select>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Uso</mat-label>
+          <mat-select formControlName="uso">
+            <mat-option value="Administrativo">Administrativo</mat-option>
+            <mat-option value="Caja">Caja</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
       <div class="grid-item my-3">
       <span class="p-float-label">
@@ -348,13 +317,13 @@
       </div>
 
       <div class="grid-item my-3">
-        <select class="form-select py-3 color-select w-100 rounded " formControlName="disco">
-          @if (!isEquipmentWithNoOptions(selectedType)) {
-            <option disabled>SSD/HDD</option>
-            <option value="SSD">SSD</option>
-            <option value="HDD">HDD</option>
-          }
-        </select>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Disco</mat-label>
+          <mat-select formControlName="disco">
+            <mat-option value="SSD">SSD</mat-option>
+            <mat-option value="HDD">HDD</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="grid-item my-3">
@@ -392,19 +361,19 @@
           type="text"
           formControlName="encargadoAgencia"
         />
-        <label for="encargado">Encargado Agencia</label>
+        <label for="encargado">Encargado Agencia *</label>
       </span>
       </div>
       <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" formControlName="ubicacion" id="ubicacion" pInputText type="text"/>
-        <label for="ubicacion">Ubicación</label>
+        <label for="ubicacion">Ubicación *</label>
       </span>
       </div>
       <div class="grid-item my-3">
       <span class="p-float-label">
         <input class="w-100 rounded" id="garantia" pInputText type="Number" formControlName="garantiaMeses"/>
-        <label for="garantia">Garantía</label>
+        <label for="garantia">Garantía *</label>
       </span>
       </div>
       <div class="grid-item my-3">
@@ -413,6 +382,7 @@
           autocomplete="on"
           class="w-100 rounded"
           id="orden_compra"
+          formControlName="ordenCompra"
           pInputText
           type="text"
         />
@@ -432,7 +402,7 @@
     <div class="col-12">
       <div class="d-flex justify-content-between">
         <button
-          class="back-button px-5 py-2"
+          class="back-button rounded-circle px-5 py-2"
           label="Volver"
           pButton
           routerLink="/home"
@@ -440,7 +410,7 @@
         ></button>
 
         <button
-          (click)="abrirModalResumenIngresoIndividual()"
+          (click)="onSubmit()"
           class="search-button px-5 py-2"
           label="Ingresar"
           [disabled]="!ingresoIndividualForm.valid"

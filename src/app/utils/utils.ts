@@ -1,3 +1,5 @@
+import { FormGroup } from "@angular/forms";
+
 export const MAC_PATTERN = /^([0-9a-f]{2}:){5}[0-9a-f]{2}$/;
 export const IPV4_PATTERN = /^(\d{1,3}\.){3}\d{1,3}$/;
 export const IPV6_PATTERN = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
@@ -36,4 +38,15 @@ export function formatDDLTBK(input: string): string {
   return parts.substring(0, 3) +
     (parts.length > 3 ? '-' : '') + parts.substring(3, 6) +
     (parts.length > 6 ? '-' : '') + parts.substring(6, 9);
+}
+
+export function logFormErrors(form: FormGroup): void {
+  Object.keys(form.controls).forEach(key => {
+    const controlErrors = form.get(key)?.errors;
+    if ( controlErrors ) {
+      Object.keys(controlErrors).forEach(errorKey => {
+        console.log(`Error in ${ key }: ${ errorKey }, error value:`, controlErrors[errorKey]);
+      });
+    }
+  });
 }

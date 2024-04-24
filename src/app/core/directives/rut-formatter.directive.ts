@@ -8,12 +8,11 @@ export class RutFormatterDirective {
   constructor(private el: ElementRef) {
   }
 
-  @HostListener('keyup', [ '$event' ])
-  onKeyUp(event: KeyboardEvent) {
+  @HostListener('blur', [ '$event' ])
+  onBlur(event: KeyboardEvent) {
     let value = this.el.nativeElement.value;
     value = this.formatRut(value);
     this.el.nativeElement.value = value;
-
   }
 
   private formatRut(value: string): string {

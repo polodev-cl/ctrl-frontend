@@ -3,18 +3,35 @@
   <div class="custom-modal-content rounded-3 text-center">
     <!-- <button class="close  " (click)="cerrarModal()">&times;</button> -->
     <h4 class="my-2">Consulta Masiva</h4>
-    <form class="form-group mt-5">
+    <form class="form-group mt-5" [formGroup]="modalForm">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Empresa</mat-label>
         <input matInput
                placeholder="Selecciona una empresa"
                aria-label="Empresa"
                [matAutocomplete]="auto"
-               [formControl]="empresaControl">
-        <mat-autocomplete #auto="matAutocomplete">
-          @for (empresa of empresasFiltradas | async; track empresa.id) {
-            <mat-option [value]="empresa.razonSocial"(click)="seleccionarEmpresa(empresa)">
-              {{ empresa.razonSocial }}
+               formControlName="company">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectCompany($event.option.value)" [displayWith]="displayCompanyFn">
+          @for (company of companies | async; track company.id) {
+            <mat-option [value]="company">
+              {{ company.razonSocial }}
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Agencia</mat-label>
+        <input matInput
+               placeholder="Selecciona una agencia"
+               aria-label="Agencias"
+               [matAutocomplete]="auto2"
+               formControlName="agency">
+        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayAgencyFn">
+          @for (agency of agencies | async; track agency.id) {
+            <mat-option [value]="agency">
+              {{ agency.nombre }}
             </mat-option>
           }
         </mat-autocomplete>

@@ -1,21 +1,21 @@
-import { NgForOf, NgIf } from "@angular/common";
+import { NgForOf, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { ButtonModule } from "primeng/button";
-import { DividerModule } from "primeng/divider";
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
 import { CognitoService } from '../../common/auth/cognito-service.service';
 import { CompanyService } from '../../services/company.service';
-import { ModalCargaMasivaComponent } from "../Custom/modal-carga-masiva/modal-carga-masiva.component";
-import { ModalConsultaMasivaComponent } from "../Custom/modal-consulta-masiva/modal-consulta-masiva.component";
-import { ModalDuplicadoComponent } from "../Custom/modal-duplicado/modal-duplicado.component";
-import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
-import { ModalGestionUsuarioComponent } from "../Custom/modal-gestion-usuario/modal-gestion-usuario.component";
-import { NavbarComponent } from "../shared/navbar/navbar.component";
+import { ModalCargaMasivaComponent } from '../Custom/modal-carga-masiva/modal-carga-masiva.component';
+import { ModalConsultaMasivaComponent } from '../Custom/modal-consulta-masiva/modal-consulta-masiva.component';
+import { ModalDuplicadoComponent } from '../Custom/modal-duplicado/modal-duplicado.component';
+import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
+import { ModalGestionUsuarioComponent } from '../Custom/modal-gestion-usuario/modal-gestion-usuario.component';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: [ './home.component.css' ],
+  styleUrls: ['./home.component.css'],
   standalone: true,
   imports: [
     ModalConsultaMasivaComponent,
@@ -28,13 +28,11 @@ import { NavbarComponent } from "../shared/navbar/navbar.component";
     RouterLink,
     ButtonModule,
     NgForOf,
-    NavbarComponent
-  ]
+    NavbarComponent,
+  ],
 })
-export class HomeComponent implements OnInit {
-  breadcrumbs = [
-    { text: 'Home', link: '/home' },
-  ];
+export class HomeComponent {
+  breadcrumbs = [{ text: 'Home', link: '/home' }];
 
   empresa: any = null;
   mostrarModalConsultaMasiva: boolean = false;
@@ -45,23 +43,14 @@ export class HomeComponent implements OnInit {
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
 
-  constructor(private companyService: CompanyService, private cognitoService: CognitoService, private route: ActivatedRoute) {
-  }
+  constructor(
+    private companyService: CompanyService,
+    private cognitoService: CognitoService,
+    private route: ActivatedRoute
+  ) {}
 
   cerrarSesion() {
     this.cognitoService.signOut();
-  }
-
-  ngOnInit() {
-    console.log(this.route.snapshot.data['authenticatedUser']);
-    this.companyService.getCompanyById(1).subscribe({
-      next: (data) => {
-        this.empresa = data;
-      },
-      error: (error) => {
-        console.error('Error al obtener datos de la empresa', error);
-      }
-    });
   }
 
   abrirModalDuplicados(): void {

@@ -3,11 +3,19 @@ import { Router } from '@angular/router';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 import { CompanyService, Company } from '../../../services/company.service';
-import { Observable } from 'rxjs';
-import { map, startWith, switchMap, debounceTime } from 'rxjs/operators';
+import { Observable, lastValueFrom, of } from 'rxjs';
+import { map, startWith, debounceTime } from 'rxjs/operators';
+import { Agency, AgencyService } from '../../ingreso-individual/agency.service';
 @Component({
   selector: 'app-modal-consulta-masiva',
   templateUrl: './modal-consulta-masiva.component.html',
@@ -24,33 +32,45 @@ import { map, startWith, switchMap, debounceTime } from 'rxjs/operators';
 })
 export class ModalConsultaMasivaComponent {
   @Output() cerrar = new EventEmitter<void>();
+  modalForm: FormGroup;
 
   empresaControl = new FormControl();
-  empresasFiltradas: Observable<Company[]> | undefined;
+  companies: Observable<Company[]>;
+  agencies: Observable<Agency[]> = of([]);
 
-  constructor(private router: Router, private companyService: CompanyService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly fb: FormBuilder,
+    private readonly companyService: CompanyService,
+    private readonly agencyService: AgencyService
+  ) {
+    this.companies = this.companyService.companies;
 
-  ngOnInit(): void {
-    this.empresasFiltradas = this.empresaControl.valueChanges.pipe(
-      startWith(''),
-      switchMap((value) => this.filterCompanies(value))
-    );
-  }
-  private filterCompanies(value: string): Observable<Company[]> {
-    return this.companyService
-      .getCompanies()
-      .pipe(
-        map((companies) =>
-          companies.filter((company: Company) =>
-            company.razonSocial.toLowerCase().includes(value.toLowerCase())
-          )
-        )
-      );
+    this.modalForm = this.fb.group({
+      company: [undefined, [Validators.required]],
+      agency: [{ value: undefined, disabled: true }, [Validators.required]],
+    });
   }
 
-  seleccionarEmpresa(empresa: Company) {
-    console.log('Empresa seleccionada:', empresa);
+  displayCompanyFn(company: Company) {
+    return company ? company.razonSocial : '';
   }
+
+  displayAgencyFn(agency: Agency) {
+    return agency ? agency.nombre : '';
+  }
+
+  onSelectCompany(company: Company) {
+    this.modalForm.patchValue({ agency: undefined });
+    this.modalForm.get('agency')?.disable();
+
+    lastValueFrom(this.agencyService.getAgenciesByCompanyId(company.id))
+      .then((agencies) => {
+        this.agencies = of(agencies);
+      })
+      .finally(() => this.modalForm.get('agency')?.enable());
+  }
+
   cerrarModal(): void {
     this.cerrar.emit();
   }

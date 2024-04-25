@@ -12,7 +12,7 @@ import { lastValueFrom } from "rxjs";
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
 import { RutFormatterDirective } from "../../core/directives/rut-formatter.directive";
 import { RutPipe } from "../../core/pipes/rut.pipe";
-import { formatDDLTBK, formatMAC, IPV4_PATTERN, MAC_PATTERN, } from '../../utils/utils';
+import { formatDDLTBK, formatMAC, IPV4_PATTERN, MAC_PATTERN, cleanEmptyFields } from '../../utils/utils';
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
 import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
 import { Agency, AgencyService } from './agency.service';
@@ -107,8 +107,7 @@ export class IngresoIndividualComponent implements OnInit {
       uso: [ undefined, [ Validators.required ] ],
       marca: [ undefined, [ Validators.required ] ],
       modelo: [ undefined, [ Validators.required ] ],
-      // mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
-      mac : ["00:1B:44:11:3A:B7"],
+      mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
       ip: [ undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
       nombre: [ undefined, [ Validators.required ] ],
       procesador: [ undefined ],
@@ -286,16 +285,8 @@ export class IngresoIndividualComponent implements OnInit {
 
   onSubmit() {
     if ( this.ingresoIndividualForm.valid ) {
-      const formData = this.ingresoIndividualForm.getRawValue();
-      console.log('Formulario válido', formData);
+      const formData = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
 
-      if ( this.isEquipmentWithNoOptions(this.selectedType) ) {
-        formData.sistemaOperativo = "N/A";
-        formData.sistemaOperativoVersion = "N/A";
-        formData.procesador = "N/A";
-        formData.ramGb = "N/A";
-        formData.disco = "N/A";
-      }
       this.equipmentService.createEquipment(formData).subscribe(
         response => {
           console.log('Equipo creado con éxito', response);

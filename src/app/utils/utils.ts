@@ -50,3 +50,13 @@ export function logFormErrors(form: FormGroup): void {
     }
   });
 }
+
+export function cleanEmptyFields(obj: any) {
+  const parsedData: any = {};
+
+  Object.keys(obj).forEach(element => {
+    const field = obj[element];
+    if (field && field !== '') parsedData[element] = field;
+    else parsedData[element] = undefined;
+  });
+}

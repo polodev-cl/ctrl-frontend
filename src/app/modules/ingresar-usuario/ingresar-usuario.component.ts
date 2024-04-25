@@ -49,12 +49,11 @@ export class IngresarUsuarioComponent {
         options: {
           userAttributes: {
             email: this.email,
-            // Otros atributos aquí...
           },
           autoSignIn: { enabled: true }
         }
       });
-      // Llamar al modal de éxito inmediatamente después de la promesa signUp
+    
       this.abrirModalExito();
     } catch ( error ) {
       console.error('Error en el registro de usuario:', error);

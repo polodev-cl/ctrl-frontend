@@ -6,6 +6,7 @@ import { DividerModule } from "primeng/divider";
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
 import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/modal-historial-equipo.component";
 import { NavbarComponent } from "../shared/navbar/navbar.component";
+import { TablaDpcComponent } from "../tabla-dpc/tabla-dpc.component";
 
 @Component({
   selector: 'app-agencia-dcp',
@@ -19,7 +20,8 @@ import { NavbarComponent } from "../shared/navbar/navbar.component";
     NgForOf,
     RouterLink,
     ButtonModule,
-    NavbarComponent
+    NavbarComponent,
+    TablaDpcComponent
   ]
 })
 export class AgenciaDcpComponent {

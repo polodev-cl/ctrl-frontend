@@ -28,12 +28,9 @@ export function formatMAC(mac: string): string {
 export const validateMAC = (str: string) => MAC_PATTERN.test(str);
 
 
-// Suponiendo que este código se agregará en tu archivo de utilidades
 export function formatDDLTBK(input: string): string {
-  // Primero, elimina cualquier caracter que no sea dígito o guión
   let cleanedInput = input.replace(/[^\d-]/g, '').substring(0, 11); // Limpia y limita la longitud
 
-  // Inserta guiones automáticamente después del tercer y sexto dígito
   let parts = cleanedInput.split('-').join(''); // Elimina guiones existentes para evitar duplicados
   return parts.substring(0, 3) +
     (parts.length > 3 ? '-' : '') + parts.substring(3, 6) +

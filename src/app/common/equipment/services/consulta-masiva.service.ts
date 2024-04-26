@@ -10,7 +10,7 @@ import { Equipamiento } from '../interfaces/equipamiento.interface';
 })
 export class ConsultaMasivaService {
   private apiUrl =
-    'https://4d49-181-226-165-253.ngrok-free.app/api/equipment';
+    'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment';
 
   constructor(private http: HttpClient) {}
 
@@ -37,15 +37,22 @@ export class ConsultaMasivaService {
 
     return this.http.get<Equipamiento[]>(this.apiUrl, { params }).pipe(
       map((data) =>
-        data.map((item) => ({
-          inventario: item.inventario,
-          equipo: item.nombre,
-          dcp: item.agenciaDpc ? item.agenciaDpc.toString() : '-',
-          agencia: item.ageId ? item.ageId.toString() : '-',
-          empresa: 'Nombre de la Empresa',
-          usuario: 'Nombre del Usuario',
-          modelo: item.modelo,
-        }))
+        data.map((item) => {
+          let nombres = undefined;
+
+          if (item.usuarioCreacion?.nombres && item.usuarioCreacion?.apellidos)
+            nombres = item.usuarioCreacion?.nombres + ' ' + item.usuarioCreacion.apellidos;
+
+          return {
+            inventario: item.inventario,
+            equipo: item.nombre,
+            dcp: item.agenciaDpc?.toString() || '-',
+            agencia: item.agencia?.nombre || '-',
+            empresa: item.agencia?.empresa?.nombreCorto || '-',
+            usuario: nombres || '-',
+            modelo: item.modelo,
+          }
+        })
       )
     );
   }

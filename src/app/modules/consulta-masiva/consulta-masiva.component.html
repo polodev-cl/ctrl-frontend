@@ -96,6 +96,7 @@
       <div *ngIf="showTable" class="col-12 col-md-2 mb-3">
         <button
           (click)="tablasComponent.exportToExcel()"
+          [disabled]="filteredContent?.length === 0"
           class="search-button p-2 w-100"
           label="Excel"
           pButton

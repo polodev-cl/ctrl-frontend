@@ -30,4 +30,6 @@ export interface Equipamiento {
   usuarioIdCreacion: string;
   usuarioIdModificacion: string;
   fechaEliminacion?: any;
+  agencia: any;
+  usuarioCreacion: any;
 }

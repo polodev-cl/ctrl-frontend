@@ -1,4 +1,4 @@
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { MatPaginatorIntl } from "@angular/material/paginator";
 import { provideAnimations } from "@angular/platform-browser/animations";
@@ -6,12 +6,13 @@ import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading
 import { AmplifyAuthenticatorModule } from "@aws-amplify/ui-angular";
 
 import { routes } from './app.routes';
+import { authInterceptor } from "./core/config/interceptors/auth.interceptor";
 import { getSpanishPaginatorIntl } from "./modules/tablas-historial-equipo/tablas-historial-equipo.component";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([ authInterceptor ])),
     provideRouter(routes,
       withPreloading(PreloadAllModules),
       withViewTransitions(),

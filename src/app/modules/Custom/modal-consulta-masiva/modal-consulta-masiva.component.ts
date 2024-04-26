@@ -1,25 +1,20 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AsyncPipe, JsonPipe } from '@angular/common';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
-import { CompanyService, Company } from '../../../services/company.service';
-import { Observable, lastValueFrom, of } from 'rxjs';
-import { map, startWith, debounceTime } from 'rxjs/operators';
+import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
+import { lastValueFrom, Observable, of } from 'rxjs';
+import { map } from "rxjs/operators";
+import { Company, CompanyService } from '../../../services/company.service';
+import { filterByValue } from "../../../utils/utils";
 import { Agency, AgencyService } from '../../ingreso-individual/agency.service';
+
 @Component({
   selector: 'app-modal-consulta-masiva',
   templateUrl: './modal-consulta-masiva.component.html',
-  styleUrls: ['./modal-consulta-masiva.component.css'],
+  styleUrls: [ './modal-consulta-masiva.component.css' ],
   standalone: true,
   imports: [
     FormsModule,
@@ -28,15 +23,17 @@ import { Agency, AgencyService } from '../../ingreso-individual/agency.service';
     MatAutocompleteModule,
     ReactiveFormsModule,
     AsyncPipe,
+    JsonPipe,
   ],
 })
 export class ModalConsultaMasivaComponent {
   @Output() cerrar = new EventEmitter<void>();
   modalForm: FormGroup;
 
-  empresaControl = new FormControl();
-  companies: Observable<Company[]>;
+  companies: Observable<Partial<Company>[]>;
+  companiesFiltered: Observable<Partial<Company>[]> = of([]);
   agencies: Observable<Agency[]> = of([]);
+  agenciesFiltered: Observable<Partial<Agency>[]> = of([]);
 
   constructor(
     private readonly router: Router,
@@ -44,16 +41,34 @@ export class ModalConsultaMasivaComponent {
     private readonly companyService: CompanyService,
     private readonly agencyService: AgencyService
   ) {
-    this.companies = this.companyService.companies;
+    this.companies = this.companyService.companiesSelector;
+    this.companiesFiltered = this.companies;
 
     this.modalForm = this.fb.group({
-      company: [undefined, [Validators.required]],
-      agency: [{ value: undefined, disabled: true }, [Validators.required]],
+      company: [ undefined, [ Validators.required ] ],
+      agency: [ { value: undefined, disabled: true }, [ Validators.required ] ],
     });
   }
 
+  filter(field: 'agency' | 'company', target: any) {
+    switch ( field ) {
+      case 'agency': {
+        this.agenciesFiltered = this.agencies.pipe(
+          map((agencies) => filterByValue(agencies, target.value, 'nombre'))
+        );
+        break;
+      }
+      case 'company': {
+        this.companiesFiltered = this.companyService.companiesSelector.pipe(
+          map((companies) => filterByValue<Partial<Company>>(companies, target.value, 'nombreCorto'))
+        );
+        break;
+      }
+    }
+  }
+
   displayCompanyFn(company: Company) {
-    return company ? company.razonSocial : '';
+    return company ? company.nombreCorto : '';
   }
 
   displayAgencyFn(agency: Agency) {
@@ -65,9 +80,8 @@ export class ModalConsultaMasivaComponent {
     this.modalForm.get('agency')?.disable();
 
     lastValueFrom(this.agencyService.getAgenciesByCompanyId(company.id))
-      .then((agencies) => {
-        this.agencies = of(agencies);
-      })
+      .then((agencies) => this.agencies = of(agencies))
+      .then(() => this.agenciesFiltered = this.agencies)
       .finally(() => this.modalForm.get('agency')?.enable());
   }
 
@@ -76,6 +90,11 @@ export class ModalConsultaMasivaComponent {
   }
 
   irAConsultaMasiva() {
-    this.router.navigate(['/consulta-masiva']);
+    const form = this.modalForm.getRawValue();
+    const params = {
+      agencyId: form.agency.id,
+      companyId: form.company.id,
+    }
+    this.router.navigate([ '/consulta-masiva' ], { queryParams: params });
   }
 }

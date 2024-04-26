@@ -99,6 +99,11 @@
           {{ element.modelo }}
         </td>
       </ng-container>
+      <tr *matNoDataRow class="mat-row">
+        <td [attr.colspan]="displayedColumns.length" class="mat-cell text-center fst-italic pt-4">
+          No se han encontrado equipos que coincidan con la búsqueda.
+        </td>
+      </tr>
 
       <!-- Header and Row Declarations -->
       <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>

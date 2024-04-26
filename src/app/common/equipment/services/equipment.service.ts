@@ -7,8 +7,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class EquipmentService {
-  private apiUrl =
-    'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment';
+  private apiUrl = 'https://4d49-181-226-165-253.ngrok-free.app/api/equipment';
 
   constructor(private http: HttpClient) {
   }
@@ -20,7 +19,7 @@ export class EquipmentService {
   }
 
   getEquipmentByDPC(agenciaDpc: number): Observable<any[]> {
-    return this.http.get<any[]>(`${ this.apiUrl }?agenciaDpc=${ agenciaDpc }`).pipe(
+    return this.http.get<any[]>(`${ this.apiUrl }/mini?agenciaDpc=${ agenciaDpc }`).pipe(
       tap(data => console.log('Data from API:', data))
     );
   }

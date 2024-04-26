@@ -1,12 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-export interface Company {
-  id: number;
-  razonSocial: string;
-}
 
 export interface Agency {
   id: number;
@@ -16,20 +11,21 @@ export interface Agency {
   empId: number;
 }
 
-@Injectable({ providedIn: 'root', })
+const BASE_URL = 'https://4d49-181-226-165-253.ngrok-free.app/api/agency';
+
+@Injectable({ providedIn: 'root' })
 export class AgencyService {
-  private companyApiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/company';
-  private agencyApiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/agency';
 
   constructor(private http: HttpClient) {
   }
 
-  getCompanies(): Observable<Company[]> {
-    return this.http.get<Company[]>(`${ this.companyApiUrl }`);
+  getAgenciesSelectorByCompanyId(companyId: number): Observable<Partial<Agency>[]> {
+    const httpParams = new HttpParams().append('empId', companyId);
+    return this.http.get<Partial<Agency>[]>(`${ BASE_URL }/selector`, { params: httpParams });
   }
 
   getAgenciesByCompanyId(companyId: number): Observable<Agency[]> {
-    return this.http.get<Agency[]>(`${ this.agencyApiUrl }`).pipe(
+    return this.http.get<Agency[]>(`${ BASE_URL }`).pipe(
       map(agencies => agencies.filter(agency => agency.empId === companyId))
     );
   }

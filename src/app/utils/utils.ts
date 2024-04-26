@@ -48,7 +48,7 @@ export function logFormErrors(form: FormGroup): void {
   });
 }
 
-export function cleanEmptyFields(obj: any) {
+export function cleanEmptyFields(obj: any): any {
   const parsedData: any = {};
 
   Object.keys(obj).forEach(element => {
@@ -56,4 +56,19 @@ export function cleanEmptyFields(obj: any) {
     if (field && field !== '') parsedData[element] = field;
     else parsedData[element] = undefined;
   });
+
+  return parsedData;
+}
+
+export function cleanIfNotValid(form: FormGroup, field: string) {
+  const fieldValue = form.get(field)?.value;
+
+  if (typeof fieldValue === 'string') {
+    form.patchValue({ [field]: undefined });
+  }
+}
+
+export function filterByValue<T>(array: T[], value: string, field: keyof T) {
+  // @ts-ignore
+  return array.filter((item) => item[field].toString().toLowerCase().includes(value.toLowerCase()));
 }

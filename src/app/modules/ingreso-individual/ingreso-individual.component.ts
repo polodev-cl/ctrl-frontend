@@ -1,23 +1,27 @@
-import { JsonPipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteTrigger } from "@angular/material/autocomplete";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatInput } from "@angular/material/input";
 import { MatOption, MatSelect } from "@angular/material/select";
 import { RouterLink } from "@angular/router";
 import { CalendarModule } from "primeng/calendar";
 import { DividerModule } from "primeng/divider";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
-import { lastValueFrom } from "rxjs";
+import { lastValueFrom, Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
 import { RutFormatterDirective } from "../../core/directives/rut-formatter.directive";
 import { RutPipe } from "../../core/pipes/rut.pipe";
-import { formatDDLTBK, formatMAC, IPV4_PATTERN, MAC_PATTERN, cleanEmptyFields } from '../../utils/utils';
+import { Company, CompanyService } from "../../services/company.service";
+import { cleanEmptyFields, cleanIfNotValid, filterByValue, formatDDLTBK, formatMAC, IPV4_PATTERN, MAC_PATTERN } from '../../utils/utils';
 import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
 import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 import { Agency, AgencyService } from './agency.service';
 import { SoService, SOVersion } from './so.service';
-import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 interface Option {
   value: string | number;
@@ -49,7 +53,11 @@ interface Option {
     MatLabel,
     JsonPipe,
     RutPipe,
-    NavbarComponent
+    NavbarComponent,
+    AsyncPipe,
+    MatAutocomplete,
+    MatAutocompleteTrigger,
+    MatInput
   ]
 })
 export class IngresoIndividualComponent implements OnInit {
@@ -72,13 +80,12 @@ export class IngresoIndividualComponent implements OnInit {
     { value: 'TBK', label: 'TBK' },
   ];
 
-  selectorEmpresas: Option[] = [];
-  selectorAgencies: Agency[] = [];
-  selectorDpcOptions: Option[] = [];
-  selectorNemonicoOptions: Option[] = [];
+  selectorCompany: Observable<Partial<Company>[]> = of([]);
+  selectorCompanyFiltered: Observable<Partial<Company>[]> = of([]);
+  selectorAgency: Observable<Partial<Agency>[]> = of([]);
+  selectorAgencyFiltered: Observable<Partial<Agency>[]> = of([]);
   selectorSistemasOperativos: SOVersion[] = [];
-  selectorVersionesFiltradas: string[] = [];
-  
+  selectorSistemasOperativosFiltered: SOVersion[] = [];
 
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
@@ -86,98 +93,68 @@ export class IngresoIndividualComponent implements OnInit {
   mostrarModalResumenIngresoIndividual: boolean = false;
   datosParaModal: any = {};
   ingresoIndividualForm: FormGroup;
+  protected readonly cleanIfNotValid = cleanIfNotValid;
 
   constructor(
     private soService: SoService,
     private agencyService: AgencyService,
+    private companyService: CompanyService,
     private equipmentService: EquipmentService,
     private fb: FormBuilder,
   ) {
-    this.ingresoIndividualForm = this.fb.group({
-      fechaIngreso: [ undefined, [ Validators.required ] ],
-      ordenCompra: [ undefined, [ Validators.required ] ],
-      rut: [ undefined ],
-      agenciaId: [ { value: undefined, disabled: true } ],
-      agenciaMnemonic: [ { value: undefined, disabled: true } ],
-      agenciaDpc: [ { value: undefined, disabled: true } ],
-      inventario: [ undefined, [ Validators.min(0) ] ],
-      tipo: [ undefined, [ Validators.required ] ],
-      sistemaOperativo: [ undefined ],
-      sistemaOperativoVersion: [ undefined ],
-      uso: [ undefined, [ Validators.required ] ],
-      marca: [ undefined, [ Validators.required ] ],
-      modelo: [ undefined, [ Validators.required ] ],
-      mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
-      ip: [ undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
-      nombre: [ undefined, [ Validators.required ] ],
-      procesador: [ undefined ],
-      ramGb: [ undefined, [ Validators.min(1) ] ],
-      disco: [ undefined ],
-      ddllTbk: [ { value: undefined, disabled: true } ],
-      serie: [ undefined ],
-      encargadoAgencia: [ undefined, [ Validators.required ] ],
-      ubicacion: [ undefined, [ Validators.required ] ],
-      garantiaMeses: [ undefined, [ Validators.required, Validators.min(1) ] ],
-      estado: [1],
-    });
+    this.ingresoIndividualForm = this._loadForm();
+    this.selectorCompany = this.companyService.companiesSelector;
   }
 
   ngOnInit() {
-    this.loadEmpresas();
-    console.log(this.ingresoIndividualForm.get('agenciaDpc')?.value)
-    this.ingresoIndividualForm.get('agenciaDpc')?.valueChanges.subscribe(console.log);
-    // this.loadSOData();
+    this.selectorAgencyFiltered = this.selectorAgency;
+  }
+
+  filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
+    switch ( field ) {
+      case 'agency': {
+        this.selectorAgencyFiltered = this.selectorAgency.pipe(
+          map((agencies) => filterByValue(agencies, target.value, 'nombre'))
+        );
+        break;
+      }
+      case 'company': {
+        this.selectorCompanyFiltered = this.companyService.companiesSelector.pipe(
+          map((companies) => filterByValue(companies, target.value, 'razonSocial'))
+        );
+        break;
+      }
+      case 'sistemaOperativo': {
+        this.selectorSistemasOperativosFiltered = filterByValue(this.selectorSistemasOperativos, target.value, 'so');
+        break;
+      }
+    }
   }
 
   isEquipmentWithNoOptions(type: string): boolean {
-    return [
-      'Impresora',
-      'Anexos',
-      'Escaner',
-      'LBM',
-      'Monitor',
-      'Pistola',
-      'Print Server',
-      'TBK',
-    ].includes(type);
+    return [ 'Impresora', 'Anexos', 'Escaner', 'LBM', 'Monitor', 'Pistola', 'Print Server', 'TBK', ].includes(type);
   }
-
-  loadEmpresas = () =>
-    lastValueFrom(this.agencyService.getCompanies())
-      .then((companies) => {
-        this.selectorEmpresas = companies.map((company) => ({
-          value: company.id,
-          label: company.razonSocial,
-        }));
-        console.log('Empresas', this.selectorEmpresas)
-      }).catch(console.error);
 
   onEmpresaChange(value: any): void {
-    if ( value )
-      lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value)).then((agencies) => {
-        console.log('Agencias', agencies)
-        this.selectorAgencies = agencies;
-        this.selectorDpcOptions = [];
-        this.selectorNemonicoOptions = [];
-        this.ingresoIndividualForm.patchValue({
-          agenciaId: undefined,
-          agenciaDpc: undefined,
-          agenciaMnemonic: undefined,
-        });
-        this.ingresoIndividualForm.get('agenciaId')?.enable();
-      }).catch(console.error);
+    this.ingresoIndividualForm.patchValue({
+      agenciaId: undefined,
+      agenciaDpc: undefined,
+      agenciaMnemonic: undefined,
+    });
+
+    if (value)
+      lastValueFrom(this.agencyService.getAgenciesSelectorByCompanyId(+value))
+        .then((agencies) => this.selectorAgency = of(agencies))
+        .then(() => this.selectorAgencyFiltered = this.selectorAgency)
+        .then(() => this.ingresoIndividualForm.get('agenciaId')?.enable())
+        .catch(console.error);
   }
 
-  onAgencyChange(): void {
-    const agencyId = this.ingresoIndividualForm.get('agenciaId')?.value;
-
-    if ( agencyId ) {
-      const agency = this.selectorAgencies.find((agency) => agency.id === agencyId);
-      this.ingresoIndividualForm.patchValue({
-        agenciaDpc: agency?.dpc,
-        agenciaMnemonic: agency?.nemonico,
-      })
-    }
+  onAgencyChange(agency: Agency): void {
+    this.ingresoIndividualForm.patchValue({
+      agenciaDpc: agency?.dpc,
+      agenciaMnemonic: agency?.nemonico,
+    })
   }
 
   onDDLTBKInput(): void { // TODO: usar valueChanges
@@ -188,7 +165,7 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   onTypeChange(value: string): void {
-    if ( this.isEquipmentWithNoOptions(value) ) {
+    if (this.isEquipmentWithNoOptions(value)) {
       this.ingresoIndividualForm.patchValue({
         // sistemaOperativo: { value: undefined, disabled: true },
         sistemaOperativo: undefined,
@@ -205,7 +182,7 @@ export class IngresoIndividualComponent implements OnInit {
       this.ingresoIndividualForm.get('disco')?.disable();
       this.ingresoIndividualForm.get('ddllTbk')?.disable();
 
-      if ( value === 'TBK' ) {
+      if (value === 'TBK') {
         this.ingresoIndividualForm.patchValue({
           ddllTbk: undefined,
         });
@@ -236,6 +213,7 @@ export class IngresoIndividualComponent implements OnInit {
   loadSOData = () =>
     lastValueFrom(this.soService.getSODataByType(this.ingresoIndividualForm.get('tipo')?.value)).then((soOptions) => {
       this.selectorSistemasOperativos = soOptions;
+      this.selectorSistemasOperativosFiltered = soOptions;
       this.ingresoIndividualForm.patchValue({
         sistemaOperativoVersion: undefined,
         procesador: undefined,
@@ -244,18 +222,9 @@ export class IngresoIndividualComponent implements OnInit {
       });
     })
 
-  onSOChange(value: string): void {
-    const soSeleccionado = this.selectorSistemasOperativos.find(
-      (so) => so.so === value
-    );
-
-    this.selectorVersionesFiltradas = soSeleccionado ? soSeleccionado.versiones : [];
-    this.ingresoIndividualForm.patchValue({ sistemaOperativoVersion: undefined });
-  }
-
   limitAndValidateIP(): void {
     const value = this.ingresoIndividualForm.get('ip')?.value;
-    if ( value && value.length > 39 )
+    if (value && value.length > 39)
       this.ingresoIndividualForm.patchValue({ ip: value.substring(0, 39) });
   }
 
@@ -275,6 +244,7 @@ export class IngresoIndividualComponent implements OnInit {
     this.datosParaModal = this.ingresoIndividualForm.getRawValue(); // Preparar los datos para el modal
     this.mostrarModalResumenIngresoIndividual = true;
   }
+
   cerrarModalResumenIngresoIndividual(): void {
     this.mostrarModalResumenIngresoIndividual = false;
   }
@@ -284,7 +254,7 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   onSubmit() {
-    if ( this.ingresoIndividualForm.valid ) {
+    if (this.ingresoIndividualForm.valid) {
       const formData = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
 
       this.equipmentService.createEquipment(formData).subscribe(
@@ -296,5 +266,38 @@ export class IngresoIndividualComponent implements OnInit {
         }
       );
     }
+  }
+
+  displayFnAgency = (agency: Agency) => agency ? agency.nombre : '';
+
+  displayFnCompany = (company: Company) => company ? company.razonSocial : '';
+
+  private _loadForm() {
+    return this.fb.group({
+      fechaIngreso: [ undefined, [ Validators.required ] ],
+      ordenCompra: [ undefined, [ Validators.required ] ],
+      rut: [ undefined ],
+      agenciaId: [ { value: undefined, disabled: true } ],
+      agenciaMnemonic: [ { value: undefined, disabled: true } ],
+      agenciaDpc: [ { value: undefined, disabled: true } ],
+      inventario: [ undefined, [ Validators.min(0) ] ],
+      tipo: [ undefined, [ Validators.required ] ],
+      sistemaOperativo: [ undefined ],
+      uso: [ undefined, [ Validators.required ] ],
+      marca: [ undefined, [ Validators.required ] ],
+      modelo: [ undefined, [ Validators.required ] ],
+      mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
+      ip: [ undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
+      nombre: [ undefined, [ Validators.required ] ],
+      procesador: [ undefined ],
+      ramGb: [ undefined, [ Validators.min(1) ] ],
+      disco: [ undefined ],
+      ddllTbk: [ { value: undefined, disabled: true } ],
+      serie: [ undefined ],
+      encargadoAgencia: [ undefined, [ Validators.required ] ],
+      ubicacion: [ undefined, [ Validators.required ] ],
+      garantiaMeses: [ undefined, [ Validators.required, Validators.min(1) ] ],
+      estado: [ 1 ],
+    });
   }
 }

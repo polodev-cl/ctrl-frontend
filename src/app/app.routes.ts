@@ -1,9 +1,9 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { AuthGuard } from "./common/auth/guards/auth.guard";
 import { NoAuthGuard } from "./common/auth/guards/no-auth.guard";
 import { appResolver } from "./common/auth/resolvers/auth.resolver";
 import { CompanyService } from './services/company.service';
-import { inject } from '@angular/core';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -28,7 +28,7 @@ export const routes: Routes = [
     canActivateChild: [ AuthGuard ],
     resolve: {
       authenticatedUser: appResolver,
-      companies: () => inject(CompanyService).getCompanies()
+      companies: () => inject(CompanyService).getCompaniesSelector()
     },
     children: [
       { path: 'home', loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent) },

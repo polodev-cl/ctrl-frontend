@@ -1,27 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  ViewChild,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild, } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef,
-  MatHeaderRow,
-  MatHeaderRowDef,
-  MatRow,
-  MatRowDef,
-  MatTable,
-  MatTableDataSource,
-} from '@angular/material/table';
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef, MatTable, MatTableDataSource, } from '@angular/material/table';
 import * as XLSX from 'xlsx';
-import { ConsultaMasivaService } from '../../../common/equipment/services/consulta-masiva.service';
 
 interface Consulta {
   inventario: number;
@@ -36,7 +16,7 @@ interface Consulta {
 @Component({
   selector: 'app-tablas',
   templateUrl: './tablas.component.html',
-  styleUrls: ['./tablas.component.css'],
+  styleUrls: [ './tablas.component.css' ],
   standalone: true,
   imports: [
     MatTable,
@@ -50,6 +30,7 @@ interface Consulta {
     MatRow,
     MatRowDef,
     MatPaginator,
+    MatNoDataRow
   ],
 })
 export class TablasComponent implements OnChanges, AfterViewInit {
@@ -94,9 +75,12 @@ export class TablasComponent implements OnChanges, AfterViewInit {
     { header: 'Fechas', wch: 10 },
   ];
 
-  constructor(private consultaMasivaService: ConsultaMasivaService) {}
+  constructor() {
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.data = this.data;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -126,18 +110,18 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   exportToExcel() {
     // Usar dataSource.data para obtener los datos actuales mostrados en la tabla
     const data = this.dataSource.data;
-  
+
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
-    XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
+    XLSX.utils.sheet_add_aoa(ws, [ this.columns.map((col) => col.header) ], {
       origin: 'A1',
     });
-  
+
     // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
     XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
-  
+
     // Configurar las anchuras de las columnas basadas en la configuración privada de 'columns'
     ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
-  
+
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
     XLSX.writeFile(wb, 'ReporteFiltrado.xlsx');

@@ -10,29 +10,26 @@ import { Equipamiento } from '../interfaces/equipamiento.interface';
 })
 export class ConsultaMasivaService {
   private apiUrl =
-    'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment';
+    'https://4d49-181-226-165-253.ngrok-free.app/api/equipment';
 
   constructor(private http: HttpClient) {}
 
   obtenerEquipamientoFiltrado(
+    companyId: number,
+    agencyId: number,
     tipo: string,
     sistemaOperativo: string,
-    sistemaOperativoVersion: string,
     uso: string
   ): Observable<Consulta[]> {
     let params = new HttpParams();
+
+    params = params.append('companyId', companyId).append('agencyId', agencyId);
 
     if (tipo) {
       params = params.append('tipo', tipo);
     }
     if (sistemaOperativo && sistemaOperativo !== 'N/A') {
       params = params.append('sistemaOperativo', sistemaOperativo);
-    }
-    if (sistemaOperativoVersion && sistemaOperativoVersion !== 'N/A') {
-      params = params.append(
-        'sistemaOperativoVersion',
-        sistemaOperativoVersion
-      );
     }
     if (uso) {
       params = params.append('uso', uso);

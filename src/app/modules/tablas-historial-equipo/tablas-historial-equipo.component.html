@@ -1,16 +1,14 @@
 <div class="example-table-container">
   <table [dataSource]="activaDataSource" class="example-table" mat-table>
-    <!-- Cabecera de la Fecha -->
-    <!-- ... -->
+
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef> Fecha</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ row.fecha }}
       </mat-cell>
     </ng-container>
-    <!-- ... -->
 
-    <!-- En tu archivo componente.html -->
+
     <ng-container matColumnDef="razonUsuario">
       <mat-header-cell *matHeaderCellDef> Razón/Usuario</mat-header-cell>
       <mat-cell

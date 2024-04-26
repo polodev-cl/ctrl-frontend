@@ -9,7 +9,6 @@ export interface EquipmentType {
 
 export interface SOVersion {
   so: string;
-  versiones: string[];
 }
 
 @Injectable({
@@ -21,8 +20,15 @@ export class SoService {
     {
       type: 'PC',
       soOptions: [
-        { so: 'Windows', versiones: [ 'Windows 10', 'Windows 11' ] },
-        { so: 'Linux', versiones: [ 'Ubuntu 20.04', 'Fedora 34' ] },
+        { so: 'Windows 10' },
+        { so: 'Windows 10 Pro' },
+        { so: 'Windows 11' },
+        { so: 'Fedora 24' },
+        { so: 'Fedora 14' },
+        { so: 'Windows 8.1' },
+        { so: 'Windows 7' },
+        { so: 'Windows Server 2019' },
+        { so: 'macOS 14.0' }
       ]
     },
     {
@@ -48,9 +54,15 @@ export class SoService {
     {
       type: 'Notebook',
       soOptions: [
-        { so: 'Windows', versiones: [ 'Windows 10', 'Windows 11' ] },
-        { so: 'MacOS', versiones: [ 'Mojave', 'Catalina', 'Big Sur' ] },
-        { so: 'Linux', versiones: [ 'Ubuntu 20.04', 'Fedora 34' ] }
+        { so: 'Windows 10' },
+        { so: 'Windows 10 Pro' },
+        { so: 'Windows 11' },
+        { so: 'Fedora 24' },
+        { so: 'Fedora 14' },
+        { so: 'Windows 8.1' },
+        { so: 'Windows 7' },
+        { so: 'Windows Server 2019' },
+        { so: 'macOS 14.0' }
       ]
     },
     {
@@ -59,9 +71,7 @@ export class SoService {
     },
     {
       type: 'Print Server',
-      soOptions: [
-        { so: 'Linux', versiones: [ 'Ubuntu Server 20.04', 'Debian Server 10' ] }
-      ]
+      soOptions: []
     },
     {
       type: 'TBK',

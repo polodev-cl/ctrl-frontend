@@ -62,23 +62,6 @@
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <select
           class="form-select py-3 color-select"
-          [(ngModel)]="selectedVersion"
-        >
-          <option disabled selected value="">Versión</option>
-          <option
-            *ngIf="!getVersions() || getVersions().length === 0"
-            [value]="'N/A'"
-          >
-            N/A
-          </option>
-          <ng-container *ngFor="let version of getVersions()">
-            <option [value]="version">{{ version }}</option>
-          </ng-container>
-        </select>
-      </div>
-      <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <select
-          class="form-select py-3 color-select"
           [(ngModel)]="selectedUsage"
         >
           <option disabled selected value="">Uso</option>
@@ -99,7 +82,7 @@
   </div>
   <div class="container-fluid tabla my-2 px-0">
     <hr *ngIf="!showTable" />
-    <app-tablas *ngIf="showTable" [data]="equipamientoFiltrado"></app-tablas>
+    <app-tablas *ngIf="showTable" [data]="filteredContent"></app-tablas>
     <div class="row my-4 d-flex justify-content-between">
       <div class="col-12 col-md-2 mb-3">
         <button

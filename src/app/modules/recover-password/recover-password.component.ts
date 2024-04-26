@@ -1,5 +1,5 @@
 import { NgIf } from "@angular/common";
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from "primeng/button";
@@ -26,8 +26,8 @@ import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.com
     ModalExitosoComponent
   ]
 })
-export class RecoverPasswordComponent implements OnInit {
-  email: string = '';
+export class RecoverPasswordComponent {
+  email: string;
   verificationCode: string = '';
   newPassword: string = '';
   confirmPassword: string = '';
@@ -41,27 +41,25 @@ export class RecoverPasswordComponent implements OnInit {
     private emailStateService: EmailStateService,
     private router: Router
   ) {
-  }
-
-  ngOnInit(): void {
-    this.email = this.emailStateService.getEmail();
-    if ( !this.email ) {
+    const tempEmail = this.emailStateService.email;
+    if (!tempEmail) {
       console.warn('No email provided via EmailStateService.');
       this.router.navigate([ '/' ]);
     }
+    this.email = tempEmail!;
   }
 
   async changePassword(): Promise<void> {
     console.log('Attempting to change password...');
-    if ( !this.newPassword || !this.confirmPassword || !this.verificationCode ) {
+    if (!this.newPassword || !this.confirmPassword || !this.verificationCode) {
       this.error = 'All fields are required.';
       return;
     }
-    if ( this.newPassword.length < 8 ) {
+    if (this.newPassword.length < 8) {
       this.error = 'Password must be at least 8 characters long.';
       return;
     }
-    if ( this.newPassword !== this.confirmPassword ) {
+    if (this.newPassword !== this.confirmPassword) {
       this.error = 'Passwords do not match.';
       return;
     }
@@ -71,6 +69,7 @@ export class RecoverPasswordComponent implements OnInit {
       await this.cognitoService.confirmResetPassword(this.email, this.verificationCode, this.newPassword);
       this.abrirModalExitoso();
       this.error = ''; // Clear any previous errors
+      this.emailStateService.clearEmail();
     } catch ( error ) {
       console.error('Error during password confirmation:', error);
       this.error = 'Failed to change password: ' + (error instanceof Error ? error.message : 'unknown error');

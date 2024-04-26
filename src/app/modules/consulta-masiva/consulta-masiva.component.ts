@@ -1,9 +1,11 @@
-import { NgForOf, NgIf } from "@angular/common";
+import { AsyncPipe, JsonPipe, NgForOf, NgIf } from "@angular/common";
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
+import { lastValueFrom } from "rxjs";
+import { Consulta } from "../../common/equipment/interfaces/consulta-equipment.interface";
 import { ConsultaMasivaService } from '../../common/equipment/services/consulta-masiva.service';
 import { FiltrosMasivaService } from '../../services/filtros-masiva.service';
 import { TablasComponent } from '../Custom/tablas/tablas.component';
@@ -33,30 +35,44 @@ interface OperatingSystem {
     ButtonModule,
     TablasComponent,
     FormsModule,
-    NavbarComponent
+    NavbarComponent,
+    AsyncPipe,
+    JsonPipe
   ]
 })
 export class ConsultaMasivaComponent implements OnInit {
   @ViewChild(TablasComponent, { static: false }) tablasComponent!: TablasComponent;
 
-
+  filteredContent: Consulta[] = [];
 
   breadcrumbs = [
     { text: 'Home', link: '/home' },
     { text: 'Consulta masiva', link: '/consulta-masiva' }
   ];
 
+  agencyId: number;
+  companyId: number;
   showTable = false;
   equipmentTypes: EquipmentType[] = [];
   systems: OperatingSystem[] = [];
   usages: string[] = [];
   selectedMachineType: string = '';
   selectedSystem: string = '';
-  selectedVersion: string = '';
   selectedUsage: string = '';
 
+  constructor(
+    private filtrosService: FiltrosMasivaService,
+    private consultaMasivaService: ConsultaMasivaService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    const queryParams: { companyId: number, agencyId: number } = this.route.snapshot.queryParams as { companyId: number, agencyId: number };
 
-  constructor(private filtrosService: FiltrosMasivaService, private consultaMasivaService: ConsultaMasivaService) {
+    if (!queryParams.agencyId || !queryParams.companyId)
+      this.router.navigate([ '/home' ])
+
+    this.agencyId = +queryParams.agencyId;
+    this.companyId = +queryParams.agencyId;
   }
 
   ngOnInit(): void {
@@ -73,7 +89,7 @@ export class ConsultaMasivaComponent implements OnInit {
   }
 
   getVersions(): string[] {
-    if ( !this.systems || !this.selectedSystem ) {
+    if (!this.systems || !this.selectedSystem) {
       return [];
     }
     const selectedSystem = this.systems.find(system => system.name === this.selectedSystem);
@@ -82,42 +98,24 @@ export class ConsultaMasivaComponent implements OnInit {
 
   onEquipmentTypeChange() {
     const selectedEquipment = this.equipmentTypes.find(equipment => equipment.name === this.selectedMachineType);
-    if ( selectedEquipment && selectedEquipment.operatingSystems.length > 0 ) {
+    if (selectedEquipment && selectedEquipment.operatingSystems.length > 0) {
       this.systems = selectedEquipment.operatingSystems;
       this.selectedSystem = selectedEquipment.operatingSystems[0]?.name;
-      this.selectedVersion = this.getVersions()[0] || 'N/A';
     } else {
       this.systems = [];
-      this.selectedSystem = this.selectedVersion = 'N/A';
     }
   }
 
-  onSearch() {
-    this.consultaMasivaService.obtenerEquipamientoFiltrado(
+  async onSearch() {
+    this.showTable = false;
+    lastValueFrom(this.consultaMasivaService.obtenerEquipamientoFiltrado(
+      this.companyId,
+      this.agencyId,
       this.selectedMachineType,
       this.selectedSystem,
-      this.selectedVersion,
       this.selectedUsage
-    ).subscribe({
-      next: (equipamiento) => {
-        console.log('Equipamiento filtrado recibido del servicio:', equipamiento);
-        this.showTable = true;
-        setTimeout(() => {
-          if (this.tablasComponent) {
-            this.tablasComponent.cargarDatos(equipamiento);
-          } else {
-            console.error('TablasComponent no está disponible.');
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error al obtener el equipamiento filtrado:', error);
-        this.showTable = false;
-      }
-    });
+    )).then(data => this.filteredContent = data)
+      .then(() => this.showTable = true)
+      .catch(() => this.showTable = false);
   }
-  
-
-
-
 }

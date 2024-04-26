@@ -28,10 +28,10 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             @for (crumb of breadcrumbs; track crumb.text) {
-            <li class="breadcrumb-item" [class.active]="$last">
-              <a *ngIf="!$last" [routerLink]="crumb.link">{{ crumb.text }}</a>
-              <span *ngIf="$last">{{ crumb.text }}</span>
-            </li>
+              <li class="breadcrumb-item" [class.active]="$last">
+                <a *ngIf="!$last" [routerLink]="crumb.link">{{ crumb.text }}</a>
+                <span *ngIf="$last">{{ crumb.text }}</span>
+              </li>
             }
           </ol>
         </nav>
@@ -77,8 +77,8 @@
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Empresa</mat-label>
           <mat-select (selectionChange)="onEmpresaChange($event.value)">
-            @for (empresa of selectorEmpresas; track empresa.value) {
-            <mat-option [value]="empresa.value">{{ empresa.label }}</mat-option>
+            @for (empresa of selectorCompany | async; track empresa.id) {
+              <mat-option [value]="empresa.id">{{ empresa.nombreCorto }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -86,14 +86,24 @@
       <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Agencia</mat-label>
-          <mat-select
-            (selectionChange)="onAgencyChange()"
-            formControlName="agenciaId"
-          >
-            @for (agency of selectorAgencies; track agency.id) {
-            <mat-option [value]="agency.id">{{ agency.nombre }}</mat-option>
+          <input (blur)="cleanIfNotValid(ingresoIndividualForm,'agency')"
+                 (focus)="filter('agency', $event.target)"
+                 (input)="filter('agency', $event.target)"
+                 [matAutocomplete]="auto2" aria-label="Agencias"
+                 formControlName="agenciaId"
+                 matInput
+                 placeholder="Selecciona una agencia">
+          <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="onAgencyChange($event.option.value)"
+                            [displayWith]="displayFnAgency" requireSelection="true">
+            @for (agency of selectorAgencyFiltered | async; track agency.id) {
+              <mat-option [value]="agency">
+                {{ agency.nombre }}
+              </mat-option>
             }
-          </mat-select>
+            @if ((selectorAgency | async)?.length === 0) {
+              <mat-option disabled>No hay agencias disponibles</mat-option>
+            }
+          </mat-autocomplete>
         </mat-form-field>
       </div>
 
@@ -143,7 +153,7 @@
             formControlName="tipo"
           >
             @for (type of equipmentTypes; track type.value) {
-            <mat-option [value]="type.value">{{ type.label }}</mat-option>
+              <mat-option [value]="type.value">{{ type.label }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -152,25 +162,22 @@
       <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Sistema Operativo</mat-label>
-          <mat-select
-            (selectionChange)="onSOChange($event.value)"
-            formControlName="sistemaOperativo"
-          >
-            @for (so of selectorSistemasOperativos; track so.so) {
-            <mat-option [value]="so.so">{{ so.so }}</mat-option>
+          <input (focus)="filter('sistemaOperativo', $event.target)"
+                 (input)="filter('sistemaOperativo', $event.target)"
+                 [matAutocomplete]="autoSO"
+                 aria-label="Agencias" formControlName="sistemaOperativo"
+                 matInput
+                 placeholder="Selecciona una agencia">
+          <mat-autocomplete #autoSO="matAutocomplete" requireSelection="true">
+            @for (so of selectorSistemasOperativosFiltered; track so.so) {
+              <mat-option [value]="so.so">
+                {{ so.so }}
+              </mat-option>
             }
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="grid-item my-3">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Modelo</mat-label>
-          <mat-select formControlName="sistemaOperativoVersion">
-            @for (version of selectorVersionesFiltradas; track version) {
-            <mat-option [value]="version">{{ version }}</mat-option>
+            @if (selectorSistemasOperativosFiltered.length === 0) {
+              <mat-option disabled>No hay sistemas operativos disponibles</mat-option>
             }
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
       <div class="grid-item my-3">
@@ -387,7 +394,7 @@
 
   <div class="row">
     <div class="col">
-      <hr />
+      <hr/>
     </div>
   </div>
 

@@ -46,7 +46,7 @@ export class ForgotPasswordComponent {
 
     try {
       await this.cognitoService.resetPassword(this.email);
-      this.emailStateService.setEmail(this.email);
+      this.emailStateService.email = this.email;
       this.obscuredEmail = this.obscureEmail(this.email);
       this.showModal();
       this.errorMessage = '';

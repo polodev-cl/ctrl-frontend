@@ -1,5 +1,4 @@
 <div class="custom-modal">
-
   <div class="custom-modal-content rounded-3 text-center">
     <!-- <button class="close  " (click)="cerrarModal()">&times;</button> -->
     <h4 class="my-2">Consulta Masiva</h4>
@@ -10,16 +9,21 @@
                placeholder="Selecciona una empresa"
                aria-label="Empresa"
                [matAutocomplete]="auto"
+               (focus)="filter('company', $event.target)"
+               (input)="filter('company', $event.target)"
                formControlName="company">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectCompany($event.option.value)" [displayWith]="displayCompanyFn">
-          @for (company of companies | async; track company.id) {
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectCompany($event.option.value)"
+                          [displayWith]="displayCompanyFn" requireSelection="true">
+          @for (company of companiesFiltered | async; track company.id) {
             <mat-option [value]="company">
-              {{ company.razonSocial }}
+              {{ company.nombreCorto }}
             </mat-option>
+          }
+          @if ((companies | async)?.length === 0 || (companiesFiltered | async)?.length === 0) {
+            <mat-option disabled>No hay empresas disponibles</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
-
 
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Agencia</mat-label>
@@ -27,19 +31,23 @@
                placeholder="Selecciona una agencia"
                aria-label="Agencias"
                [matAutocomplete]="auto2"
+               (focus)="filter('agency', $event.target)"
+               (input)="filter('agency', $event.target)"
                formControlName="agency">
-        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayAgencyFn">
-          @for (agency of agencies | async; track agency.id) {
-            <mat-option [value]="agency">
-              {{ agency.nombre }}
-            </mat-option>
+        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayAgencyFn" requireSelection="true">
+          @for (agency of agenciesFiltered | async; track agency.id) {
+            <mat-option [value]="agency">{{ agency.nombre }}</mat-option>
+          }
+          @if ((agencies | async)?.length === 0 || (agenciesFiltered | async)?.length === 0) {
+            <mat-option disabled>No hay agencias disponibles</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
     </form>
     <div class="button-group d-flex justify-content-between mt-5 mb-3">
       <button (click)="cerrarModal()" class="btn btn-outline mt-5">Volver</button>
-      <button (click)="irAConsultaMasiva()" class="btn btn-primary mt-5">Continuar</button>
+      <button (click)="irAConsultaMasiva()" [disabled]="!modalForm.valid" class="btn btn-primary mt-5">Continuar
+      </button>
     </div>
   </div>
 </div>

@@ -14,7 +14,7 @@ export interface Usuario {
 
 @Injectable({ providedIn: 'root' })
 export class EditarUsuarioService {
-  private apiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/user';
+  private apiUrl = 'https://4d49-181-226-165-253.ngrok-free.app/api/user';
 
   constructor(private http: HttpClient) {
   }

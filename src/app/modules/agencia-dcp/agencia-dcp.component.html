@@ -44,8 +44,22 @@
 
     <div class="row mt-4 mb-3">
       <div class="col mb-4">
-        <app-tabla-dpc [equipments]="equipments"></app-tabla-dpc>
+        <app-tabla-dpc #tablaDpcComponent [equipments]="equipments"></app-tabla-dpc>
+        <div class="row my-4 d-flex justify-content-between">
+        
+          <div class="col-12 mb-3">
+            <button
+            (click)="tablaDpcComponent.exportToExcel()"
+              class="search-button p-2 w-100"
+              label="Excel"
+              pButton
+              type="button"
+            ></button>
+          </div>
+        </div>
+
       </div>
+     
     </div>
   </div>
 </div>

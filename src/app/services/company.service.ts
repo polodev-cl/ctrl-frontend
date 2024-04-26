@@ -8,7 +8,7 @@ export interface Company {
   nombreCorto: string;
 }
 
-const BASE_URL = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/company';
+const BASE_URL = 'https://856c-181-226-165-253.ngrok-free.app/api/company';
 
 @Injectable({
   providedIn: 'root',

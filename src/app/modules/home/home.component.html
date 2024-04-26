@@ -187,6 +187,42 @@
           </div>
         </div>
       </div>
+      <div class="col-md-6 mb-3">
+        <div class="card border rounded card-shadow-box">
+          <div class="card-header px-5 py-1 header-individual">
+            Mantenedores
+          </div>
+          <div class="card-body p-md-4 p-3">
+            <div class="row mt-1">
+              <div class="col">
+                <div class="d-flex flex-column h-100">
+                  <div class="mb-auto">
+                    <p class="m-auto text-center my-5">
+                      Contenido de la Consulta Individual
+                    </p>
+                  </div>
+                  <div class="d-flex gap-2 justify-content-between align-items-center">
+                    <button
+                      class="consultar-button w-75 py-2"
+                      label="Empresa"
+                      pButton
+                      routerLink="/empresa"
+                      type="button"
+                    ></button>
+                    <button
+                      class="consultar-button w-75 py-2"
+                      label="Agencia"
+                      pButton
+                      routerLink="/consulta-individual"
+                      type="button"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div *ngIf="empresa" class="row">
         <div class="col-md-12"></div>
       </div>

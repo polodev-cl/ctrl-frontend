@@ -153,3 +153,12 @@ input[type=number] {
   color: #222;
   font-family: 'Roboto';
 }
+
+
+.search-button {
+  border: none;
+  border-radius: 100px;
+  background-color: #34AA4E;
+  color: white;
+  font-family: 'Roboto';
+}

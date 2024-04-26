@@ -1,5 +1,5 @@
 import { NgForOf, NgIf } from "@angular/common";
-import { Component } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
@@ -34,6 +34,7 @@ export class AgenciaDcpComponent {
   agenciaDpc: number | null = null;
   mostrarModalHistorialEquipo: boolean = false;
 
+
   constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {
   }
 
@@ -59,7 +60,6 @@ export class AgenciaDcpComponent {
     });
   }
 
-  //consulta masiva
   abrirModalHistorialEquipo(): void {
     this.mostrarModalHistorialEquipo = true;
   }
@@ -67,4 +67,6 @@ export class AgenciaDcpComponent {
   cerrarModalHistorialEquipo(): void {
     this.mostrarModalHistorialEquipo = false;
   }
+
+  
 }

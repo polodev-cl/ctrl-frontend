@@ -11,7 +11,7 @@ export interface Agency {
   empId: number;
 }
 
-const BASE_URL = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/agency';
+const BASE_URL = 'https://856c-181-226-165-253.ngrok-free.app/api/agency';
 
 @Injectable({ providedIn: 'root' })
 export class AgencyService {

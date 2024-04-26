@@ -10,7 +10,7 @@ import { Equipamiento } from '../interfaces/equipamiento.interface';
 })
 export class ConsultaMasivaService {
   private apiUrl =
-    'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment';
+    'https://856c-181-226-165-253.ngrok-free.app/api/equipment';
 
   constructor(private http: HttpClient) {}
 

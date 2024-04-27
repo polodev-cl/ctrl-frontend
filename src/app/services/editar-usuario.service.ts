@@ -14,7 +14,7 @@ export interface Usuario {
 
 @Injectable({ providedIn: 'root' })
 export class EditarUsuarioService {
-  private apiUrl = 'https://856c-181-226-165-253.ngrok-free.app/api/user';
+  private apiUrl = 'http://localhost:3000/api/user';
 
   constructor(private http: HttpClient) {
   }

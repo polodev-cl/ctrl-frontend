@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+
+<div class="container-md">
+  <div class="frame mt-3" id="frame_middletop">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="consultation-title">
+          <img
+            class=""
+            height="16"
+            src="../../../assets/image/logo-amarillo.jpg"
+          />
+          Compañías
+        </h2>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <!--            @for (crumb of breadcrumbs; track crumb.text) {-->
+            <!--              <li class="breadcrumb-item" [class.active]="$last">-->
+            <!--                <a *ngIf="!$last" [routerLink]="crumb.link">{{ crumb.text }}</a>-->
+            <!--                <span *ngIf="$last">{{ crumb.text }}</span>-->
+            <!--              </li>-->
+            <!--            }-->
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-md">
+  <router-outlet></router-outlet>
+</div>

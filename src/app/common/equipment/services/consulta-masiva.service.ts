@@ -10,7 +10,7 @@ import { Equipamiento } from '../interfaces/equipamiento.interface';
 })
 export class ConsultaMasivaService {
   private apiUrl =
-    'https://856c-181-226-165-253.ngrok-free.app/api/equipment';
+    'http://localhost:3000/api/equipment';
 
   constructor(private http: HttpClient) {}
 

@@ -1,0 +1,22 @@
+mat-header-row {
+  background-color: #388CD9 !important;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+
+  & mat-header-cell.mat-mdc-header-cell {
+    background: unset !important;
+    color: white;
+  }
+}
+
+.mat-column-checkbox, .mat-column-id {
+  flex: 0 0 55px;
+}
+
+.mat-column-actions {
+  flex: 0 0 70px;
+}
+
+mat-table {
+  min-width: 1050px !important;
+}

@@ -1,0 +1,87 @@
+<!-- Filtros -->
+<button (click)="onCleanFilters()" class="button-style" mat-button>
+  <mat-icon>filter_alt_off</mat-icon>
+  <span>Limpiar filtros</span>
+</button>
+<form (submit)="onSearch()" [formGroup]="searchForm">
+  <div class="row mt-3 pb-4">
+    <div class="col-md-3 ">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>RUT (Rol Único Tributario)</mat-label>
+        <input formControlName="rut" matInput placeholder="RUT">
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 ">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Razón Social</mat-label>
+        <input formControlName="razonSocial" matInput placeholder="Razón Social">
+      </mat-form-field>
+    </div>
+    <div class="col-md-3  ">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Nombre Corto</mat-label>
+        <input formControlName="nombreCorto" matInput placeholder="Nombre Corto">
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 d-flex h-56 gap-4">
+      <button class="h-100 search-button flex-grow-1" mat-flat-button>
+        Buscar
+      </button>
+      <a
+        [routerLink]="['create']"
+        class="flex-grow-0 custom-bg-primary"
+        color="primary"
+        mat-fab matTooltip="Agregar Nueva Compañía"
+        type="button">
+        <mat-icon>add</mat-icon>
+      </a>
+    </div>
+  </div>
+</form>
+
+<material-table [dataSource]="dataSource" [displayedColumns]="displayedColumns">
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="rut">
+    <mat-header-cell *matHeaderCellDef>RUT</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.rut }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="razonSocial">
+    <mat-header-cell *matHeaderCellDef>RAZÓN SOCIAL</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.razonSocial }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="nombreCorto">
+    <mat-header-cell *matHeaderCellDef>NOMBRE CORTO</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.nombreCorto }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="comuna">
+    <mat-header-cell *matHeaderCellDef>COMUNA</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.comuna }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <!--      material mat menu-->
+      <button [matMenuTriggerFor]="menu" mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>edit</mat-icon>
+          <span>Editar</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>delete</mat-icon>
+          <span>Eliminar</span>
+        </button>
+      </mat-menu>
+    </mat-cell>
+  </ng-container>
+</material-table>

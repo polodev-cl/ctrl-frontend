@@ -42,3 +42,11 @@ app-root {
 .rounded-xl {
   border-radius: 100px;
 }
+
+.h-56 {
+  height: 56px;
+}
+
+.custom-bg-primary {
+  background-color: #388CD9 !important;
+}

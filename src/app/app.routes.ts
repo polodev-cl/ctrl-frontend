@@ -47,6 +47,7 @@ export const routes: Routes = [
           { path: 'equipos-duplicados', loadComponent: () => import('./modules/equipos-duplicados/equipos-duplicados.component').then(m => m.EquiposDuplicadosComponent) },
         ]
       },
+      { path: 'company', loadChildren: () => import('./modules/company/company.routes') }
     ]
   }
 ];

@@ -72,3 +72,12 @@ export function filterByValue<T>(array: T[], value: string, field: keyof T) {
   // @ts-ignore
   return array.filter((item) => item[field].toString().toLowerCase().includes(value.toLowerCase()));
 }
+
+export function cleanObjectFromUndefinedFields(object: any) {
+  return Object.entries(object ? object : {}).reduce<Record<string, any>>((acc, [ key, value ]) => {
+    if (value !== null && value !== undefined) {
+      acc[key] = value;
+    }
+    return acc;
+  }, {})
+}

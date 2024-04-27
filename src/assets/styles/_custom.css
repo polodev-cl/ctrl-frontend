@@ -119,17 +119,15 @@ input[type=number] {
   color: inherit !important;
 }
 
-
 .historial-button {
-  background: #388CD9; 
+  background: #388CD9;
   border-radius: 100px;
 }
 
 .historial-button:hover {
-  background-color: #3072BF; 
-  border-color: #3072BF; 
+  background-color: #3072BF;
+  border-color: #3072BF;
 }
-
 
 .tiempo-garantia {
   background-color: #D9D9D9 !important;
@@ -156,9 +154,51 @@ input[type=number] {
 
 
 .search-button {
-  border: none;
-  border-radius: 100px;
-  background-color: #34AA4E;
-  color: white;
+  border: none !important;
+  border-radius: 100px !important;
+  background-color: #34AA4E !important;
+  color: white !important;
   font-family: 'Roboto';
+}
+
+.color-headers {
+  background-color: #388CD9 !important;
+}
+
+.first-header {
+  border-top-left-radius: 0.75rem;
+  border-bottom-left-radius: 0; /* Se elimina el redondeo inferior izquierdo */
+}
+
+.last-header {
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0; /* Se elimina el redondeo inferior derecho */
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.grid-container-create {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+  .grid-container-create {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid-item-checkbox {
+  max-height: 60px;
 }

@@ -11,7 +11,7 @@ export interface Agency {
   empId: number;
 }
 
-const BASE_URL = 'https://856c-181-226-165-253.ngrok-free.app/api/agency';
+const BASE_URL = 'http://localhost:3000/api/agency';
 
 @Injectable({ providedIn: 'root' })
 export class AgencyService {

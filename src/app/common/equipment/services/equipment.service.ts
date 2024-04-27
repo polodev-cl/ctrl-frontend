@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class EquipmentService {
-  private apiUrl = 'https://856c-181-226-165-253.ngrok-free.app/api/equipment';
+  private apiUrl = 'http://localhost:3000/api/equipment';
 
   constructor(private http: HttpClient) {
   }

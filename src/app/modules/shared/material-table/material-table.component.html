@@ -1,0 +1,17 @@
+<div class="mat-elevation-z0 rounded-5 shadow">
+  <div class="table-responsive">
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+      <ng-content></ng-content>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <!--    <mat-paginator-->
+    <!--      #paginator-->
+    <!--      [pageSizeOptions]="[5, 10, 20]"-->
+    <!--      [pageSize]="10"-->
+    <!--      class="custom-borders w-100"-->
+    <!--    ></mat-paginator>-->
+  </div>
+</div>

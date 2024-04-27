@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, tap } from 'rxjs';
+import { CompanyQueryDto } from "@modules/company/dto/company-query.dto";
+import { cleanObjectFromUndefinedFields } from "@app/utils/utils";
 
 export interface Company {
   id: number;
@@ -8,7 +10,7 @@ export interface Company {
   nombreCorto: string;
 }
 
-const BASE_URL = 'https://856c-181-226-165-253.ngrok-free.app/api/company';
+const BASE_URL = 'http://localhost:3000/api/company';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +30,24 @@ export class CompanyService {
       .pipe(tap((companies) => this._companiesSelector.next(companies)));
   }
 
-  getCompanies = (): Observable<any> => this.http.get<any>(BASE_URL);
+  getCompanies = (query?: CompanyQueryDto): Observable<any> => {
+    console.log('query', query)
+
+    // Clean from query object all properties with null or undefined values
+    const cleanQuery = cleanObjectFromUndefinedFields(query);
+
+    const queryParams: HttpParams = new HttpParams({ fromObject: cleanQuery as any });
+
+    return this.http.get<any>(BASE_URL, { params: queryParams });
+  }
 
   getCompanyById(id: number): Observable<any> {
     return this.http.get(`${BASE_URL}/:id`);
   }
+
+
+  createCompany(companyData: any): Observable<any> {
+    return this.http.post(BASE_URL, companyData);
+  }
 }
+

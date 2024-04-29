@@ -7,23 +7,20 @@
   <div class="row mt-3 pb-4">
     <div class="col-md-3 ">
       <mat-form-field appearance="outline" class="w-100">
-        <mat-label>RUT (Rol Único Tributario)</mat-label>
-        <input formControlName="rut" matInput placeholder="RUT">
-        @if (searchForm.get('rut')?.hasError('minlength')) {
-          <mat-error>Debe tener al menos 3 caracteres</mat-error>
-        }
+        <mat-label>Nombre</mat-label>
+        <input formControlName="name" matInput placeholder="Nombre">
       </mat-form-field>
     </div>
     <div class="col-md-3">
       <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Razón Social</mat-label>
-        <input formControlName="razonSocial" matInput placeholder="Razón Social">
+        <mat-label>Nemónico</mat-label>
+        <input formControlName="nemonico" matInput placeholder="Nemónico">
       </mat-form-field>
     </div>
     <div class="col-md-3">
       <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Nombre Corto</mat-label>
-        <input formControlName="nombreCorto" matInput placeholder="Nombre Corto">
+        <mat-label>DPC</mat-label>
+        <input formControlName="dpc" matInput placeholder="DPC" type="number">
       </mat-form-field>
     </div>
     <div class="col-md-3 d-flex h-56 gap-4">
@@ -57,24 +54,24 @@
     <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="rut">
-    <mat-header-cell *matHeaderCellDef>RUT</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.rut }}</mat-cell>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>NAME</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.nombre }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="razonSocial">
-    <mat-header-cell *matHeaderCellDef>RAZÓN SOCIAL</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.razonSocial }}</mat-cell>
+  <ng-container matColumnDef="nemonico">
+    <mat-header-cell *matHeaderCellDef>NEMÓNICO</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.nemonico }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="nombreCorto">
-    <mat-header-cell *matHeaderCellDef>NOMBRE CORTO</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.nombreCorto }}</mat-cell>
+  <ng-container matColumnDef="dpc">
+    <mat-header-cell *matHeaderCellDef>DPC</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.dpc }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="comuna">
-    <mat-header-cell *matHeaderCellDef>COMUNA</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.comuna }}</mat-cell>
+  <ng-container matColumnDef="companyName">
+    <mat-header-cell *matHeaderCellDef>EMPRESA</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.empresa.nombreCorto }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="actions">

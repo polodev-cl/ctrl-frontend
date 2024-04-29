@@ -81,7 +81,7 @@ export class CompanyListComponent {
       .catch(() => {
         this.companies = [];
         this.messageNoData = 'Error al buscar las empresas';
-        this.snackBar.open('Error al buscar las empresas', 'Cerrar', { duration: 5000, horizontalPosition: 'center', verticalPosition: 'top' });
+        this.snackBar.open('Error al buscar las empresas', 'Cerrar', { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
       })
   }
 

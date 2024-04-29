@@ -38,4 +38,12 @@ export class AgencyService {
   getAgencies(query: Partial<IAgency>): Observable<IAgency[]> {
     return this.http.get<IAgency[]>(`${ BASE_URL }`, { params: query as any });
   }
+
+  createAgency(agencyData: IAgency): Observable<any> {
+    return this.http.post(BASE_URL, agencyData);
+  }
+
+  updateAgency(id: number, agencyData: IAgency): Observable<any> {
+    return this.http.patch(`${ BASE_URL }/${ id }`, agencyData);
+  }
 }

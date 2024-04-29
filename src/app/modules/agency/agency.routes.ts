@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { AgencyComponent } from "@modules/agency/agency.component";
+import { agencyResolver } from "@modules/agency/resolvers/agency.resolver";
 
 export default [
   {
@@ -16,6 +17,7 @@ export default [
       },
       {
         path: 'edit/:id',
+        resolve: { agency: agencyResolver },
         loadComponent: () => import('./components/agency-edit/agency-edit.component').then(m => m.AgencyEditComponent)
       },
       { path: '**', redirectTo: '' }

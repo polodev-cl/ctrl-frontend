@@ -1,6 +1,6 @@
-import { Company } from "@app/services/company.service";
+import { ICompany } from "@modules/company/domain/interface/company.interface";
 
-export class CompanyQueryDto implements Partial<Company> {
+export class CompanyQueryDto implements Partial<ICompany> {
   id?: number;
   rut?: string;
   razonSocial?: string;

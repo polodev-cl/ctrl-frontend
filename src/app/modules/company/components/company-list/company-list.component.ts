@@ -5,26 +5,43 @@ import { MatError, MatFormField, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInput } from "@angular/material/input";
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
-import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef } from "@angular/material/table";
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-
-import { ButtonModule } from "primeng/button";
 import { lastValueFrom, Observable, of } from "rxjs";
 
 import { CompanyService } from "@app/services/company.service";
 import { cleanObjectFields } from "@app/utils/utils";
-import { CompanyQueryDto } from "@modules/company/dto/company-query.dto";
+import { CompanyQueryDto } from "@modules/company/domain/dto/company-query.dto";
 import { MaterialTableComponent } from "@shared/material-table/material-table.component";
-import { MatToolbar } from "@angular/material/toolbar";
 import { ICompany } from "@modules/company/domain/interface/company.interface";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-company-list',
   standalone: true,
-  imports: [ MatError, MaterialTableComponent, MatHeaderCell, MatHeaderCellDef, MatColumnDef, MatCell, MatCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatFormField, MatInput, MatLabel, MatIcon, MatButton, ReactiveFormsModule, MatMenuTrigger, MatMenu, MatIconButton, MatMenuItem, ButtonModule, RouterLink, MatTooltip, MatFabAnchor, MatToolbar, NgIf ],
+  imports: [
+    MatButton,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatFabAnchor,
+    MatTooltip,
+    RouterLink,
+    MaterialTableComponent,
+    MatColumnDef,
+    MatHeaderCell,
+    MatCell,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatIconButton,
+    MatMenuTrigger,
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
+    MatLabel,
+    MatError
+  ],
   templateUrl: './company-list.component.html',
   styleUrl: './company-list.component.css'
 })
@@ -44,11 +61,12 @@ export class CompanyListComponent {
               private readonly route: ActivatedRoute) {
     const queryParams = this.route.snapshot.queryParams;
 
-    if (cleanObjectFields<CompanyQueryDto>(queryParams)) {
+    if (cleanObjectFields<CompanyQueryDto>(queryParams))
       this.searchForm = this._loadForm(queryParams as Partial<ICompany>);
-      this.onSearch();
-    } else
+    else
       this.searchForm = this._loadForm();
+
+    this.onSearch();
   }
 
   onSearch() {

@@ -1,7 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, tap } from 'rxjs';
-import { CompanyQueryDto } from "@modules/company/dto/company-query.dto";
+import { CompanyQueryDto } from "@modules/company/domain/dto/company-query.dto";
+import { CreateCompanyDto } from "@modules/company/domain/dto/create-company.dto";
+import { UpdateCompanyDto } from "@modules/company/domain/dto/update-company.dto";
 
 export interface Company {
   id: number;
@@ -40,9 +42,12 @@ export class CompanyService {
     return this.http.get<Company>(`${ BASE_URL }/${ id }`);
   }
 
-
-  createCompany(companyData: any): Observable<any> {
+  createCompany(companyData: CreateCompanyDto): Observable<any> {
     return this.http.post(BASE_URL, companyData);
+  }
+
+  updateCompany(id: number, companyData: UpdateCompanyDto): Observable<any> {
+    return this.http.patch(`${ BASE_URL }/${ id }`, companyData);
   }
 }
 

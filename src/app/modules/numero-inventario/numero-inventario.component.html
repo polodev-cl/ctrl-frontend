@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
 <app-modal-historial-equipo
+  [equipoId]="equipoActualId"
   (cerrar)="cerrarModalHistorialEquipo()"
   *ngIf="mostrarModalHistorialEquipo"
 >
@@ -76,7 +77,7 @@
                 <p><strong>Agencia:</strong> {{ equipment.ageNemonico }}</p>
                 <p><strong>DPC:</strong> {{ equipment.ageDpc }}</p>
                 <p>
-                  <strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }}
+                  <strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }} 
                 </p>
                 <p>
                   <strong>Estado:</strong>
@@ -91,7 +92,7 @@
                   type="button"
                   label="Ver Historial"
                   class="historial-button p-2 w-100"
-                  (click)="abrirModalHistorialEquipo()"
+                  (click)="abrirModalHistorialEquipo(equipment.id)">
                 ></button>
               </div>
               <div class="col-12 col-md-4 mb-3 ps-md-0">

@@ -31,7 +31,7 @@ export class NumeroInventarioComponent {
   equipments: any[] = [];
   inventario: number | null = null;
   mostrarModalHistorialEquipo: boolean = false;
-
+  equipoActualId: number | null = null;
 
   constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {
   }
@@ -60,7 +60,8 @@ export class NumeroInventarioComponent {
 
 
   //consulta masiva
-  abrirModalHistorialEquipo(): void {
+  abrirModalHistorialEquipo(equipmentId: number): void {
+    this.equipoActualId = equipmentId;
     this.mostrarModalHistorialEquipo = true;
   }
 

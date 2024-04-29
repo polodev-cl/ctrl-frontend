@@ -33,4 +33,8 @@ export class EquipmentService {
   createEquipment(equipmentData: any): Observable<any> {
     return this.http.post(this.apiUrl, equipmentData);
   }
+
+  getEquipmentHistory(equipmentId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${equipmentId}/history`);
+  }
 }

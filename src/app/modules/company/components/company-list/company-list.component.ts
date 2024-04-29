@@ -111,4 +111,6 @@ export class CompanyListComponent {
       nombreCorto: [ state.nombreCorto ],
     });
   }
+
+  protected readonly cleanObjectFields = cleanObjectFields;
 }

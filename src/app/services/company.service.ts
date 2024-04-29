@@ -11,7 +11,7 @@ export interface Company {
   nombreCorto: string;
 }
 
-const BASE_URL = 'http://localhost:3000/api/company';
+const BASE_URL = 'https://nqyw4kymuud65aoxwslnl3jqhe0unvrn.lambda-url.us-east-1.on.aws/api/company';
 
 @Injectable({
   providedIn: 'root',

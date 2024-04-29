@@ -1,8 +1,10 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { AuthGuard } from "./common/auth/guards/auth.guard";
-import { NoAuthGuard } from "./common/auth/guards/no-auth.guard";
-import { appResolver } from "./common/auth/resolvers/auth.resolver";
+
+import { AuthGuard } from "@common/auth/guards/auth.guard";
+import { NoAuthGuard } from "@common/auth/guards/no-auth.guard";
+import { appResolver } from "@common/auth/resolvers/auth.resolver";
+
 import { CompanyService } from './services/company.service';
 
 export const routes: Routes = [
@@ -47,7 +49,8 @@ export const routes: Routes = [
           { path: 'equipos-duplicados', loadComponent: () => import('./modules/equipos-duplicados/equipos-duplicados.component').then(m => m.EquiposDuplicadosComponent) },
         ]
       },
-      { path: 'company', loadChildren: () => import('./modules/company/company.routes') }
+      { path: 'company', loadChildren: () => import('./modules/company/company.routes') },
+      { path: 'agency', loadChildren: () => import('./modules/agency/agency.routes') },
     ]
   }
 ];

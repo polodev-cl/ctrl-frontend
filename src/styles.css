@@ -51,3 +51,23 @@ app-root {
 .custom-bg-primary {
   background-color: #388CD9 !important;
 }
+
+.filter-button {
+  & > .mat-button-wrapper {
+    border-radius: 5px;
+    background: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    line-height: 36px;
+    font-size: 14px;
+    font-weight: 600;
+
+    & mat-icon {
+      margin-right: 5px;
+    }
+  }
+}

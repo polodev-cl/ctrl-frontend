@@ -23,8 +23,7 @@ import { ICompany } from "@modules/company/domain/interface/company.interface";
     MatLabel,
     ReactiveFormsModule
   ],
-  templateUrl: './company-form.component.html',
-  styleUrl: './company-form.component.css'
+  templateUrl: './company-form.component.html'
 })
 export class CompanyFormComponent implements OnInit {
   @Input() company?: ICompany | undefined;

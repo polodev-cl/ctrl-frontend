@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButton, MatFabAnchor, MatIconButton } from "@angular/material/button";
 import { MatError, MatFormField, MatLabel } from "@angular/material/form-field";
@@ -42,8 +42,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
     MatLabel,
     MatError
   ],
-  templateUrl: './company-list.component.html',
-  styleUrl: './company-list.component.css'
+  templateUrl: './company-list.component.html'
 })
 export class CompanyListComponent {
   public searchForm: FormGroup;
@@ -51,8 +50,6 @@ export class CompanyListComponent {
   public messageNoData: string = 'Realizar una búsqueda para obtener resultados';
   public displayedColumns: string[] = [ 'id', 'rut', 'razonSocial', 'nombreCorto', 'comuna', 'actions' ];
   public loading: Observable<boolean> = of(false);
-
-  @ViewChild(MaterialTableComponent) table!: MaterialTableComponent<ICompany>;
 
   constructor(private readonly companyService: CompanyService,
               private readonly fb: FormBuilder,
@@ -84,7 +81,7 @@ export class CompanyListComponent {
       .catch(() => {
         this.companies = [];
         this.messageNoData = 'Error al buscar las empresas';
-        this.snackBar.open('Error al buscar las empresas', 'Cerrar', { duration: 5000 });
+        this.snackBar.open('Error al buscar las empresas', 'Cerrar', { duration: 5000, horizontalPosition: 'center', verticalPosition: 'top' });
       })
   }
 

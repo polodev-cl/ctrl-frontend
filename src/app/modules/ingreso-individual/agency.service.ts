@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IAgency } from "@modules/agency/domain/interface/agency.interface";
 
 export interface Agency {
   id: number;
@@ -28,5 +29,13 @@ export class AgencyService {
     return this.http.get<Agency[]>(`${ BASE_URL }`).pipe(
       map(agencies => agencies.filter(agency => agency.empId === companyId))
     );
+  }
+
+  getAgencyById(agencyId: number): Observable<IAgency> {
+    return this.http.get<IAgency>(`${ BASE_URL }/${ agencyId }`);
+  }
+
+  getAgencies(query: Partial<IAgency>): Observable<IAgency[]> {
+    return this.http.get<IAgency[]>(`${ BASE_URL }`, { params: query as any });
   }
 }

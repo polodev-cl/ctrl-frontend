@@ -10,8 +10,7 @@ import { CreateCompanyDto } from "@modules/company/domain/dto/create-company.dto
   selector: 'app-company-create',
   standalone: true,
   imports: [ CompanyFormComponent ],
-  templateUrl: './company-create.component.html',
-  styleUrl: './company-create.component.css'
+  templateUrl: './company-create.component.html'
 })
 export class CompanyCreateComponent {
   private _router: Router = inject(Router);

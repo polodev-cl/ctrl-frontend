@@ -14,8 +14,7 @@ import { UpdateCompanyDto } from "@modules/company/domain/dto/update-company.dto
     CompanyFormComponent,
     JsonPipe
   ],
-  templateUrl: './company-edit.component.html',
-  styleUrl: './company-edit.component.css'
+  templateUrl: './company-edit.component.html'
 })
 export class CompanyEditComponent {
   private readonly _route = inject(ActivatedRoute);

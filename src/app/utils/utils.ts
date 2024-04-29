@@ -1,4 +1,5 @@
 import { FormGroup } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
 
 export const MAC_PATTERN = /^([0-9a-f]{2}:){5}[0-9a-f]{2}$/;
 export const IPV4_PATTERN = /^(\d{1,3}\.){3}\d{1,3}$/;
@@ -91,4 +92,12 @@ export function cleanObjectFields<T extends Record<string, any>>(object: T): T |
   if (Object.keys(filtered).length === 0) return undefined;
 
   return filtered as T;
+}
+
+export function updateQuerySate(router: Router, route: ActivatedRoute, queryParams: any) {
+  router.navigate([], {
+    queryParams,
+    queryParamsHandling: 'merge',
+    relativeTo: route
+  }).then();
 }

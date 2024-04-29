@@ -15,7 +15,7 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
 
   return from(fetchAuthSession()).pipe(
     switchMap(session => {
-      const token = session.tokens?.accessToken;
+      const token = session.tokens?.idToken;
       let newReq = req;
 
       if (token) {

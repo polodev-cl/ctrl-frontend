@@ -20,8 +20,7 @@ import { NavbarComponent } from "@shared/navbar/navbar.component";
     RouterOutlet,
   ],
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './company.component.html',
-  styleUrl: './company.component.css'
+  templateUrl: './company.component.html'
 })
 export class CompanyComponent {
 

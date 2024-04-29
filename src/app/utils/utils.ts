@@ -54,7 +54,6 @@ export function cleanEmptyFields(obj: any): any {
   Object.keys(obj).forEach(element => {
     const field = obj[element];
     if (field && field !== '') parsedData[element] = field;
-    else parsedData[element] = undefined;
   });
 
   return parsedData;
@@ -73,11 +72,23 @@ export function filterByValue<T>(array: T[], value: string, field: keyof T) {
   return array.filter((item) => item[field].toString().toLowerCase().includes(value.toLowerCase()));
 }
 
-export function cleanObjectFromUndefinedFields(object: any) {
-  return Object.entries(object ? object : {}).reduce<Record<string, any>>((acc, [ key, value ]) => {
-    if (value !== null && value !== undefined) {
-      acc[key] = value;
+export function cleanObjectFields<T extends Record<string, any>>(object: T): T | undefined {
+  if (!object) return undefined;
+
+  let filtered: Record<string, any> = {};
+
+  for ( const [ key, value ] of Object.entries(object) ) {
+    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      const cleanedObject = cleanObjectFields(value);
+      if (cleanedObject !== undefined) {
+        filtered[key] = cleanedObject;
+      }
+    } else if (value !== null && value !== undefined && !(typeof value === 'string' && value.trim() === '')) {
+      filtered[key] = value;
     }
-    return acc;
-  }, {})
+  }
+
+  if (Object.keys(filtered).length === 0) return undefined;
+
+  return filtered as T;
 }

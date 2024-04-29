@@ -1,59 +1,73 @@
-import { Component } from '@angular/core';
-import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTableDataSource } from "@angular/material/table";
-import { MaterialTableComponent } from "@shared/material-table/material-table.component";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
-import { MatInput } from "@angular/material/input";
-import { CompanyService } from "@app/services/company.service";
-import { MatIcon } from "@angular/material/icon";
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButton, MatFabAnchor, MatIconButton } from "@angular/material/button";
-import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { cleanEmptyFields } from "@app/utils/utils";
+import { MatError, MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatIcon } from "@angular/material/icon";
+import { MatInput } from "@angular/material/input";
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
-import { ButtonModule } from "primeng/button";
-import { CompanyQueryDto } from "@modules/company/dto/company-query.dto";
-import { lastValueFrom } from "rxjs";
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 
-export interface Company {
-  id: number,
-  rut: string,
-  razonSocial: string,
-  nombreCorto: string,
-  comuna: string
-}
+import { ButtonModule } from "primeng/button";
+import { lastValueFrom, Observable, of } from "rxjs";
+
+import { CompanyService } from "@app/services/company.service";
+import { cleanObjectFields } from "@app/utils/utils";
+import { CompanyQueryDto } from "@modules/company/dto/company-query.dto";
+import { MaterialTableComponent } from "@shared/material-table/material-table.component";
+import { MatToolbar } from "@angular/material/toolbar";
+import { ICompany } from "@modules/company/domain/interface/company.interface";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-company-list',
   standalone: true,
-  imports: [ MaterialTableComponent, MatHeaderCell, MatHeaderCellDef, MatColumnDef, MatCell, MatCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatFormField, MatInput, MatLabel, MatIcon, MatButton, ReactiveFormsModule, MatMenuTrigger, MatMenu, MatIconButton, MatMenuItem, ButtonModule, RouterLink, MatTooltip, MatFabAnchor ],
+  imports: [ MatError, MaterialTableComponent, MatHeaderCell, MatHeaderCellDef, MatColumnDef, MatCell, MatCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatFormField, MatInput, MatLabel, MatIcon, MatButton, ReactiveFormsModule, MatMenuTrigger, MatMenu, MatIconButton, MatMenuItem, ButtonModule, RouterLink, MatTooltip, MatFabAnchor, MatToolbar, NgIf ],
   templateUrl: './company-list.component.html',
   styleUrl: './company-list.component.css'
 })
 export class CompanyListComponent {
   public searchForm: FormGroup;
+  public companies: ICompany[] = [];
+  public messageNoData: string = 'Realizar una búsqueda para obtener resultados';
   public displayedColumns: string[] = [ 'id', 'rut', 'razonSocial', 'nombreCorto', 'comuna', 'actions' ];
-  public dataSource: MatTableDataSource<Company> = new MatTableDataSource<Company>();
-  private dummyData: Company[] = [
-    { id: 1, rut: '12.345.678-9', razonSocial: 'Empresa de ejemplo S.A.', nombreCorto: 'Ejemplo S.A.', comuna: 'Santiago' },
-    { id: 2, rut: '98.765.432-1', razonSocial: 'Otra empresa de ejemplo S.A.', nombreCorto: 'Otra Ejemplo S.A.', comuna: 'Santiago' }
-  ]
+  public loading: Observable<boolean> = of(false);
+
+  @ViewChild(MaterialTableComponent) table!: MaterialTableComponent<ICompany>;
 
   constructor(private readonly companyService: CompanyService,
               private readonly fb: FormBuilder,
+              private readonly snackBar: MatSnackBar,
               private readonly router: Router,
               private readonly route: ActivatedRoute) {
-    this.dataSource.data = this.dummyData;
     const queryParams = this.route.snapshot.queryParams;
-    this.searchForm = this._loadForm(queryParams as Partial<Company>);
+
+    if (cleanObjectFields<CompanyQueryDto>(queryParams)) {
+      this.searchForm = this._loadForm(queryParams as Partial<ICompany>);
+      this.onSearch();
+    } else
+      this.searchForm = this._loadForm();
   }
 
   onSearch() {
-    const values = cleanEmptyFields(this.searchForm.getRawValue());
+    this.loading = of(true);
+    this.messageNoData = 'Buscando empresas...';
+    const values = cleanObjectFields(this.searchForm.getRawValue());
 
     this._saveToState(values);
     lastValueFrom(this.companyService.getCompanies(values as CompanyQueryDto))
-      .then((companies) => this.dataSource.data = companies);
+      .then((companies) => {
+        this.companies = companies;
+        this.messageNoData = 'No hay resultados que mostrar';
+        this.loading = of(false);
+      })
+      .catch(() => {
+        this.companies = [];
+        this.messageNoData = 'Error al buscar las empresas';
+        this.snackBar.open('Error al buscar las empresas', 'Cerrar', { duration: 5000 });
+      })
   }
 
   onCleanFilters() {
@@ -61,16 +75,20 @@ export class CompanyListComponent {
     this._saveToState({});
   }
 
-  private _saveToState(values: Partial<Company>) {
+  trackByIdFn(index: number, item: ICompany) {
+    return item.id;
+  }
+
+  private _saveToState(values: Partial<ICompany>) {
     this.router.navigate([], {
       queryParams: values,
       relativeTo: this.route
     }).then();
   }
 
-  private _loadForm(state: Partial<Company> = {}): FormGroup {
+  private _loadForm(state: Partial<ICompany> = {}): FormGroup {
     return this.fb.group({
-      rut: [ state.rut ],
+      rut: [ state.rut, [ Validators.minLength(3) ] ],
       razonSocial: [ state.razonSocial ],
       nombreCorto: [ state.nombreCorto ],
     });

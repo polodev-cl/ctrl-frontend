@@ -3,6 +3,10 @@
 
 @import './assets/styles/_custom.css';
 
+* {
+  transition: background-color 0.2s !important;
+}
+
 html, body {
   height: 100%;
 }

@@ -154,11 +154,21 @@ input[type=number] {
 
 
 .search-button {
-  border: none !important;
-  border-radius: 100px !important;
-  background-color: #34AA4E !important;
-  color: white !important;
+  border: none;
+  border-radius: 100px;
+  background-color: #34AA4E;
+  color: white;
   font-family: 'Roboto';
+}
+
+.search-button.mat-mdc-unelevated-button:not(:disabled) {
+  background-color: #34AA4E;
+  color: white;
+  border-radius: 100px;
+}
+
+.search-button.mat-mdc-unelevated-button:is(:disabled) {
+  border-radius: 100px;
 }
 
 .color-headers {

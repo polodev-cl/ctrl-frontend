@@ -9,6 +9,9 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>RUT (Rol Único Tributario)</mat-label>
         <input formControlName="rut" matInput placeholder="RUT">
+        @if (searchForm.get('rut')?.hasError('minlength')) {
+          <mat-error>Debe tener al menos 3 caracteres</mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="col-md-3 ">
@@ -24,7 +27,11 @@
       </mat-form-field>
     </div>
     <div class="col-md-3 d-flex h-56 gap-4">
-      <button class="h-100 search-button flex-grow-1" mat-flat-button>
+      <button
+        [disabled]="searchForm.invalid"
+        class="h-100 search-button flex-grow-1"
+        mat-flat-button
+      >
         Buscar
       </button>
       <a
@@ -38,8 +45,13 @@
     </div>
   </div>
 </form>
-
-<material-table [dataSource]="dataSource" [displayedColumns]="displayedColumns">
+<material-table
+  [data]="companies"
+  [displayedColumns]="displayedColumns"
+  [loading]="loading"
+  [messageNoData]="messageNoData"
+  [trackByFn]="trackByIdFn"
+>
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
     <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
@@ -73,7 +85,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button [routerLink]="['edit', element.id]" mat-menu-item>
           <mat-icon>edit</mat-icon>
           <span>Editar</span>
         </button>

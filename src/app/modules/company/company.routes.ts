@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { CompanyComponent } from "./company.component";
+import { companyResolver } from "@modules/company/resolvers/company.resolver";
 
 export default [
   {
@@ -16,7 +17,10 @@ export default [
       },
       {
         path: 'edit/:id',
-        loadComponent: () => import('./components/company-edit/company-edit.component').then(m => m.CompanyEditComponent)
+        loadComponent: () => import('./components/company-edit/company-edit.component').then(m => m.CompanyEditComponent),
+        resolve: {
+          company: companyResolver
+        }
       },
       { path: '**', redirectTo: '' }
     ]

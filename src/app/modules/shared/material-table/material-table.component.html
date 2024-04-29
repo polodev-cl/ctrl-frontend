@@ -1,17 +1,20 @@
 <div class="mat-elevation-z0 rounded-5 shadow">
   <div class="table-responsive">
-    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+    <mat-table [dataSource]="dataSource" [trackBy]="trackByFn" class="mat-elevation-z8">
       <ng-content></ng-content>
+
+      <div *matNoDataRow [innerText]="messageNoData" class="mat-cell text-center fst-italic py-4 text-muted"></div>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
 
-    <!--    <mat-paginator-->
-    <!--      #paginator-->
-    <!--      [pageSizeOptions]="[5, 10, 20]"-->
-    <!--      [pageSize]="10"-->
-    <!--      class="custom-borders w-100"-->
-    <!--    ></mat-paginator>-->
+    <mat-paginator
+      #paginator
+      [disabled]="(loading | async) || data.length === 0"
+      [pageSizeOptions]="[5, 10, 20]"
+      [pageSize]="10"
+      class="custom-borders w-100"
+    ></mat-paginator>
   </div>
 </div>

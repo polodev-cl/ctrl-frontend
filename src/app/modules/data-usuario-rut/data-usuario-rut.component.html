@@ -1,5 +1,6 @@
 <app-navbar> </app-navbar>
 <app-modal-historial-equipo
+[equipoId]="equipoActualId"
   (cerrar)="cerrarModalHistorialEquipo()"
   *ngIf="mostrarModalHistorialEquipo"
 >
@@ -32,13 +33,13 @@
         </nav>
       </div>
 
-      <div class="col-md-6 col-sm-12">
+      <!-- <div class="col-md-6 col-sm-12">
         <div class="profile-details text-md-end">
           <p class="mb-0">Juan Perez</p>
           <p class="mb-0">10.923.948-8</p>
           <p class="mb-0">Empresa: Starken</p>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="row mt-4 mb-3">
@@ -73,21 +74,27 @@
               </div>
               <div class="col">
                 <p><strong>Número CI:</strong> {{ equipment.inventario }}</p>
-                <p><strong>Agencia:</strong> {{ equipment.ageNemonico }}</p>
-                <p><strong>DPC:</strong> {{ equipment.ageDpc }}</p>
+                <p><strong>Agencia:</strong> {{ equipment.agencia.nombre }}</p>
+                <p><strong>DPC:</strong> {{ equipment.agenciaDpc }}</p>
                 <p>
-                  <strong>Nemónico:</strong> {{ equipment.agenciaMnemonic }}
+                  <strong>Nemónico:</strong> {{ equipment.agencia.nemonico }}
                 </p>
                 <p>
                   <strong>Estado:</strong>
                   {{ equipment.estado === 1 ? "Activo" : "Inactivo" }}
                 </p>
               </div>
+              <div class="col">
+                <p><strong>Rut:</strong> {{ equipment.rut }}</p>
+                <p><strong>N° Serie:</strong> {{ equipment.serie }}</p>
+                <p><strong>Encargado Agencia:</strong> {{ equipment.encargadoAgencia }}</p>
+                <p><strong>Fecha Ingreso:</strong> {{ equipment.fechaIngreso }}</p>
+              </div>
             </div>
             <div class="row mt-3">
               <div class="col-12 col-md-4 mb-3 pe-md-0">
                 <button
-                  (click)="abrirModalHistorialEquipo()"
+                (click)="abrirModalHistorialEquipo(equipment.id)"
                   class="historial-button p-2 w-100"
                   label="Ver Historial"
                   pButton

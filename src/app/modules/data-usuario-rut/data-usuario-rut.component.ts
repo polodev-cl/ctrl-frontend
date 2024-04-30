@@ -37,7 +37,7 @@ export class DataUsuarioRutComponent {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.rut = params['rut']; // Captura el rut desde los parámetros de ruta
+      this.rut = params['rut'];
       if ( this.rut ) {
         this.buscarPorRut(this.rut);
       }
@@ -47,12 +47,12 @@ export class DataUsuarioRutComponent {
   buscarPorRut(rut: string): void {
     this.equipmentService.getEquipmentByRut(rut).subscribe({
       next: (data) => {
-        this.equipments = data;  // Asegúrate de que data es un arreglo y se asigna correctamente
+        this.equipments = data; 
         console.log('Received equipments:', data);
       },
       error: (error) => {
         console.error('Error fetching data:', error);
-        this.equipments = [];  // Asigna un arreglo vacío en caso de error
+        this.equipments = []; 
       }
     });
   }

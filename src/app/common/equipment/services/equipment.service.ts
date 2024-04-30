@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class EquipmentService {
-  private apiUrl = 'http://localhost:3000/api/equipment';
+  private apiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment';
 
   constructor(private http: HttpClient) {
   }
@@ -32,5 +32,9 @@ export class EquipmentService {
 
   createEquipment(equipmentData: any): Observable<any> {
     return this.http.post(this.apiUrl, equipmentData);
+  }
+
+  getEquipmentHistory(equipmentId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${equipmentId}/history`);
   }
 }

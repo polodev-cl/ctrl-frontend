@@ -1,24 +1,30 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Element, ELEMENT_DATA2, TablasHistorialEquipoComponent, } from '../../tablas-historial-equipo/tablas-historial-equipo.component'; // Asegúrate de ajustar las rutas de importación según sea necesario.
+import { Element, TablasHistorialEquipoComponent } from '../../tablas-historial-equipo/tablas-historial-equipo.component';
 
 @Component({
   selector: 'app-modal-historial-equipo-dcp',
   templateUrl: './modal-historial-equipo-dcp.component.html',
-  styleUrl: './modal-historial-equipo-dcp.component.css',
+  styleUrls: ['./modal-historial-equipo-dcp.component.css'], 
   imports: [
     TablasHistorialEquipoComponent
   ],
   standalone: true
 })
-export class ModalHistorialEquipoDcpComponent {
+export class ModalHistorialEquipoDcpComponent implements OnChanges {
   @Output() cerrar = new EventEmitter<void>();
+  @Input() historialEquipos: Element[] | undefined;
 
-  dcpDataSource = new MatTableDataSource<Element>(ELEMENT_DATA2);
   activaDataSource: MatTableDataSource<Element>;
 
   constructor() {
-    this.activaDataSource = this.dcpDataSource;
+    this.activaDataSource = new MatTableDataSource<Element>();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['historialEquipos'] && changes['historialEquipos'].currentValue) {
+      this.activaDataSource.data = changes['historialEquipos'].currentValue;
+    }
   }
 
   cerrarModal(): void {

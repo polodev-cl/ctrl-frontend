@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, Input} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Element, ELEMENT_DATA3, TablasHistorialEquipoComponent, } from '../../tablas-historial-equipo/tablas-historial-equipo.component';
+import { Element, TablasHistorialEquipoComponent, } from '../../tablas-historial-equipo/tablas-historial-equipo.component';
 import { EquipmentService } from '../../../common/equipment/services/equipment.service';
 @Component({
   selector: 'app-modal-historial-equipo',
@@ -15,7 +15,7 @@ export class ModalHistorialEquipoComponent {
   @Input() equipoId!: number;
   @Output() cerrar = new EventEmitter<void>();
 
-  rutDataSource = new MatTableDataSource<Element>(ELEMENT_DATA3);
+  rutDataSource = new MatTableDataSource<Element>();
 
   // Esta variable determina qué tabla está actualmente visible.
   activaDataSource: MatTableDataSource<Element>;

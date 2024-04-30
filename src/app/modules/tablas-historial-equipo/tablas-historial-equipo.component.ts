@@ -89,23 +89,23 @@ export const ELEMENT_DATA2: Element[] = [
   },
 ];
 
-export const ELEMENT_DATA3: Element[] = [
-  {
-    fecha: '15/04/2023',
-    razonUsuario: 'TABLA DE RUT Equipo por "Nicolas Álvarez" a través de carga masiva',
-  },
-  { fecha: '15/04/2023', razonUsuario: 'Incidente equipo ticket 103945' },
-  {
-    fecha: '02/08/2023',
-    razonUsuario:
-      'Actualización base de datos de este equipo realizado por "Nicolas Álvarez". \n\nCampos actualizados: \n\n- DCP anterior: 454 \n\nObservaciones: Ninguna.',
-  },
-  {
-    fecha: '02/08/2023',
-    razonUsuario:
-      'Actualización base de datos de este equipo realizado por "Nicolas Álvarez". \n\nCampos actualizados: \n\n- DCP anterior: 454 \n\nObservaciones: Ninguna.',
-  },
-];
+// export const ELEMENT_DATA3: Element[] = [
+//   {
+//     fecha: '15/04/2023',
+//     razonUsuario: 'TABLA DE RUT Equipo por "Nicolas Álvarez" a través de carga masiva',
+//   },
+//   { fecha: '15/04/2023', razonUsuario: 'Incidente equipo ticket 103945' },
+//   {
+//     fecha: '02/08/2023',
+//     razonUsuario:
+//       'Actualización base de datos de este equipo realizado por "Nicolas Álvarez". \n\nCampos actualizados: \n\n- DCP anterior: 454 \n\nObservaciones: Ninguna.',
+//   },
+//   {
+//     fecha: '02/08/2023',
+//     razonUsuario:
+//       'Actualización base de datos de este equipo realizado por "Nicolas Álvarez". \n\nCampos actualizados: \n\n- DCP anterior: 454 \n\nObservaciones: Ninguna.',
+//   },
+// ];
 
 const spanishRangeLabel = (page: number, pageSize: number, length: number) => {
   if ( length === 0 || pageSize === 0 ) {
@@ -135,3 +135,5 @@ export function getSpanishPaginatorIntl() {
 
   return paginatorIntl;
 }
+export { NewlinePipe };
+

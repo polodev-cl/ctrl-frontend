@@ -4,6 +4,8 @@ import {
   OnChanges,
   SimpleChanges,
   ViewChild,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import {
@@ -18,8 +20,15 @@ import {
   MatRowDef,
   MatTable,
   MatTableDataSource,
+  
 } from '@angular/material/table';
+import { MatTooltip } from "@angular/material/tooltip";
 import * as XLSX from 'xlsx';
+
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { EquipmentService } from '@app/common/equipment/services/equipment.service';
+
 
 @Component({
   selector: 'app-tabla-dpc',
@@ -36,13 +45,19 @@ import * as XLSX from 'xlsx';
     MatRow,
     MatRowDef,
     MatPaginator,
+    MatTooltip,
+    MatIconButton,
+    MatIcon
   ],
   templateUrl: './tabla-dpc.component.html',
   styleUrl: './tabla-dpc.component.css',
 })
-export class TablaDpcComponent implements OnChanges {
+export class TablaDpcComponent implements OnChanges { 
   @Input() equipments: any[] = [];
+  @Output() onHistoryRequested = new EventEmitter<any>();
+  @Output() onToggleModal = new EventEmitter<boolean>();
   dataSource = new MatTableDataSource<any>(this.equipments);
+  
   displayedColumns: string[] = [
     'dpc',
     'equipo',
@@ -52,8 +67,12 @@ export class TablaDpcComponent implements OnChanges {
     'agencia',
     'empresa',
     'usuario',
+    'Acciones'
     
   ];
+
+  constructor(private equipmentService: EquipmentService) {}
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -95,8 +114,23 @@ export class TablaDpcComponent implements OnChanges {
   }
 
 
+// En TablaDpcComponent
+getHistory(equipmentId: number) {
+  this.equipmentService.getEquipmentHistory(equipmentId).subscribe({
+    next: (history) => {
+      console.log('Datos de la tabla history:', history);
+      this.onHistoryRequested.emit(history);  // Emite el evento con los datos del historial
+    },
+    error: (error) => {
+      console.error('Failed to fetch history:', error);
+      // Posiblemente emitir un evento de error o manejarlo de alguna manera
+    }
+  });
+}
+
+
   exportToExcel() {
-    // Usar dataSource.data para obtener los datos actuales mostrados en la tabla
+
     const data = this.dataSource.data;
 
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
@@ -106,8 +140,6 @@ export class TablaDpcComponent implements OnChanges {
 
     // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
     XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
-
-    // Configurar las anchuras de las columnas basadas en la configuración privada de 'columns'
     ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
 
     const wb: XLSX.WorkBook = XLSX.utils.book_new();

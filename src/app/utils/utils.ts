@@ -95,9 +95,9 @@ export function cleanObjectFields<T extends Record<string, any>>(object: T): T |
 }
 
 export function updateQuerySate(router: Router, route: ActivatedRoute, queryParams: any) {
-  router.navigate([], {
+  return router.navigate([], {
     queryParams,
     queryParamsHandling: 'merge',
     relativeTo: route
-  }).then();
+  });
 }

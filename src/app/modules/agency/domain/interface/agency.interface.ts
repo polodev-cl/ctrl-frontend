@@ -1,10 +1,12 @@
+import { ICompany } from "@modules/company/domain/interface/company.interface";
+
 export interface IAgency {
   id: number;
   activo: boolean;
-  name: string;
+  nombre: string;
   nemonico: string;
   dpc: number;
   empId: number;
   fechaCreacion: Date;
-  empresa: IAgency;
+  empresa: Partial<ICompany>;
 }

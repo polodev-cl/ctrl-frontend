@@ -22,7 +22,7 @@ export class CompanyCreateComponent {
   onSubmit(formValue: CreateCompanyDto) {
     lastValueFrom(this.companyService.createCompany(formValue))
       .then((res) => {
-        this._matSnackBar.open('Empresa creada correctamente', 'Cerrar', { duration: 5000, horizontalPosition: 'center', verticalPosition: 'top' });
+        this._matSnackBar.open('Empresa creada correctamente', 'Cerrar', { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
         this._router.navigate([ '/company' ], { queryParams: { rut: res.rut } });
       });
   }

@@ -26,7 +26,7 @@ export class CompanyEditComponent {
   onSubmit(formValue: UpdateCompanyDto) {
     lastValueFrom(this._companyService.updateCompany(this.company.id, formValue))
       .then((res) => {
-        this._matSnackBar.open('Empresa actualizada correctamente', 'Cerrar', { duration: 5000, horizontalPosition: 'center', verticalPosition: 'top' });
+        this._matSnackBar.open('Empresa actualizada correctamente', 'Cerrar', { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
         this._router.navigate([ '/company' ], { queryParams: { rut: res.rut } });
       })
   }

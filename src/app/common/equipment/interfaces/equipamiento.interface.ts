@@ -33,3 +33,15 @@ export interface Equipamiento {
   agencia: any;
   usuarioCreacion: any;
 }
+
+export interface HistorialEquipment {
+  id: number;
+  equipoId: number;
+  descripcion: string;
+  fechaCreacion: string;
+  usuario: {
+    id: number;
+    nombres: string;
+    rut: string;
+  };
+}

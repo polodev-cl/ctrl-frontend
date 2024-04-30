@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Output, Input} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Element, ELEMENT_DATA3, TablasHistorialEquipoComponent, } from '../../tablas-historial-equipo/tablas-historial-equipo.component';
+import { TablasHistorialEquipoComponent, } from '../../tablas-historial-equipo/tablas-historial-equipo.component';
 import { EquipmentService } from '../../../common/equipment/services/equipment.service';
+import { HistorialEquipment } from '@app/common/equipment/interfaces/equipamiento.interface';
+
 @Component({
   selector: 'app-modal-historial-equipo',
   templateUrl: './modal-historial-equipo.component.html',
@@ -15,10 +17,8 @@ export class ModalHistorialEquipoComponent {
   @Input() equipoId!: number;
   @Output() cerrar = new EventEmitter<void>();
 
-  rutDataSource = new MatTableDataSource<Element>(ELEMENT_DATA3);
 
-  // Esta variable determina qué tabla está actualmente visible.
-  activaDataSource: MatTableDataSource<Element>;
+  dataSource: MatTableDataSource<HistorialEquipment>;
 
 
 
@@ -30,16 +30,15 @@ export class ModalHistorialEquipoComponent {
 
   
   constructor(private equipmentService: EquipmentService) {
-    // Inicializa con la tabla de inventario como predeterminada
-    this.activaDataSource = this.rutDataSource;
+
+    this.dataSource = new MatTableDataSource<HistorialEquipment>([]);
   }
-
-
 
   buscarHistorialEquipo(equipmentId: number): void {
     this.equipmentService.getEquipmentHistory(equipmentId).subscribe({
-      next: (data) => {
-        this.activaDataSource = new MatTableDataSource(data);
+      next: (data: HistorialEquipment[]) => {
+        console.log("Datos: ", data);
+        this.dataSource = new MatTableDataSource(data); 
       },
       error: (error) => {
         console.error('Error fetching history:', error);

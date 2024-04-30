@@ -1,1 +1,75 @@
-<p>agency-form works!</p>
+<form (submit)="onSubmit.emit(agencyForm.getRawValue())" [formGroup]="agencyForm">
+  <div class="row mt-3 pb-4 row-gap-3">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Empresa</mat-label>
+        <input (focus)="filter('company', $event.target)"
+               (input)="filter('company', $event.target)"
+               [matAutocomplete]="auto"
+               aria-label="Empresa"
+               formControlName="empresa"
+               matInput
+               placeholder="Selecciona una empresa">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCompanySelect($event.option.value)"
+                          [displayWith]="displayCompanyFn" requireSelection="true">
+          @for (company of companiesFiltered | async; track company.id) {
+            <mat-option [value]="company">
+              {{ company.nombreCorto }}
+            </mat-option>
+          }
+          @if ((companies | async)?.length === 0 || (companiesFiltered | async)?.length === 0) {
+            <mat-option disabled>No hay empresas disponibles</mat-option>
+          }
+        </mat-autocomplete>
+        @if (agencyForm.get('empresa')?.hasError('required')) {
+          <mat-error>Debe seleccionar una empresa</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Nombre</mat-label>
+        <input formControlName="nombre" matInput placeholder="Nombre">
+        @if (agencyForm.get('nombre')?.hasError('required')) {
+          <mat-error>Debe ingresar un nombre</mat-error>
+        }
+        @if (agencyForm.get('nombre')?.hasError('minlength')) {
+          <mat-error>Debe tener al menos 4 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Nemónico</mat-label>
+        <input formControlName="nemonico" matInput placeholder="Nemónico">
+        @if (agencyForm.get('nemonico')?.hasError('minlength')) {
+          <mat-error>Debe tener al menos 3 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>DPC</mat-label>
+        <input formControlName="dpc" matInput placeholder="DPC" type="number">
+        @if (agencyForm.get('dpc')?.hasError('minlength')) {
+          <mat-error>Debe tener al menos 3 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between my-2">
+    <button
+      [defaultRoute]="['/agency']"
+      backButton
+      class="back-button rounded-xl px-5 py-2"
+      label="Volver"
+      pButton
+      type="button"
+    ></button>
+
+    <button
+      [innerText]="submitText"
+      class="search-button  rounded-5 py-2 px-4"
+    ></button>
+  </div>
+</form>

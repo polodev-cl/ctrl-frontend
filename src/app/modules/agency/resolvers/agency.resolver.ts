@@ -45,7 +45,7 @@ export const agencyResolver: ResolveFn<IAgency | undefined> = (
   } else {
     matSnackBar.open('El id de la empresa no es válido', 'Cerrar', snackBarConfig);
     // redirect to /company
-    router.navigate([ '/company' ]);
+    router.navigate([ '/agency' ]);
     return of(undefined);
   }
 };

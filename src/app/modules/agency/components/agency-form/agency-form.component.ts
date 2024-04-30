@@ -41,6 +41,7 @@ import { ICompany } from "@modules/company/domain/interface/company.interface";
 export class AgencyFormComponent implements OnInit {
   @Input() submitText: string = 'Guardar';
   @Input() agency?: IAgency;
+  @Input() submitFn!: (agency: IAgency) => Promise<any>;
   @Output() onSubmit: EventEmitter<IAgency> = new EventEmitter<IAgency>();
 
   companies?: Observable<Partial<ICompany>[]>;
@@ -76,9 +77,9 @@ export class AgencyFormComponent implements OnInit {
 
   private _loadForm(agency?: IAgency) {
     return this.fb.group({
-      nombre: [ { value: agency?.nombre || undefined, disabled: !!agency }, [ Validators.required, Validators.minLength(4) ] ],
-      nemonico: [ { value: agency?.nemonico || undefined, disabled: !!agency }, [ Validators.minLength(3) ] ],
-      dpc: [ { value: agency?.dpc || undefined, disabled: !!agency }, [ Validators.min(0) ] ],
+      nombre: [ { value: agency?.nombre || undefined }, [ Validators.required, Validators.minLength(4) ] ],
+      nemonico: [ { value: agency?.nemonico || undefined }, [ Validators.minLength(3) ] ],
+      dpc: [ { value: agency?.dpc || undefined }, [ Validators.min(0) ] ],
       empresa: [ { value: agency?.empresa || undefined, disabled: !!agency }, [ Validators.required ] ]
     });
   }

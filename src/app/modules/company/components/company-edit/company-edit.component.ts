@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CompanyFormComponent } from "@modules/company/components/company-form/company-form.component";
 import { ActivatedRoute, Router } from "@angular/router";
-import { JsonPipe } from "@angular/common";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { CompanyService } from "@app/services/company.service";
 import { lastValueFrom } from "rxjs";
@@ -10,10 +9,7 @@ import { UpdateCompanyDto } from "@modules/company/domain/dto/update-company.dto
 @Component({
   selector: 'app-company-edit',
   standalone: true,
-  imports: [
-    CompanyFormComponent,
-    JsonPipe
-  ],
+  imports: [ CompanyFormComponent ],
   templateUrl: './company-edit.component.html'
 })
 export class CompanyEditComponent {

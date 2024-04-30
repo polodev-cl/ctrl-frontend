@@ -9,7 +9,7 @@ describe('TablasHistorialEquipoComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         TablasHistorialEquipoComponent,
-        NewlinePipe // Añade el NewlinePipe aquí
+        NewlinePipe
       ]
 
     })

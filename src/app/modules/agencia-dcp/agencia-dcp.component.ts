@@ -6,6 +6,7 @@
   import { EquipmentService } from '../../common/equipment/services/equipment.service';
   import { NavbarComponent } from "../shared/navbar/navbar.component";
   import { TablaDpcComponent } from "../tabla-dpc/tabla-dpc.component";
+  import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/modal-historial-equipo.component";
 
   @Component({
     selector: 'app-agencia-dcp',
@@ -19,7 +20,8 @@
       RouterLink,
       ButtonModule,
       NavbarComponent,
-      TablaDpcComponent
+      TablaDpcComponent,
+      ModalHistorialEquipoComponent
     ]
   })
   export class AgenciaDcpComponent {
@@ -30,8 +32,8 @@
     ];
     equipments: any[] = [];
     agenciaDpc: number | null = null;
-    mostrarModalHistorialEquipoDpc: boolean = false;
-    historialEquipos: any[] = [];
+    mostrarModalHistorialEquipo: boolean = false;
+    equipoId: number | null = null;
 
     constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {
     }
@@ -58,18 +60,14 @@
       });
     }
 
-    handleHistoryRequested(history: any[]): void {
-      this.historialEquipos = history;  // Asigna los datos del historial al array
-      this.abrirModalHistorialEquipoDpc();  // Abre el modal
-    }
-    
-    abrirModalHistorialEquipoDpc(): void {
-      this.mostrarModalHistorialEquipoDpc = true;  // Muestra el modal si hay datos
-    }
-    
 
-    cerrarModalHistorialEquipoDpc(): void {
-      this.mostrarModalHistorialEquipoDpc = false;
+    openModalWithId(equipoId: number) {
+      this.equipoId = equipoId;
+      this.mostrarModalHistorialEquipo = true;
+    }
+  
+    cerrarModalHistorialEquipo(): void {
+      this.mostrarModalHistorialEquipo = false;
     }
 
     

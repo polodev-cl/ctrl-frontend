@@ -54,8 +54,7 @@ import { EquipmentService } from '@app/common/equipment/services/equipment.servi
 })
 export class TablaDpcComponent implements OnChanges { 
   @Input() equipments: any[] = [];
-  @Output() onHistoryRequested = new EventEmitter<any>();
-  @Output() onToggleModal = new EventEmitter<boolean>();
+  @Output() requestOpenModal = new EventEmitter<number>();
   dataSource = new MatTableDataSource<any>(this.equipments);
   
   displayedColumns: string[] = [
@@ -113,21 +112,10 @@ export class TablaDpcComponent implements OnChanges {
     this.dataSource.paginator = this.paginator;
   }
 
-
-// En TablaDpcComponent
-getHistory(equipmentId: number) {
-  this.equipmentService.getEquipmentHistory(equipmentId).subscribe({
-    next: (history) => {
-      console.log('Datos de la tabla history:', history);
-      this.onHistoryRequested.emit(history);  // Emite el evento con los datos del historial
-    },
-    error: (error) => {
-      console.error('Failed to fetch history:', error);
-      // Posiblemente emitir un evento de error o manejarlo de alguna manera
-    }
-  });
-}
-
+  getHistory(equipmentId: number) {
+    console.log("ID ENVIADO",equipmentId)
+    this.requestOpenModal.emit(equipmentId);
+  }
 
   exportToExcel() {
 

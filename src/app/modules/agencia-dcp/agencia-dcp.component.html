@@ -1,10 +1,12 @@
 <app-navbar> </app-navbar>
 
-<app-modal-historial-equipo-dpc
-  *ngIf="mostrarModalHistorialEquipoDpc"
-  [historialDatos]="historialEquipos"
-  (cerrar)="cerrarModalHistorialEquipoDpc()">
-</app-modal-historial-equipo-dpc>
+
+<app-modal-historial-equipo
+  (cerrar)="cerrarModalHistorialEquipo()"
+  [equipoId]="equipoId"
+  *ngIf="mostrarModalHistorialEquipo"
+>
+</app-modal-historial-equipo>
 
 <div class="container-md">
   <div class="frame mt-3" id="frame_middletop">
@@ -47,7 +49,7 @@
         <app-tabla-dpc
           #tablaDpcComponent
           [equipments]="equipments"
-          (onHistoryRequested)="handleHistoryRequested($event)">
+          (requestOpenModal)="openModalWithId($event)">
         ></app-tabla-dpc>
         <div class="row my-4 d-flex justify-content-between">
           <div class="col-12 mb-3">

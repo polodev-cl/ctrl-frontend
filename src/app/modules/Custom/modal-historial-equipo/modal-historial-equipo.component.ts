@@ -23,6 +23,7 @@ export class ModalHistorialEquipoComponent {
 
 
   ngOnInit() {
+    console.log("Received equipoId in modal:", this.equipoId);
     if (this.equipoId) {
       this.buscarHistorialEquipo(this.equipoId);
     }

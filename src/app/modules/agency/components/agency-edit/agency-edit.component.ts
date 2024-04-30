@@ -30,7 +30,7 @@ export class AgencyEditComponent {
     this.agencyForm.agencyForm.disable();
     form.empId = form.empresa.id!;
 
-    lastValueFrom(this.agencyService.createAgency(form))
+    lastValueFrom(this.agencyService.updateAgency(this.agency.id, form))
       .then((res) => {
         this._matSnackBar.open('Agencia editada correctamente', 'Cerrar', { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
         this._router.navigate([ '/agency' ], { queryParams: { id: res.id } }).then();

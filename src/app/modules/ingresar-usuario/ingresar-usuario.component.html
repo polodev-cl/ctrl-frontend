@@ -10,9 +10,9 @@
   (cerrar)="cerrarModalAdvertencia()"
   *ngIf="mostrarModalAdvertencia"
   [mensajeModalAdvertencia]="mensajeModalAdvertencia"
-  [tituloModalAdvertencia]="tituloModalAdvertencia">
+  [tituloModalAdvertencia]="tituloModalAdvertencia"
+>
 </app-modal-advertencia>
-
 
 <div class="container-md">
   <div class="frame mt-3" id="frame_middletop">
@@ -44,6 +44,28 @@
 
     <div class="row">
       <form [formGroup]="usuarioForm" class="mt-4">
+        <div class="grid-item my-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Empresa</mat-label>
+            <mat-select formControlName="empresa">
+              <mat-option *ngFor="let empresa of empresas" [value]="empresa.id">
+                {{ empresa.nombreCorto }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="grid-item my-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="rolId">
+              <mat-option value="1">Administrador</mat-option>
+              <mat-option value="2">Ingreso</mat-option>
+              <mat-option value="3">Consulta</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
         <div class="grid-item my-3">
           <span class="p-float-label">
             <input
@@ -102,53 +124,28 @@
           </span>
         </div>
 
-        <div class="grid-item my-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Rol</mat-label>
-            <mat-select formControlName="rolId">
-              <mat-option value="1">Administrador</mat-option>
-              <mat-option value="2">Ingreso</mat-option>
-              <mat-option value="3">Consulta</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="grid-item my-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Empresa</mat-label>
-            <mat-select formControlName="empresa">
-              <mat-option *ngFor="let empresa of empresas" [value]="empresa.id">
-                {{ empresa.nombreCorto }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          
-        </div>
+        
       </form>
-
-      <div class="col-md-4 d-flex justify-content-end align-items-end">
-        <!-- <button pButton type="button" class="search-button px-5 py-2 mb-3" (click)="abrirModalExito()">
-          Ingresar
-        </button> -->
-        <button
-          (click)="onSubmit()"
-          class="search-button px-5 py-2 mb-3"
-          pButton
-          type="button"
-        >
-          Registrar
-        </button>
-      </div>
     </div>
-    <div class="container-fluid no-tabla my-2 px-0">
+    <div class="container-fluid px-0">
       <hr />
-      <div class="row my-4">
+      <div class="row my-4 d-flex gap-2 justify-content-between">
         <div class="col-md-2 col-12">
           <button
             class="back-button p-2 w-100"
             label="Volver"
             pButton
             routerLink="/home"
+            type="button"
+          ></button>
+        </div>
+
+        <div class="col-md-2 col-12">
+          <button
+            (click)="onSubmit()"
+            class="search-button p-2 w-100"
+            pButton
+            label="Registrar"
             type="button"
           ></button>
         </div>

@@ -34,18 +34,21 @@
         <form class="p-fluid">
           <div class="p-inputgroup mt-3 position-relative">
             <input
-              class="input-color rounded-5"
-              id="search_username"
-              pInputText
-              placeholder="Nombre o rut del usuario"
-              type="text"
-            />
-            <img
-              (click)="onSearch()"
-              alt="Search Icon"
-              class="custom-input-icon"
-              src="../../../assets/image/searchIcon.svg"
-            />
+            #searchInput
+            class="input-color rounded-5"
+            id="search_username"
+            pInputText
+            placeholder="Nombre o rut del usuario"
+            type="text"
+          />
+          
+          <img
+            (click)="onSearch(searchInput)"
+            alt="Search Icon"
+            class="custom-input-icon"
+            src="../../../assets/image/searchIcon.svg"
+          />
+          
           </div>
         </form>
       </div>

@@ -1,5 +1,5 @@
 import { NgForOf, NgIf } from "@angular/common";
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
@@ -24,16 +24,21 @@ import { NavbarComponent } from "../shared/navbar/navbar.component";
     NavbarComponent
   ]
 })
-export class EditarUsuarioComponent {
+export class EditarUsuarioComponent implements OnInit {
   showTable = false;
   breadcrumbs = [
     { text: 'Home', link: '/home' },
     { text: 'Editar Usuario', link: '/editar-usuario' }
   ];
+  @ViewChild(TablasEditarUsuarioComponent) tablaComponent!: TablasEditarUsuarioComponent;
 
-  onSearch() {
 
+  ngOnInit(): void {
     this.showTable = true;
+  }
+  onSearch(searchInput: HTMLInputElement) {
+  
+    this.tablaComponent.applyFilter(searchInput.value);
   }
 
 }

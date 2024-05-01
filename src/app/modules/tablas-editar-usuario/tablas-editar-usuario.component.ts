@@ -83,6 +83,14 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
     });
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   editarUsuario(user: Usuario) {
     console.log('Editando usuario:', user);
     this.cerrarModalEditar();

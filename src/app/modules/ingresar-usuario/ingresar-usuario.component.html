@@ -33,57 +33,97 @@
         </nav>
       </div>
     </div>
+
     <div class="row">
-      <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="nombreUsuario"
-            class="w-100 rounded"
-            id="nombreUsuario"
-            pInputText
-            type="text"
-          />
-          <label for="nombreUsuario">Nombre de usuario</label>
-        </span>
-      </div>
-      <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <span class="p-float-label">
-          <input
-            class="w-100 rounded"
-            id="nivelUsuario"
-            pInputText
-            type="text"
-          />
-          <label for="nivelUsuario">Nivel de usuario</label>
-        </span>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <span class="p-float-label">
-          <input class="w-100 rounded" id="rutUsuario" pInputText type="text" />
-          <label for="rutUsuario">Rut</label>
-        </span>
-      </div>
-      <div class="col-md-4 mt-4 mb-3 mt-md-0">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="email"
-            class="w-100 rounded"
-            id="correo"
-            pInputText
-            required
-            type="email"
-          />
-          <label for="correo">Correo Electrónico</label>
-        </span>
-      </div>
+      <form [formGroup]="usuarioForm" class="mt-4">
+        <div class="grid-item my-3">
+          <span class="p-float-label">
+            <input
+              autocomplete="on"
+              class="w-100 rounded"
+              id="rut"
+              pInputText
+              #rut
+              type="text"
+              [value]="rut.value | rutPipe"
+              formControlName="rut"
+            />
+            <label for="rut">Rut (12345678-9)</label>
+          </span>
+        </div>
+
+        <div class="grid-item my-3">
+          <span class="p-float-label">
+            <input
+              autocomplete="on"
+              class="w-100 rounded"
+              id="email"
+              pInputText
+              type="text"
+              formControlName="email"
+            />
+            <label for="email">Email</label>
+          </span>
+        </div>
+
+        <div class="grid-item my-3">
+          <span class="p-float-label">
+            <input
+              autocomplete="on"
+              class="w-100 rounded"
+              id="nombres"
+              pInputText
+              type="text"
+              formControlName="nombres"
+            />
+            <label for="nombres">Nombres</label>
+          </span>
+        </div>
+
+        <div class="grid-item my-3">
+          <span class="p-float-label">
+            <input
+              autocomplete="on"
+              class="w-100 rounded"
+              id="apellidos"
+              pInputText
+              type="text"
+              formControlName="apellidos"
+            />
+            <label for="apellidos">Apellidos</label>
+          </span>
+        </div>
+
+        <div class="grid-item my-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="rolId">
+              <mat-option value="1">Administrador</mat-option>
+              <mat-option value="2">Ingreso</mat-option>
+              <mat-option value="3">Consulta</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="grid-item my-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Empresa</mat-label>
+            <mat-select formControlName="empresa">
+              <mat-option *ngFor="let empresa of empresas" [value]="empresa.id">
+                {{ empresa.nombreCorto }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+        </div>
+      </form>
+
       <div class="col-md-4 d-flex justify-content-end align-items-end">
         <!-- <button pButton type="button" class="search-button px-5 py-2 mb-3" (click)="abrirModalExito()">
           Ingresar
         </button> -->
         <button
-          (click)="registrarUsuario()"
+          (click)="onSubmit()"
           class="search-button px-5 py-2 mb-3"
           pButton
           type="button"

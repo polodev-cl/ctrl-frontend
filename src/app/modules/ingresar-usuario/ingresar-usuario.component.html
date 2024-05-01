@@ -6,6 +6,14 @@
   [titulo]="tituloModalExito"
 ></app-modal-exitoso>
 
+<app-modal-advertencia
+  (cerrar)="cerrarModalAdvertencia()"
+  *ngIf="mostrarModalAdvertencia"
+  [mensajeModalAdvertencia]="mensajeModalAdvertencia"
+  [tituloModalAdvertencia]="tituloModalAdvertencia">
+</app-modal-advertencia>
+
+
 <div class="container-md">
   <div class="frame mt-3" id="frame_middletop">
     <div class="row">

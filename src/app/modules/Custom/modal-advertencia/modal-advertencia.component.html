@@ -1,11 +1,10 @@
 <div class="custom-modal">
   <div class="custom-modal-content rounded-3 text-center">
-    <h2 class="my-3">Eliminar Usuario</h2>
+    <h2 class="my-3">{{ tituloModalAdvertencia }}</h2>
     <img alt="Alert" class="mt-4 mb-4" src="../../../../assets/image/alert.svg"/>
-    <p class="subtitulo">¿Esta seguro que desea eliminar el usuario?</p>
+    <p class="subtitulo">{{ mensajeModalAdvertencia }}</p>
     <div class="modal-footer mt-4 pt-0">
       <button (click)="cerrarModal()" class="btn btn-outline my-3 px-1">Volver</button>
-      <button (click)="abrirModalExitoso()" class="btn btn-eliminar px-1">Eliminar</button>
     </div>
   </div>
 </div>

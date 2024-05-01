@@ -12,6 +12,7 @@ import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.com
 import { ModalGestionUsuarioComponent } from '../Custom/modal-gestion-usuario/modal-gestion-usuario.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -86,6 +87,9 @@ export class HomeComponent {
   cerrarModalCargaMasiva(): void {
     this.mostrarModalCargaMasiva = false;
   }
+
+
+  //advertencia
 
   manejarReemplazo(): void {
     // Antes de mostrar el modal exitoso, asigna los valores deseados a las propiedades

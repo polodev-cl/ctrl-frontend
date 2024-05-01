@@ -1,5 +1,5 @@
 import { NgForOf, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -26,6 +26,7 @@ import { Company, CompanyService } from '@app/services/company.service';
 import { Observable, of } from 'rxjs';
 import { cleanEmptyFields } from '@app/utils/utils';
 import { UserService } from '@app/common/user/services/user.service';
+import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
 
 @Component({
   selector: 'app-ingresar-usuario',
@@ -50,6 +51,7 @@ import { UserService } from '@app/common/user/services/user.service';
     MatFormField,
     ReactiveFormsModule,
     RutPipe,
+    ModalAdvertenciaComponent,
   ],
 })
 export class IngresarUsuarioComponent implements OnInit{
@@ -58,7 +60,9 @@ export class IngresarUsuarioComponent implements OnInit{
     { text: 'Ingresar-usuario', link: '/ingresar-usuario' },
   ];
 
-
+   mostrarModalAdvertencia: boolean = false;
+   mensajeModalAdvertencia: string = 'Hubo un error en su solicitud';
+  tituloModalAdvertencia: string = 'Error';
   mostrarModalExito: boolean = false;
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
@@ -106,21 +110,27 @@ export class IngresarUsuarioComponent implements OnInit{
 
 
   onSubmit() {
-   if(this.usuarioForm.valid){
-    const formData = cleanEmptyFields(this.usuarioForm.getRawValue());
-    formData.rolId = Number(formData.rolId);
-    formData.empresaId = formData.empresa;
-    this.userService.createUser(formData).subscribe(
-      response => {
-        console.log('Equipo creado con éxito', response);
-      },
-      error =>{
-        console.error('Error al crear el equipo', error);
-      }
-    )
-   }
+    if (this.usuarioForm.valid) {
+      const formData = cleanEmptyFields(this.usuarioForm.getRawValue());
+      formData.rolId = Number(formData.rolId);
+      formData.empresaId = formData.empresa;
+  
+      this.userService.createUser(formData).subscribe({
+        next: (response) => {
+          console.log('Usuario creado con éxito', response);
+          this.abrirModalExito();
+        },
+        error: (error) => {
+          console.error('Error al crear el usuario', error);
+          const errorMessage = error.error.message || 'Se produjo un error inesperado.';
+          console.log("error: ",errorMessage)
+          this.abrirModalAdvertencia(errorMessage);
+        }
+      });
+    } else {
+      this.abrirModalAdvertencia('Por favor, verifica que todos los campos estén correctos.');
+    }
   }
-
   abrirModalExito(): void {
     this.tituloModalExito = 'Ingreso Usuario';
     this.mensajeModalExito = `Usuario ha sido ingresado con éxito`;
@@ -129,5 +139,13 @@ export class IngresarUsuarioComponent implements OnInit{
 
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
+  }
+  cerrarModalAdvertencia(): void {
+    this.mostrarModalAdvertencia = false;
+  }
+  abrirModalAdvertencia(mensaje: string): void {
+    this.tituloModalAdvertencia = 'Error al ingresar usuario';
+    this.mensajeModalAdvertencia = mensaje;
+    this.mostrarModalAdvertencia = true;
   }
 }

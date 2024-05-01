@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-modal-resumen-ingreso-individual',
@@ -6,17 +6,31 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
   styleUrls: ['./modal-resumen-ingreso-individual.component.css'],
   standalone: true
 })
-export class ModalResumenIngresoIndividualComponent {
-  @Input() datosModal: any;
+export class ModalResumenIngresoIndividualComponent implements OnInit {
+  @Input() datosModal: any; 
+  formattedDate: string = '';  
+  formattedTime: string = ''; 
 
-  @Output() cerrar = new EventEmitter<void>();
-  @Output() exito = new EventEmitter<void>();
+
+  @Output() cerrar = new EventEmitter<void>();  
+  @Output() exito = new EventEmitter<void>();   
+  ngOnInit() {
+  
+    if (this.datosModal && this.datosModal.fechaIngreso) {
+      const date = new Date(this.datosModal.fechaIngreso);
+      this.formattedDate = date.toLocaleDateString('es-CL', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      this.formattedTime = date.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+    }
+    console.log('Datos recibidos en el modal:', this.datosModal);
+    console.log('Formatted Date:', this.formattedDate);
+    console.log('Formatted Time:', this.formattedTime);
+  }
 
   cerrarModal(): void {
-    this.cerrar.emit();
+    this.cerrar.emit();  
   }
 
   confirmarAccion(): void {
-    this.exito.emit();
+    this.exito.emit();  
   }
 }

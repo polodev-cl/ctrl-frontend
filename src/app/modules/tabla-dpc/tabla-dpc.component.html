@@ -74,7 +74,7 @@
           Agencia
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
-          {{ element.agencia?.nombre || "Sin Agencia" }}
+          {{ element.agencia?.nombre || "-" }}
         </td>
       </ng-container>
 
@@ -87,7 +87,7 @@
           Empresa
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
-          {{ element.empresa?.nombreCorto || "Sin Empresa" }}
+          {{ element.empresa?.nombreCorto || "-" }}
         </td>
       </ng-container>
 
@@ -100,7 +100,7 @@
           Usuario
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
-          {{ element.usuario.rut }}
+          {{ element.rut || "-" }}
         </td>
       </ng-container>
 
@@ -110,7 +110,7 @@
           class="rounded-header last-header color-headers text-center text-light"
           mat-header-cell
         >
-          Acciones
+         
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
           <div class="d-flex justify-content-evenly align-items-center">

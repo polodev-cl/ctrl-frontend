@@ -1,27 +1,45 @@
-import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteTrigger } from "@angular/material/autocomplete";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
-import { MatInput } from "@angular/material/input";
-import { MatOption, MatSelect } from "@angular/material/select";
-import { RouterLink } from "@angular/router";
-import { CalendarModule } from "primeng/calendar";
-import { DividerModule } from "primeng/divider";
-import { FloatLabelModule } from "primeng/floatlabel";
-import { InputTextModule } from "primeng/inputtext";
-import { lastValueFrom, Observable, of } from "rxjs";
-import { map } from "rxjs/operators";
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { RouterLink } from '@angular/router';
+import { CalendarModule } from 'primeng/calendar';
+import { DividerModule } from 'primeng/divider';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { lastValueFrom, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
-import { RutFormatterDirective } from "../../core/directives/rut-formatter.directive";
-import { RutPipe } from "../../core/pipes/rut.pipe";
-import { Company, CompanyService } from "../../services/company.service";
-import { cleanEmptyFields, cleanIfNotValid, filterByValue, formatDDLTBK, formatMAC, IPV4_PATTERN, MAC_PATTERN } from '../../utils/utils';
-import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
-import { ModalResumenIngresoIndividualComponent } from "../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component";
-import { NavbarComponent } from "../shared/navbar/navbar.component";
+import { RutFormatterDirective } from '../../core/directives/rut-formatter.directive';
+import { RutPipe } from '../../core/pipes/rut.pipe';
+import { Company, CompanyService } from '../../services/company.service';
+import {
+  cleanEmptyFields,
+  cleanIfNotValid,
+  filterByValue,
+  formatDDLTBK,
+  formatMAC,
+  IPV4_PATTERN,
+  MAC_PATTERN,
+} from '../../utils/utils';
+import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
+import { ModalResumenIngresoIndividualComponent } from '../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { Agency, AgencyService } from './agency.service';
 import { SoService, SOVersion } from './so.service';
+import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
 
 interface Option {
   value: string | number;
@@ -31,7 +49,7 @@ interface Option {
 @Component({
   selector: 'app-ingreso-individual',
   templateUrl: './ingreso-individual.component.html',
-  styleUrls: [ './ingreso-individual.component.css' ],
+  styleUrls: ['./ingreso-individual.component.css'],
   standalone: true,
   imports: [
     ModalExitosoComponent,
@@ -57,8 +75,9 @@ interface Option {
     AsyncPipe,
     MatAutocomplete,
     MatAutocompleteTrigger,
-    MatInput
-  ]
+    MatInput,
+    ModalAdvertenciaComponent
+  ],
 })
 export class IngresoIndividualComponent implements OnInit {
   breadcrumbs = [
@@ -87,6 +106,9 @@ export class IngresoIndividualComponent implements OnInit {
   selectorSistemasOperativos: SOVersion[] = [];
   selectorSistemasOperativosFiltered: SOVersion[] = [];
 
+  mostrarModalAdvertencia: boolean = false;
+  mensajeModalAdvertencia: string = 'Hubo un error en su solicitud';
+ tituloModalAdvertencia: string = 'Error';
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
   mostrarModalExito: boolean = false;
@@ -100,7 +122,7 @@ export class IngresoIndividualComponent implements OnInit {
     private agencyService: AgencyService,
     private companyService: CompanyService,
     private equipmentService: EquipmentService,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.ingresoIndividualForm = this._loadForm();
     this.selectorCompany = this.companyService.companiesSelector;
@@ -110,8 +132,9 @@ export class IngresoIndividualComponent implements OnInit {
     this.selectorAgencyFiltered = this.selectorAgency;
   }
 
+
   filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
-    switch ( field ) {
+    switch (field) {
       case 'agency': {
         this.selectorAgencyFiltered = this.selectorAgency.pipe(
           map((agencies) => filterByValue(agencies, target.value, 'nombre'))
@@ -119,20 +142,36 @@ export class IngresoIndividualComponent implements OnInit {
         break;
       }
       case 'company': {
-        this.selectorCompanyFiltered = this.companyService.companiesSelector.pipe(
-          map((companies) => filterByValue(companies, target.value, 'razonSocial'))
-        );
+        this.selectorCompanyFiltered =
+          this.companyService.companiesSelector.pipe(
+            map((companies) =>
+              filterByValue(companies, target.value, 'razonSocial')
+            )
+          );
         break;
       }
       case 'sistemaOperativo': {
-        this.selectorSistemasOperativosFiltered = filterByValue(this.selectorSistemasOperativos, target.value, 'so');
+        this.selectorSistemasOperativosFiltered = filterByValue(
+          this.selectorSistemasOperativos,
+          target.value,
+          'so'
+        );
         break;
       }
     }
   }
 
   isEquipmentWithNoOptions(type: string): boolean {
-    return [ 'Impresora', 'Anexos', 'Escaner', 'LBM', 'Monitor', 'Pistola', 'Print Server', 'TBK', ].includes(type);
+    return [
+      'Impresora',
+      'Anexos',
+      'Escaner',
+      'LBM',
+      'Monitor',
+      'Pistola',
+      'Print Server',
+      'TBK',
+    ].includes(type);
   }
 
   onEmpresaChange(value: any): void {
@@ -144,8 +183,8 @@ export class IngresoIndividualComponent implements OnInit {
 
     if (value)
       lastValueFrom(this.agencyService.getAgenciesSelectorByCompanyId(+value))
-        .then((agencies) => this.selectorAgency = of(agencies))
-        .then(() => this.selectorAgencyFiltered = this.selectorAgency)
+        .then((agencies) => (this.selectorAgency = of(agencies)))
+        .then(() => (this.selectorAgencyFiltered = this.selectorAgency))
         .then(() => this.ingresoIndividualForm.get('agenciaId')?.enable())
         .catch(console.error);
   }
@@ -154,11 +193,14 @@ export class IngresoIndividualComponent implements OnInit {
     this.ingresoIndividualForm.patchValue({
       agenciaDpc: agency?.dpc,
       agenciaMnemonic: agency?.nemonico,
-    })
+    });
   }
 
-  onDDLTBKInput(): void { // TODO: usar valueChanges
-    const formatDDLTBKValue = formatDDLTBK(this.ingresoIndividualForm.get('ddlTbk')?.value);
+  onDDLTBKInput(): void {
+    // TODO: usar valueChanges
+    const formatDDLTBKValue = formatDDLTBK(
+      this.ingresoIndividualForm.get('ddlTbk')?.value
+    );
     this.ingresoIndividualForm.patchValue({
       ddllTbk: formatDDLTBK(this.ingresoIndividualForm.get('ddlTbk')?.value),
     });
@@ -172,7 +214,7 @@ export class IngresoIndividualComponent implements OnInit {
         sistemaOperativoVersion: undefined,
         procesador: undefined,
         ramGb: undefined,
-        disco: undefined
+        disco: undefined,
       });
 
       this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
@@ -196,7 +238,7 @@ export class IngresoIndividualComponent implements OnInit {
           sistemaOperativoVersion: undefined,
           procesador: undefined,
           ramGb: undefined,
-          disco: undefined
+          disco: undefined,
         });
 
         this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
@@ -206,21 +248,24 @@ export class IngresoIndividualComponent implements OnInit {
         this.ingresoIndividualForm.get('disco')?.enable();
         this.ingresoIndividualForm.get('ddllTbk')?.disable();
       });
-
     }
   }
 
   loadSOData = () =>
-    lastValueFrom(this.soService.getSODataByType(this.ingresoIndividualForm.get('tipo')?.value)).then((soOptions) => {
+    lastValueFrom(
+      this.soService.getSODataByType(
+        this.ingresoIndividualForm.get('tipo')?.value
+      )
+    ).then((soOptions) => {
       this.selectorSistemasOperativos = soOptions;
       this.selectorSistemasOperativosFiltered = soOptions;
       this.ingresoIndividualForm.patchValue({
         sistemaOperativoVersion: undefined,
         procesador: undefined,
         ramGb: undefined,
-        disco: undefined
+        disco: undefined,
       });
-    })
+    });
 
   limitAndValidateIP(): void {
     const value = this.ingresoIndividualForm.get('ip')?.value;
@@ -241,7 +286,8 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   abrirModalResumenIngresoIndividual(): void {
-    this.datosParaModal = this.ingresoIndividualForm.getRawValue(); // Preparar los datos para el modal
+    this.datosParaModal = this.ingresoIndividualForm.getRawValue();
+    console.log('Datos enviados al modal:', this.datosParaModal);
     this.mostrarModalResumenIngresoIndividual = true;
   }
 
@@ -253,51 +299,68 @@ export class IngresoIndividualComponent implements OnInit {
     this.mostrarModalExito = false;
   }
 
+  cerrarModalAdvertencia(): void {
+    this.mostrarModalAdvertencia = false;
+  }
+  abrirModalAdvertencia(mensaje: string): void {
+    this.tituloModalAdvertencia = 'Error al ingresar usuario';
+    this.mensajeModalAdvertencia = mensaje;
+    this.mostrarModalAdvertencia = true;
+  }
+
   onSubmit() {
     if (this.ingresoIndividualForm.valid) {
-      const formData = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
+      const values = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
+      const formData = {
+        ...values,
+        agenciaId: values.agenciaId.id,
+      };
 
       this.equipmentService.createEquipment(formData).subscribe(
-        response => {
+        (response) => {
           console.log('Equipo creado con éxito', response);
+          this.abrirModalResumenIngresoIndividual()
         },
-        error => {
+        (error) => {
           console.error('Error al crear el equipo', error);
+          const errorMessage = error.error.message || 'Se produjo un error inesperado.';
+          console.log("error: ",errorMessage)
+          this.abrirModalAdvertencia(errorMessage);
         }
       );
     }
   }
 
-  displayFnAgency = (agency: Agency) => agency ? agency.nombre : '';
+  displayFnAgency = (agency: Agency) => (agency ? agency.nombre : '');
 
-  displayFnCompany = (company: Company) => company ? company.razonSocial : '';
+  displayFnCompany = (company: Company) => (company ? company.razonSocial : '');
 
   private _loadForm() {
     return this.fb.group({
-      fechaIngreso: [ undefined, [ Validators.required ] ],
-      ordenCompra: [ undefined, [ Validators.required ] ],
-      rut: [ undefined ],
-      agenciaId: [ { value: undefined, disabled: true } ],
-      agenciaMnemonic: [ { value: undefined, disabled: true } ],
-      agenciaDpc: [ { value: undefined, disabled: true } ],
-      inventario: [ undefined, [ Validators.min(0) ] ],
-      tipo: [ undefined, [ Validators.required ] ],
-      sistemaOperativo: [ undefined ],
-      uso: [ undefined, [ Validators.required ] ],
-      marca: [ undefined, [ Validators.required ] ],
-      modelo: [ undefined, [ Validators.required ] ],
-      mac: [ undefined, [ Validators.pattern(MAC_PATTERN) ] ],
-      ip: [ undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
-      nombre: [ undefined, [ Validators.required ] ],
-      procesador: [ undefined ],
-      ramGb: [ undefined, [ Validators.min(1) ] ],
-      disco: [ undefined ],
-      ddllTbk: [ { value: undefined, disabled: true } ],
-      serie: [ undefined ],
-      encargadoAgencia: [ undefined, [ Validators.required ] ],
-      ubicacion: [ undefined, [ Validators.required ] ],
-      garantiaMeses: [ undefined, [ Validators.required, Validators.min(1) ] ],
-      estado: [ 1 ],
+      fechaIngreso: [undefined, [Validators.required]],
+      ordenCompra: [undefined, [Validators.required]],
+      rut: [undefined],
+      agenciaId: [{ value: undefined, disabled: true }],
+      agenciaMnemonic: [{ value: undefined, disabled: true }],
+      agenciaDpc: [{ value: undefined, disabled: true }],
+      inventario: [undefined, [Validators.min(0)]],
+      tipo: [undefined, [Validators.required]],
+      sistemaOperativo: [undefined],
+      uso: [undefined, [Validators.required]],
+      marca: [undefined, [Validators.required]],
+      modelo: [undefined, [Validators.required]],
+      mac: [undefined, [Validators.pattern(MAC_PATTERN)]],
+      ip: [undefined, [Validators.pattern(IPV4_PATTERN)]],
+      nombre: [undefined, [Validators.required]],
+      procesador: [undefined],
+      ramGb: [undefined, [Validators.min(1)]],
+      disco: [undefined],
+      ddllTbk: [{ value: undefined, disabled: true }],
+      serie: [undefined],
+      encargadoAgencia: [undefined, [Validators.required]],
+      ubicacion: [undefined, [Validators.required]],
+      garantiaMeses: [undefined, [Validators.required, Validators.min(1)]],
+      estado: [1],
     });
   }
 }

@@ -209,6 +209,26 @@ input[type=number] {
   }
 }
 
+
+.grid-container-modal-resumen {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 565px) {
+  .grid-container-modal-resumen {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.blue-label{
+  color: #388CD9;
+}
+
+.custom-modal-body{
+  overflow-y: auto;
+}
+
 .grid-item-checkbox {
   max-height: 60px;
 }

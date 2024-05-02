@@ -61,7 +61,7 @@
           </ol>
         </nav>
       </div>
-      <div class="col">
+      <div class="col" *ngIf="rol === RoleEnum.ADMIN">
         <div class="row">
           <div class="col my-2">
             <div class="d-flex justify-content-evenly align-items-center h-100">
@@ -156,7 +156,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-3" *ngIf="rol === RoleEnum.ADMIN || rol === RoleEnum.INGRESO">
         <div class="card border rounded card-shadow-box">
           <div class="card-header px-5 py-1 header-ingreso">
             Ingreso Individual
@@ -187,7 +187,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-3" *ngIf="rol === RoleEnum.ADMIN">
         <div class="card border rounded card-shadow-box">
           <div class="card-header px-5 py-1 header-individual">
             Mantenedores
@@ -222,9 +222,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="empresa" class="row">
-        <div class="col-md-12"></div>
       </div>
     </div>
   </div>

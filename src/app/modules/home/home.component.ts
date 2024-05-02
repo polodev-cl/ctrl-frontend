@@ -11,7 +11,8 @@ import { ModalDuplicadoComponent } from '../Custom/modal-duplicado/modal-duplica
 import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
 import { ModalGestionUsuarioComponent } from '../Custom/modal-gestion-usuario/modal-gestion-usuario.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
-
+import { UserService } from '@app/common/user/services/user.service';
+import { RoleEnum } from '@app/common/auth/enums/role.enum';
 
 @Component({
   selector: 'app-home',
@@ -30,10 +31,12 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
     ButtonModule,
     NgForOf,
     NavbarComponent,
+    
   ],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   breadcrumbs = [{ text: 'Home', link: '/home' }];
+  RoleEnum = RoleEnum;
 
   empresa: any = null;
   mostrarModalConsultaMasiva: boolean = false;
@@ -43,12 +46,24 @@ export class HomeComponent {
   mostrarModalExito: boolean = false;
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
+  rol!: RoleEnum;  // Le dice a TypeScript que la variable definitivamente tendrá un valor antes de cualquier uso
+
 
   constructor(
     private companyService: CompanyService,
     private cognitoService: CognitoService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) {}
+
+  ngOnInit() {
+    this.rol = this.obtenerRolUsuario();
+    console.log('rol de home', this.rol);
+  }
+
+  obtenerRolUsuario(): RoleEnum {
+    return this.userService.getUserRole();  // Asegúrate de que este método devuelva un 'RoleEnum'
+  }
 
   cerrarSesion() {
     this.cognitoService.signOut();
@@ -87,7 +102,6 @@ export class HomeComponent {
   cerrarModalCargaMasiva(): void {
     this.mostrarModalCargaMasiva = false;
   }
-
 
   //advertencia
 

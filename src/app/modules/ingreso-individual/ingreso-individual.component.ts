@@ -39,6 +39,7 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { Agency, AgencyService } from './agency.service';
 import { SoService, SOVersion } from './so.service';
 import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
+import { UserService } from '@app/common/user/services/user.service';
 
 interface Option {
   value: string | number;
@@ -75,7 +76,7 @@ interface Option {
     MatAutocomplete,
     MatAutocompleteTrigger,
     MatInput,
-    ModalAdvertenciaComponent
+    ModalAdvertenciaComponent,
   ],
 })
 export class IngresoIndividualComponent implements OnInit {
@@ -107,7 +108,7 @@ export class IngresoIndividualComponent implements OnInit {
 
   mostrarModalAdvertencia: boolean = false;
   mensajeModalAdvertencia: string = 'Hubo un error en su solicitud';
- tituloModalAdvertencia: string = 'Error';
+  tituloModalAdvertencia: string = 'Error';
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
   mostrarModalExito: boolean = false;
@@ -121,6 +122,7 @@ export class IngresoIndividualComponent implements OnInit {
     private agencyService: AgencyService,
     private companyService: CompanyService,
     private equipmentService: EquipmentService,
+    private userService: UserService,
     private fb: FormBuilder
   ) {
     this.ingresoIndividualForm = this._loadForm();
@@ -128,6 +130,9 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   ngOnInit() {
+    const userId = this.userService.getUserId(); // Obtener el id del usuario activo
+    console.log('ID del usuario activo:', userId);
+
     this.selectorAgencyFiltered = this.selectorAgency;
   }
 
@@ -138,8 +143,6 @@ export class IngresoIndividualComponent implements OnInit {
       macControl.setValue(formattedMac, { emitEvent: false });
     }
   }
-  
-
 
   filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
     switch (field) {
@@ -203,7 +206,6 @@ export class IngresoIndividualComponent implements OnInit {
       agenciaMnemonic: agency?.nemonico,
     });
   }
-
 
   onTypeChange(value: string): void {
     if (this.isEquipmentWithNoOptions(value)) {
@@ -312,18 +314,20 @@ export class IngresoIndividualComponent implements OnInit {
       const values = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
       const formData = {
         ...values,
+        usuarioIdCreacion: this.userService.getUserId(),
         agenciaId: values.agenciaId.id,
       };
 
       this.equipmentService.createEquipment(formData).subscribe(
         (response) => {
           console.log('Equipo creado con éxito', response);
-          this.abrirModalResumenIngresoIndividual()
+          this.abrirModalResumenIngresoIndividual();
         },
         (error) => {
           console.error('Error al crear el equipo', error);
-          const errorMessage = error.error.message || 'Se produjo un error inesperado.';
-          console.log("error: ",errorMessage)
+          const errorMessage =
+            error.error.message || 'Se produjo un error inesperado.';
+          console.log('error: ', errorMessage);
           this.abrirModalAdvertencia(errorMessage);
         }
       );

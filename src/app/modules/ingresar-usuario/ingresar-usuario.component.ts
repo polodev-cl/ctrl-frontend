@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { signUp } from 'aws-amplify/auth';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
@@ -23,7 +22,6 @@ import {
 } from '@angular/material/select';
 import { RutPipe } from '@app/core/pipes/rut.pipe';
 import { Company, CompanyService } from '@app/services/company.service';
-import { Observable, of } from 'rxjs';
 import { cleanEmptyFields } from '@app/utils/utils';
 import { UserService } from '@app/common/user/services/user.service';
 import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
@@ -118,7 +116,9 @@ export class IngresarUsuarioComponent implements OnInit{
       this.userService.createUser(formData).subscribe({
         next: (response) => {
           console.log('Usuario creado con éxito', response);
-          this.abrirModalExito();
+          if (response.temporaryPassword) {
+            this.abrirModalExito(response.temporaryPassword);
+          }
         },
         error: (error) => {
           console.error('Error al crear el usuario', error);
@@ -131,9 +131,9 @@ export class IngresarUsuarioComponent implements OnInit{
       this.abrirModalAdvertencia('Por favor, verifica que todos los campos estén correctos.');
     }
   }
-  abrirModalExito(): void {
+  abrirModalExito(temporaryPassword: string): void {
     this.tituloModalExito = 'Ingreso Usuario';
-    this.mensajeModalExito = `Usuario ha sido ingresado con éxito`;
+    this.mensajeModalExito = `Usuario ha sido ingresado con éxito. Contraseña temporal: ${temporaryPassword}`
     this.mostrarModalExito = true;
   }
 

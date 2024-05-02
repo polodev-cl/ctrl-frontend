@@ -168,10 +168,10 @@
         <div class="grid-item my-0">
           <div class="">
             <label class="form-label me-1 blue-label fw-bold" for="registroPor15">
-              Nemónico:</label
+              DDL/TBK:</label
             >
             <span class="form-text mb-0" id="registroPor15">
-              {{ datosModal.agenciaMnemonic }}
+              {{ datosModal?.ddllTbk || "N/A" }}
             </span>
           </div>
         </div>
@@ -248,15 +248,12 @@
     </div>
 
     <div class="modal-footer d-flex justify-content-around p-3">
-      <button (click)="cerrarModal()" class="back-button px-5 py-2 rounded-5">
-        Volver
-      </button>
       <button
         (click)="confirmarAccion()"
         class="search-button px-5 py-2 rounded-5"
         type="button"
       >
-        Ingresar
+       Cerrar
       </button>
     </div>
   </div>

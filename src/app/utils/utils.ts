@@ -28,16 +28,6 @@ export function formatMAC(mac: string): string {
 
 export const validateMAC = (str: string) => MAC_PATTERN.test(str);
 
-
-export function formatDDLTBK(input: string): string {
-  let cleanedInput = input.replace(/[^\d-]/g, '').substring(0, 11); // Limpia y limita la longitud
-
-  let parts = cleanedInput.split('-').join(''); // Elimina guiones existentes para evitar duplicados
-  return parts.substring(0, 3) +
-    (parts.length > 3 ? '-' : '') + parts.substring(3, 6) +
-    (parts.length > 6 ? '-' : '') + parts.substring(6, 9);
-}
-
 export function logFormErrors(form: FormGroup): void {
   Object.keys(form.controls).forEach(key => {
     const controlErrors = form.get(key)?.errors;

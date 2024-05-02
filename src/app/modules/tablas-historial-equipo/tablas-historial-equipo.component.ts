@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild,AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { NewlinePipe } from "../../core/pipes/newline.pipe";
@@ -28,17 +28,26 @@ import { CommonModule } from '@angular/common';
   ]
 })
 
-export class TablasHistorialEquipoComponent implements OnInit {
+export class TablasHistorialEquipoComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() dataSource!: MatTableDataSource<HistorialEquipment>; 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   displayedColumns: string[] = ['fechaCreacion', 'nombresUsuario', 'descripcion'];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['dataSource'] && this.paginator) {
+      const change = changes['dataSource'];
+      if (change.currentValue !== change.previousValue) {
+        this.dataSource.paginator = this.paginator;
+      }
+    }
   }
 }
 

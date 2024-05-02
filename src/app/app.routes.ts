@@ -38,7 +38,7 @@ export const routes: Routes = [
       { path: 'consulta-masiva', loadComponent: () => import('./modules/consulta-masiva/consulta-masiva.component').then(m => m.ConsultaMasivaComponent) },
       { path: 'data-usuario-rut', loadComponent: () => import('./modules/data-usuario-rut/data-usuario-rut.component').then(m => m.DataUsuarioRutComponent) },
       { path: 'data-numero-inventario', loadComponent: () => import('./modules/numero-inventario/numero-inventario.component').then(m => m.NumeroInventarioComponent) },
-      { path: 'data-agencia-dcp', loadComponent: () => import('./modules/agencia-dcp/agencia-dcp.component').then(m => m.AgenciaDcpComponent) },
+      { path: 'data-agencia-dpc', loadComponent: () => import('./modules/agencia-dcp/agencia-dcp.component').then(m => m.AgenciaDcpComponent) },
       { path: 'equipos-duplicados', loadComponent: () => import('./modules/equipos-duplicados/equipos-duplicados.component').then(m => m.EquiposDuplicadosComponent) },
       { path: 'ingreso-individual', loadComponent: () => import('./modules/ingreso-individual/ingreso-individual.component').then(m => m.IngresoIndividualComponent) },
       {

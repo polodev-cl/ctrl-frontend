@@ -28,7 +28,7 @@
     breadcrumbs = [
       { text: 'Home', link: '/home' },
       { text: 'Consulta individual', link: '/consulta-individual' },
-      { text: 'Agencia-dcp', link: '/data-agencia-dcp' },
+      { text: 'Agencia-dpc', link: '/data-agencia-dpc' },
     ];
     equipments: any[] = [];
     agenciaDpc: number | null = null;

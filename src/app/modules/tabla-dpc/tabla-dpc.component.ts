@@ -5,7 +5,8 @@ import {
   SimpleChanges,
   ViewChild,
   EventEmitter,
-  Output
+  Output,
+  AfterViewInit
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import {
@@ -47,15 +48,22 @@ import { EquipmentService } from '@app/common/equipment/services/equipment.servi
     MatPaginator,
     MatTooltip,
     MatIconButton,
-    MatIcon
+    MatIcon,
   ],
   templateUrl: './tabla-dpc.component.html',
   styleUrl: './tabla-dpc.component.css',
 })
-export class TablaDpcComponent implements OnChanges { 
+export class TablaDpcComponent implements  AfterViewInit, OnChanges { 
   @Input() equipments: any[] = [];
   @Output() requestOpenModal = new EventEmitter<number>();
   dataSource = new MatTableDataSource<any>(this.equipments);
+  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+
   
   displayedColumns: string[] = [
     'dpc',
@@ -71,10 +79,6 @@ export class TablaDpcComponent implements OnChanges {
   ];
 
   constructor(private equipmentService: EquipmentService) {}
-
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
 
   private columns = [
     { header: 'Empresa', wch: 20 },
@@ -105,12 +109,14 @@ export class TablaDpcComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['equipments']) {
       this.dataSource.data = this.equipments;
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+      }
     }
   }
+  
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
+
 
   getHistory(equipmentId: number) {
     console.log("ID ENVIADO",equipmentId)

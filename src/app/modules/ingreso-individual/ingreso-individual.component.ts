@@ -29,7 +29,6 @@ import {
   cleanEmptyFields,
   cleanIfNotValid,
   filterByValue,
-  formatDDLTBK,
   formatMAC,
   IPV4_PATTERN,
   MAC_PATTERN,
@@ -132,6 +131,15 @@ export class IngresoIndividualComponent implements OnInit {
     this.selectorAgencyFiltered = this.selectorAgency;
   }
 
+  onMacBlur(): void {
+    const macControl = this.ingresoIndividualForm.get('mac');
+    if (macControl) {
+      const formattedMac = formatMAC(macControl.value);
+      macControl.setValue(formattedMac, { emitEvent: false });
+    }
+  }
+  
+
 
   filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
     switch (field) {
@@ -196,15 +204,6 @@ export class IngresoIndividualComponent implements OnInit {
     });
   }
 
-  onDDLTBKInput(): void {
-    // TODO: usar valueChanges
-    const formatDDLTBKValue = formatDDLTBK(
-      this.ingresoIndividualForm.get('ddlTbk')?.value
-    );
-    this.ingresoIndividualForm.patchValue({
-      ddllTbk: formatDDLTBK(this.ingresoIndividualForm.get('ddlTbk')?.value),
-    });
-  }
 
   onTypeChange(value: string): void {
     if (this.isEquipmentWithNoOptions(value)) {

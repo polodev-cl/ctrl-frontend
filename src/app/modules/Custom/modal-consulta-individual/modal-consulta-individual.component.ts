@@ -51,7 +51,7 @@ export class ModalConsultaIndividualComponent {
       this.equipmentService.getEquipmentByDPC(this.dpc).subscribe({
         next: (data) => {
           if ( data.length > 0 ) {
-            this.router.navigate([ '/data-agencia-dcp', { agenciaDpc: this.dpc } ]);
+            this.router.navigate([ '/data-agencia-dpc', { agenciaDpc: this.dpc } ]);
           } else {
             this.noResultsFound = true;
           }

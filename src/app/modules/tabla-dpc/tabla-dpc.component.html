@@ -10,7 +10,7 @@
           DPC
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
-          {{ element.agencia?.dpc || "Sin Agencia" }}
+          {{ element.agencia?.dpc || "N/A" }}
         </td>
       </ng-container>
 
@@ -61,7 +61,7 @@
           N° Inventario
         </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          {{ element.inventario }}
+          {{ element?.inventario || "N/A" }}
         </td>
       </ng-container>
 
@@ -74,7 +74,7 @@
           Agencia
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
-          {{ element.agencia?.nombre || "-" }}
+          {{ element.agencia?.nombre || "N/A" }}
         </td>
       </ng-container>
 
@@ -87,7 +87,7 @@
           Empresa
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
-          {{ element.empresa?.nombreCorto || "-" }}
+          {{ element.empresa?.nombreCorto || "N/A" }}
         </td>
       </ng-container>
 
@@ -100,7 +100,7 @@
           Usuario
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
-          {{ element.rut || "-" }}
+          {{ element.rut || "N/A" }}
         </td>
       </ng-container>
 
@@ -109,9 +109,7 @@
           *matHeaderCellDef
           class="rounded-header last-header color-headers text-center text-light"
           mat-header-cell
-        >
-         
-        </th>
+        ></th>
         <td *matCellDef="let element" class="text-center" mat-cell>
           <div class="d-flex justify-content-evenly align-items-center">
             <button
@@ -134,7 +132,7 @@
     <mat-paginator
       #paginator
       [pageSizeOptions]="[5, 10, 20]"
-      [pageSize]="10"
+      [pageSize]="5"
       class="custom-borders w-100"
     ></mat-paginator>
   </div>

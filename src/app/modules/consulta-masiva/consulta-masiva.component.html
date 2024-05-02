@@ -58,7 +58,7 @@
         </select>
       </div>
     </div>
-    <div class="row mb-3">
+    <div class="row mb-3 d-flex justify-content-between">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <select
           class="form-select py-3 color-select"
@@ -68,10 +68,10 @@
           <option *ngFor="let use of usages" [value]="use">{{ use }}</option>
         </select>
       </div>
-      <div class="col-md-4 d-flex justify-content-end align-items-end">
+      <div class="col-md-2 d-flex align-items-center">
         <button
           (click)="onSearch()"
-          class="search-button px-5 py-2 mb-3"
+          class="search-button px-5 py-2  w-100"
           pButton
           type="button"
         >

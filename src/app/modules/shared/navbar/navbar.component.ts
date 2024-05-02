@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CognitoService } from '@common/auth/cognito-service.service';
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { DividerModule } from "primeng/divider";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [ DividerModule, RouterLink ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
+  authenticatedUser: any;
+
   constructor(
     private cognitoService: CognitoService,
     private route: ActivatedRoute
@@ -21,6 +24,6 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.data['authenticatedUser']);
+    this.authenticatedUser = this.route.snapshot.data['authenticatedUser'];
   }
 }

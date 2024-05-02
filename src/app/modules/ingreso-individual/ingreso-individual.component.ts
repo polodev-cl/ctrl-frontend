@@ -190,7 +190,7 @@ export class IngresoIndividualComponent implements OnInit {
     });
 
     if (value)
-      lastValueFrom(this.agencyService.getAgenciesSelectorByCompanyId(+value))
+      lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value))
         .then((agencies) => (this.selectorAgency = of(agencies)))
         .then(() => (this.selectorAgencyFiltered = this.selectorAgency))
         .then(() => this.ingresoIndividualForm.get('agenciaId')?.enable())

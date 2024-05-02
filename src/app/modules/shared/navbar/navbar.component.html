@@ -30,12 +30,10 @@
         </li>
 
         <li class="navbar-item d-lg-block d-none">
-          <span class="nav-link text-end mx-0">Perfil</span>
+          <span class="nav-link text-end mx-0">{{ authenticatedUser?.nombres }} {{ authenticatedUser?.apellidos }}</span>
           <ul class="navbar-nav">
             <li class="navbar-item">
-              <a (click)="cerrarSesion()" class="nav-link c-pointer py-0"
-                >Cerrar sesión</a
-              >
+              <a (click)="cerrarSesion()" class="nav-link c-pointer py-0">Cerrar sesión</a>
             </li>
           </ul>
         </li>

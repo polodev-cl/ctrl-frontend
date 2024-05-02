@@ -77,8 +77,8 @@ export class AgencyFormComponent implements OnInit {
 
   private _loadForm(agency?: IAgency) {
     return this.fb.group({
-      nombre: [ { value: agency?.nombre || undefined }, [ Validators.required, Validators.minLength(4) ] ],
-      nemonico: [ { value: agency?.nemonico || undefined }, [ Validators.minLength(3) ] ],
+      nombre: [ { value: agency?.nombre || undefined, disabled:false }, [ Validators.required, Validators.minLength(4) ] ],
+      nemonico: [ { value: agency?.nemonico || undefined ,disabled:false }, [ Validators.minLength(3) ] ],
       dpc: [ { value: agency?.dpc || undefined }, [ Validators.min(0) ] ],
       empresa: [ { value: agency?.empresa || undefined, disabled: !!agency }, [ Validators.required ] ]
     });

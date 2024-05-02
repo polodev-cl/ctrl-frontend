@@ -6,4 +6,5 @@ export interface User {
     apellidos: string;
     rolId: number;
     empresaId: number;
+    temporaryPassword?: string;
   }

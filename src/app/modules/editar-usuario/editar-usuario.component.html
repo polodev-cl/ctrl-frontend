@@ -31,26 +31,26 @@
     <div class="row mb-3">
       <div class="col-md-4 mt-4 mb-3 mt-md-0">
         <!-- Dropdown para el uso -->
-        <form class="p-fluid">
+        <form class="p-fluid" (submit)="onFormSubmit($event)">
           <div class="p-inputgroup mt-3 position-relative">
             <input
-            #searchInput
-            class="input-color rounded-5"
-            id="search_username"
-            pInputText
-            placeholder="Nombre o rut del usuario"
-            type="text"
-          />
-          
-          <img
-            (click)="onSearch(searchInput)"
-            alt="Search Icon"
-            class="custom-input-icon"
-            src="../../../assets/image/searchIcon.svg"
-          />
-          
+              #searchInput
+              class="input-color rounded-5"
+              id="search_username"
+              pInputText
+              placeholder="Nombre o rut del usuario"
+              type="text"
+              (keypress)="handleKeyPress($event, searchInput)"
+            />
+            <img
+              (click)="onSearch(searchInput)"
+              alt="Search Icon"
+              class="custom-input-icon"
+              src="../../../assets/image/searchIcon.svg"
+            />
           </div>
         </form>
+        
       </div>
     </div>
   </div>

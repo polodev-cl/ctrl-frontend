@@ -48,7 +48,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   usuarioAEliminar: Usuario | null = null;
 
   displayedColumns: string[] = [
-    'usuario',
+ 
     'nombre',
     'rut',
     'correo',
@@ -128,6 +128,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   }
 
 
+
   cerrarModalEliminar(): void {
     this.mostrarModalEliminar = false;
     this.usuarioAEliminar = null;
@@ -148,6 +149,19 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
 
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
+  }
+
+  getPerfilDescripcion(perfil: String): string {
+    switch (perfil) {
+      case "1":
+        return 'Administrador';
+      case "2":
+        return 'Ingreso';
+      case "3":
+        return 'Consulta';
+      default:
+        return 'Desconocido';
+    }
   }
 
   eliminarUsuario(user: Usuario) {

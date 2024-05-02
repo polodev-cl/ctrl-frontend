@@ -23,11 +23,11 @@ export class EditarUsuarioService {
     return this.http.get<any[]>(this.apiUrl).pipe(
       map(data => data.map(item => ({
         id: item.id,
-        usuario: item.email.split('@')[0],  // Extrayendo el nombre de usuario del email
-        nombre: `${ item.nombres } ${ item.apellidos }`,  // Combinando nombres y apellidos
-        rut: '', // No se proporciona un RUT en el objeto, por lo tanto, se deja vacío
+        usuario: item.email.split('@')[0], 
+        nombre: `${ item.nombres } ${ item.apellidos }`,
+        rut: `${item.rut}`,
         correo: item.email,
-        perfil: item.rolId.toString()  // Convirtiendo el rolId a string si es necesario
+        perfil: item.rolId.toString() 
       })))
     );
   }

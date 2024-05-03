@@ -38,4 +38,12 @@ export class UserService {
   getUserId() {
     return this._activeUser?.id;
   }
+
+  getUserFirstName() {
+    return this._activeUser?.nombres;
+  }
+
+  getUserLastName() {
+    return this._activeUser?.nombres;
+  }
 }

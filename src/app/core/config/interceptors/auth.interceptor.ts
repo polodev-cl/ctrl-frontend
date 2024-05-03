@@ -1,9 +1,4 @@
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandlerFn,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest, } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { UserService } from '@app/common/user/services/user.service';
 
@@ -35,13 +30,11 @@ export function authInterceptor(
         });
       }
 
-      // if (userService.activeUser) {
-      //   newReq = newReq.clone({
-      //     headers: newReq.headers
-      //       .set('empId', userService.activeUser.empresa?.id)
-      //       .set('prestador', userService.activeUser.empresa?.prestador),
-      //   });
-      // }
+      if (userService.activeUser) {
+        newReq = newReq.clone({
+          headers: newReq.headers.set('empId', `${ userService.activeUser.empresa?.id }`).set('prestador', `${ userService.activeUser.empresa?.prestador }`),
+        });
+      }
 
       return next(newReq);
     }),

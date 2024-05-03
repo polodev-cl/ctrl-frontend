@@ -20,9 +20,10 @@ import { timeout } from 'rxjs';
 })
 export class ModalCargaMasivaComponent implements AfterViewInit {
   @Output() cerrar = new EventEmitter<void>();
-  @Output() abrirModalDuplicados = new EventEmitter<void>();
   @Output() errorOcurrido = new EventEmitter<string>();
   @Output() cargaExitosa = new EventEmitter<void>();
+  @Output() mostrarModalDuplicados = new EventEmitter<string[]>(); 
+
   @ViewChild('fileDropzone', { static: false }) fileDropzone!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -76,8 +77,16 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
         error: (error) => {
           this.fileLoading = false;
           this.fileLoaded = false;
-          const errorMessages = error.error.message.errors.join(", ");
-          this.errorOcurrido.emit(errorMessages); 
+          
+          const errorMessages = error.error.message.errors;
+          const errorStep = error.error.message.step;
+          console.log(error)
+          if (errorStep === "VALIDATING") {
+            this.errorOcurrido.emit(errorMessages); 
+          } else if (errorStep === "LOOKING_FOR_DUPLICATES") {
+            console.log("error step:", errorStep)
+            this.mostrarModalDuplicados.emit(errorMessages); 
+          }
         },
       });
     }
@@ -87,8 +96,4 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
     this.cerrar.emit();
   }
 
-  abrirDuplicados(): void {
-    this.cerrarModal();
-    this.abrirModalDuplicados.emit();
-  }
 }

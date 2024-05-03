@@ -50,9 +50,8 @@ export class HomeComponent implements OnInit {
   mostrarModalExito: boolean = false;
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
-  rol!: RoleEnum;  // Le dice a TypeScript que la variable definitivamente tendrá un valor antes de cualquier uso
-
-
+  rol!: RoleEnum; // Le dice a TypeScript que la variable definitivamente tendrá un valor antes de cualquier uso
+  erroresDuplicados: string[] = [];
   constructor(
     private companyService: CompanyService,
     private cognitoService: CognitoService,
@@ -66,14 +65,16 @@ export class HomeComponent implements OnInit {
   }
 
   obtenerRolUsuario(): RoleEnum {
-    return this.userService.getUserRole();  // Asegúrate de que este método devuelva un 'RoleEnum'
+    return this.userService.getUserRole(); // Asegúrate de que este método devuelva un 'RoleEnum'
   }
 
   cerrarSesion() {
     this.cognitoService.signOut();
   }
 
-  abrirModalDuplicados(): void {
+  abrirModalDuplicado(errores: string[]): void {
+    this.erroresDuplicados = errores; 
+    this.mostrarModalCargaMasiva = false;
     this.mostrarModalDuplicados = true;
   }
 
@@ -122,8 +123,8 @@ export class HomeComponent implements OnInit {
     this.tituloModalExito = 'Equipos Reemplazados';
     this.mensajeModalExito = 'Los equipos fueron reemplazados con exito.';
 
-    this.mostrarModalDuplicados = false; 
-    this.mostrarModalExito = true; 
+    this.mostrarModalDuplicados = false;
+    this.mostrarModalExito = true;
   }
 
   cerrarModalExito(): void {
@@ -134,7 +135,7 @@ export class HomeComponent implements OnInit {
     this.tituloModalExito = 'Carga Masiva';
     this.mensajeModalExito = 'Ingreso masivo realizado con exito.';
 
-    this.mostrarModalCargaMasiva = false; 
-    this.mostrarModalExito = true; 
+    this.mostrarModalCargaMasiva = false;
+    this.mostrarModalExito = true;
   }
 }

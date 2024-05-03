@@ -1,32 +1,11 @@
-<!-- equipos-duplicados.component.html -->
 <div class="mat-elevation-z0 rounded-5 shadow">
   <div class="table-responsive">
-    <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+    <table class="mat-elevation-z8" mat-table [dataSource]="dataSource">
 
-      <!-- Columna Nombre equipo -->
-      <ng-container matColumnDef="nombreEquipo">
-        <th *matHeaderCellDef class="color-headers first-header text-center text-light" mat-header-cell>Nombre equipo
-        </th>
-        <td *matCellDef="let element" class="text-center" mat-cell> {{ element.nombreEquipo }}</td>
-      </ng-container>
-
-      <!-- Columna Código inventario -->
-      <ng-container matColumnDef="codigoInventario">
-        <th *matHeaderCellDef class="color-headers text-center text-light" mat-header-cell>Código inventario</th>
-        <td *matCellDef="let element" class="text-center" mat-cell> {{ element.codigoInventario }}</td>
-      </ng-container>
-
-      <!-- Columna Datos modificados -->
-      <ng-container matColumnDef="datosModificados">
-        <th *matHeaderCellDef class="color-headers  last-header text-center  text-light" mat-header-cell>Datos
-          modificados
-        </th>
-        <td *matCellDef="let element" class="d-flex justify-content-center align-items-center" mat-cell>
-          <ul class=" my-2 text-end">
-            <li *ngFor="let dato of element.datosModificados" class="text-start">{{ dato }}</li>
-          </ul>
-        </td>
-
+      <!-- Columna Descripción -->
+      <ng-container matColumnDef="descripcion">
+        <th *matHeaderCellDef mat-header-cell>Descripción</th>
+        <td *matCellDef="let element" mat-cell>{{ element.descripcion }}</td>
       </ng-container>
 
       <!-- Definición de las filas -->
@@ -35,6 +14,6 @@
     </table>
 
     <!-- Paginador -->
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="10" class="custom-borders"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 </div>

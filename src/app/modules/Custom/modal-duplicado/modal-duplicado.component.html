@@ -8,24 +8,21 @@
     />
     <p class="subtitulo">Uno o mas equipos están duplicados en el documento</p>
 
-
     <div class="row d-flex justify-content-center align-items-center">
-      <div class="col-12 col-md-4 my-2"> <!-- Ajuste para responsividad aquí -->
-        <button (click)="cerrarModal()" class="btn btn-outline  rounded-5 my-2 w-100">
-          <!-- Ajuste para ancho completo -->
+      <div class="col-12 col-md-4 my-2">
+        <button
+          (click)="cerrarModal()"
+          class="btn btn-outline rounded-5 my-2 w-100"
+        >
           Volver
         </button>
       </div>
-      <div class="col-12 col-md-4 my-2"> <!-- Ajuste para responsividad aquí -->
-        <button class="search-button  rounded-5  py-2 w-100" routerLink="/equipos-duplicados">
-          <!-- Ajuste para ancho completo -->
+      <div class="col-12 col-md-4 my-2">
+        <button
+          (click)="saveErrorAndSeeDuplicates()"
+          class="search-button rounded-5 py-2 w-100"
+        >
           Ver Duplicados
-        </button>
-      </div>
-      <div class="col-12 col-md-4 my-2"> <!-- Ajuste para responsividad aquí -->
-        <button (click)="reemplazarYCerrar()" class="search-button  rounded-5 py-2 w-100">
-          <!-- Ajuste para ancho completo -->
-          Reemplazar
         </button>
       </div>
     </div>

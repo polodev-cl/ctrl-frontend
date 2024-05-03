@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from "@angular/router";
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-modal-duplicado',
   templateUrl: './modal-duplicado.component.html',
@@ -10,15 +10,22 @@ import { RouterLink } from "@angular/router";
     RouterLink
   ]
 })
-export class ModalDuplicadoComponent {
+export class ModalDuplicadoComponent implements OnInit{
   @Output() cerrar = new EventEmitter<void>();
   @Output() reemplazar = new EventEmitter<void>();
+  @Input() errores: string[] = [];
+  
+  constructor(private router: Router) {}
 
   cerrarModal(): void {
-    this.cerrar.emit(); // Emite el evento para ser escuchado por el componente padre
+    this.cerrar.emit(); 
   }
 
-  reemplazarYCerrar(): void {
-    this.reemplazar.emit(); // Emitir evento para reemplazar y luego cerrar el modal
+  ngOnInit(): void {
+    console.log(this.errores)
+  }
+  saveErrorAndSeeDuplicates(): void {
+    localStorage.setItem('erroresDuplicados', JSON.stringify(this.errores));
+    this.router.navigate(['/equipos-duplicados'], );
   }
 }

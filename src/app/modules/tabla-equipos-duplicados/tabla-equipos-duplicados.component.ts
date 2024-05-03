@@ -4,9 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
 
 export interface Consulta {
-  nombreEquipo: string;
-  codigoInventario: string;
-  datosModificados: string[];
+  descripcion: string;
 }
 
 @Component({
@@ -31,14 +29,14 @@ export interface Consulta {
 })
 export class TablaEquiposDuplicadosComponent implements AfterViewInit {
   @Input() data: Consulta[] = [];
-  displayedColumns: string[] = [ 'nombreEquipo', 'codigoInventario', 'datosModificados' ];
-  dataSource = new MatTableDataSource<Consulta>([]);
+  displayedColumns: string[] = ['descripcion'];
+  dataSource = new MatTableDataSource<Consulta>(this.data);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
-    this.dataSource = new MatTableDataSource<Consulta>(this.data);
     this.dataSource.paginator = this.paginator;
+    this.dataSource.data = this.data; 
   }
 }
 

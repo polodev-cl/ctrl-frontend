@@ -17,17 +17,16 @@
   (cargaExitosa)="finalizarCargaMasivaConExito()"
   (cerrar)="cerrarModalCargaMasiva()"
   (errorOcurrido)="abrirModalAdvertencia($event)" 
+  (mostrarModalDuplicados)="abrirModalDuplicado($event)"
   *ngIf="mostrarModalCargaMasiva"
 >
 </app-modal-carga-masiva>
 
-
 <app-modal-duplicado
+  [errores]="erroresDuplicados"
   (cerrar)="cerrarModalDuplicados()"
-  (reemplazar)="manejarReemplazo()"
   *ngIf="mostrarModalDuplicados"
->
-</app-modal-duplicado>
+></app-modal-duplicado>
 
 <app-modal-exitoso
   (cerrar)="cerrarModalExito()"

@@ -1,90 +1,94 @@
-import { NgIf } from "@angular/common";
-import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { UploadFileService } from './upload-file.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-modal-carga-masiva',
   templateUrl: './modal-carga-masiva.component.html',
-  styleUrls: [ './modal-carga-masiva.component.css' ],
+  styleUrls: ['./modal-carga-masiva.component.css'],
   standalone: true,
-  imports: [
-    NgIf
-  ]
+  imports: [NgIf],
 })
 export class ModalCargaMasivaComponent implements AfterViewInit {
   @Output() cerrar = new EventEmitter<void>();
   @Output() abrirModalDuplicados = new EventEmitter<void>();
+  @Output() errorOcurrido = new EventEmitter<string>();
   @Output() cargaExitosa = new EventEmitter<void>();
   @ViewChild('fileDropzone', { static: false }) fileDropzone!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  // Add properties to track the file name and size
+
   fileName: string = '';
   fileSize: string = '';
   progress: number = 0;
-
   fileLoading: boolean = false;
   fileLoaded: boolean = false;
   showUploadButton: boolean = false;
+  selectedFile?: File;
 
-  ngAfterViewInit(): void {
-    // Intentionally blank if not used
-  }
+  constructor(private uploadService: UploadFileService) {}
+
+  ngAfterViewInit(): void {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if ( input.files && input.files.length ) {
+    if (input.files && input.files.length) {
       const file = input.files[0];
+      this.selectedFile = file;
       this.fileName = file.name;
-      // Convert bytes to KB and round to 2 decimal places
       this.fileSize = (file.size / 1024).toFixed(2) + ' KB';
-      this.simulateFileLoad(file);
+      this.fileLoading = true;
+      this.fileLoaded = true;
     }
   }
 
-  simulateFileLoad(file: File): void {
-    this.fileLoading = true;
-    this.fileName = file.name;
-    this.fileSize = (file.size / 1024).toFixed(2) + ' KB';
-
-    // Reset progress to 0
-    this.progress = 0;
-
-    // Start the simulation of the progress
-    let interval = setInterval(() => {
-      this.progress += 10;
-      if ( this.progress >= 100 ) {
-        clearInterval(interval);
-        this.fileLoading = false;
-        this.fileLoaded = true;
-        // Set the progress to 100% for the full progress bar
-        this.progress = 100;
-      }
-    }, 200); // Adjust the interval time to control the speed of the progress bar
-  }
-
-  deleteFile(): void {
-    // Logic to handle file deletion
-    this.fileLoaded = false;
-    this.fileName = '';
-    this.fileSize = '';
-
-    // Clear the input
-    const input = this.fileInput.nativeElement;
-    input.value = '';
-    input.dispatchEvent(new Event('change'));
-  }
-
   onUpload(): void {
-    console.log('Archivo listo para la siguiente acción');
-    // Simula la lógica de carga aquí, y luego emite el evento de carga exitosa
-    this.cargaExitosa.emit(); // Emitir evento al completar la carga exitosamente
+    if (this.selectedFile) {
+      this.fileLoading = true;
+      this.progress = 33;  
+  
+      this.uploadService.uploadFile(this.selectedFile).subscribe({
+        next: (event: HttpEvent<any>) => {
+          if (event.type === HttpEventType.UploadProgress && event.total) {
+            const calculatedProgress = Math.round((100 * event.loaded) / event.total);
+            if (calculatedProgress >= 50 && calculatedProgress < 100) {
+              this.progress = 50;
+            } else if (calculatedProgress < 50) {
+              this.progress = 33;
+            }
+          } else if (event.type === HttpEventType.Response) {
+            setTimeout(() => {
+              this.progress = 100;
+              this.fileLoaded = true; 
+              this.cargaExitosa.emit(); 
+              this.fileLoading = false;
+            }, 500);
+          }
+        },
+        error: (error) => {
+          this.fileLoading = false;
+          this.fileLoaded = false;
+          const errorMessages = error.error.message.errors.join(", ");
+          this.errorOcurrido.emit(errorMessages); 
+        },
+      });
+    }
   }
-
+  
   cerrarModal(): void {
     this.cerrar.emit();
   }
 
   abrirDuplicados(): void {
-    this.cerrarModal(); // Cerrar este modal primero
-    this.abrirModalDuplicados.emit(); // Luego emitir evento para abrir modal de duplicados
+    this.cerrarModal();
+    this.abrirModalDuplicados.emit();
   }
 }

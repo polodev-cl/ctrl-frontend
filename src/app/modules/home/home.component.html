@@ -16,9 +16,11 @@
   (abrirModalDuplicados)="abrirModalDuplicados()"
   (cargaExitosa)="finalizarCargaMasivaConExito()"
   (cerrar)="cerrarModalCargaMasiva()"
+  (errorOcurrido)="abrirModalAdvertencia($event)" 
   *ngIf="mostrarModalCargaMasiva"
 >
 </app-modal-carga-masiva>
+
 
 <app-modal-duplicado
   (cerrar)="cerrarModalDuplicados()"
@@ -34,7 +36,12 @@
   [titulo]="tituloModalExito"
 >
 </app-modal-exitoso>
-
+<app-modal-advertencia
+(cerrar)="cerrarModalAdvertencia()"
+*ngIf="mostrarModalAdvertencia"
+[mensajeModalAdvertencia]="mensajeModalAdvertencia"
+[tituloModalAdvertencia]="tituloModalAdvertencia"
+></app-modal-advertencia>
 <div class="container-md mb-5">
   <div class="frame mt-3" id="frame_middletop">
     <div class="row">

@@ -35,12 +35,12 @@ export const routes: Routes = [
       companies: () => inject(CompanyService).getCompaniesSelector()
     },
     children: [
-      { path: 'home', canActivate: [roleGuard([RoleEnum.ADMIN,RoleEnum.INGRESO,RoleEnum.CONSULTA], '/')], loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent) },
-      { path: 'consulta-individual', canActivate: [roleGuard([RoleEnum.ADMIN,RoleEnum.INGRESO,RoleEnum.CONSULTA], '/')], loadComponent: () => import('./modules/consulta-individual/consulta-individual.component').then(m => m.ConsultaIndividualComponent) },
-      { path: 'consulta-masiva', canActivate: [roleGuard([RoleEnum.ADMIN,RoleEnum.INGRESO,RoleEnum.CONSULTA], '/')],loadComponent: () => import('./modules/consulta-masiva/consulta-masiva.component').then(m => m.ConsultaMasivaComponent) },
-      { path: 'data-usuario-rut', canActivate: [roleGuard([RoleEnum.ADMIN,RoleEnum.INGRESO,RoleEnum.CONSULTA], '/')], loadComponent: () => import('./modules/data-usuario-rut/data-usuario-rut.component').then(m => m.DataUsuarioRutComponent) },
-      { path: 'data-numero-inventario', canActivate: [roleGuard([RoleEnum.ADMIN,RoleEnum.INGRESO,RoleEnum.CONSULTA], '/')], loadComponent: () => import('./modules/numero-inventario/numero-inventario.component').then(m => m.NumeroInventarioComponent) },
-      { path: 'data-agencia-dpc', canActivate: [roleGuard([RoleEnum.ADMIN,RoleEnum.INGRESO,RoleEnum.CONSULTA], '/')], loadComponent: () => import('./modules/agencia-dcp/agencia-dcp.component').then(m => m.AgenciaDcpComponent) },
+      { path: 'home', loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent) },
+      { path: 'consulta-individual',  loadComponent: () => import('./modules/consulta-individual/consulta-individual.component').then(m => m.ConsultaIndividualComponent) },
+      { path: 'consulta-masiva', loadComponent: () => import('./modules/consulta-masiva/consulta-masiva.component').then(m => m.ConsultaMasivaComponent) },
+      { path: 'data-usuario-rut',  loadComponent: () => import('./modules/data-usuario-rut/data-usuario-rut.component').then(m => m.DataUsuarioRutComponent) },
+      { path: 'data-numero-inventario',  loadComponent: () => import('./modules/numero-inventario/numero-inventario.component').then(m => m.NumeroInventarioComponent) },
+      { path: 'data-agencia-dpc',  loadComponent: () => import('./modules/agencia-dcp/agencia-dcp.component').then(m => m.AgenciaDcpComponent) },
       { path: 'equipos-duplicados', canActivate: [roleGuard([RoleEnum.ADMIN], '/')], loadComponent: () => import('./modules/equipos-duplicados/equipos-duplicados.component').then(m => m.EquiposDuplicadosComponent) },
       { path: 'ingreso-individual', canActivate: [roleGuard([RoleEnum.ADMIN, RoleEnum.INGRESO], '/')], loadComponent: () => import('./modules/ingreso-individual/ingreso-individual.component').then(m => m.IngresoIndividualComponent) },
       {

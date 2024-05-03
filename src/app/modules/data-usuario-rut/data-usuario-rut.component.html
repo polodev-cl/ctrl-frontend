@@ -74,10 +74,10 @@
               </div>
               <div class="col">
                 <p><strong>Número CI:</strong> {{ equipment.inventario }}</p>
-                <p><strong>Agencia:</strong> {{ equipment.agencia.nombre }}</p>
-                <p><strong>DPC:</strong> {{ equipment.agenciaDpc }}</p>
+                <p><strong>Agencia:</strong> {{ equipment.agencia?.nombre || "Agencia eliminada" }}</p>
+                <p><strong>DPC:</strong> {{ equipment.agenciaDpc || "N/A" }}</p>
                 <p>
-                  <strong>Nemónico:</strong> {{ equipment.agencia.nemonico }}
+                  <strong>Nemónico:</strong> {{ equipment.agenciaMnemonic	 || "N/A" }}
                 </p>
                 <p>
                   <strong>Estado:</strong>

@@ -116,6 +116,8 @@ export class IngresoIndividualComponent implements OnInit {
   datosParaModal: any = {};
   ingresoIndividualForm: FormGroup;
   protected readonly cleanIfNotValid = cleanIfNotValid;
+  firstName: any;
+  lastName: any;
 
   constructor(
     private soService: SoService,
@@ -130,8 +132,14 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   ngOnInit() {
-    const userId = this.userService.getUserId(); // Obtener el id del usuario activo
+    const userId = this.userService.getUserId(); 
+    const firstName =  this.userService.getUserFirstName();
+    const lastName =  this.userService.getUserLastName();
     console.log('ID del usuario activo:', userId);
+    console.log('Nombre:', firstName, 'Apellido:', lastName);
+    this.firstName = firstName;
+    this.lastName = lastName;
+  
 
     this.selectorAgencyFiltered = this.selectorAgency;
   }
@@ -191,6 +199,7 @@ export class IngresoIndividualComponent implements OnInit {
       agenciaDpc: undefined,
       agenciaMnemonic: undefined,
     });
+    
 
     if (value)
       lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value))
@@ -287,7 +296,12 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   abrirModalResumenIngresoIndividual(): void {
-    this.datosParaModal = this.ingresoIndividualForm.getRawValue();
+    this.datosParaModal = {
+      ...this.ingresoIndividualForm.getRawValue(),
+      nombreUsuario: this.firstName,
+      apellidoUsuario: this.lastName
+      
+    };
     console.log('Datos enviados al modal:', this.datosParaModal);
     this.mostrarModalResumenIngresoIndividual = true;
   }

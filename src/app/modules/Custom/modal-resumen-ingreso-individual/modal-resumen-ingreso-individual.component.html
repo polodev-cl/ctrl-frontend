@@ -30,17 +30,9 @@
         <div class="grid-item my-0 ">
           <div class="">
             <label class="form-label me-1 blue-label fw-bold" for="registroPor1">Registro: </label>
-            <span class="form-text mb-0 ms-1" id="registroPor1">Nicolas Álvarez</span>
+            <span class="form-text mb-0 ms-1" id="registroPor1">{{datosModal.nombreUsuario}} {{datosModal.apellidoUsuario}}</span>
           </div>
         </div>
-        <div class="grid-item my-0">
-          <div class="">
-            <label class="form-label me-1 blue-label fw-bold" for="registroPor2">Hora:</label>
-            <span class="form-text mb-0 ms-1" id="registroPor2"> {{ formattedTime || "N/A" }}</span>
-          </div>
-        </div>
-
-         
 
         </div>
 
@@ -107,14 +99,14 @@
           </div>
         </div>
 
-        <div class="grid-item my-0">
+        <!-- <div class="grid-item my-0">
           <div class="">
             <label class="form-label me-1 blue-label fw-bold" for="registroPor9"> Empresa:</label>
             <span class="form-text mb-0" id="registroPor9">
               {{ datosModal.empresaId?.nombreCorto || "-" }}
             </span>
           </div>
-        </div>
+        </div> -->
 
         <div class="grid-item my-0">
           <div class="">

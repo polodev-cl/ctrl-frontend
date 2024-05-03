@@ -11,7 +11,7 @@ export interface Company {
   nombreCorto: string;
 }
 
-const BASE_URL = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/company';
+const BASE_URL = 'http://localhost:3000/api/company';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +48,10 @@ export class CompanyService {
 
   updateCompany(id: number, companyData: UpdateCompanyDto): Observable<any> {
     return this.http.patch(`${ BASE_URL }/${ id }`, companyData);
+  }
+
+  deleteCompany(companyId: number): Observable<any> {
+    return this.http.delete(`${BASE_URL}/${companyId}`);
   }
 }
 

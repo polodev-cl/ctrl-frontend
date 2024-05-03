@@ -12,7 +12,7 @@ export interface Agency {
   empId: number;
 }
 
-const BASE_URL = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/agency';
+const BASE_URL = 'http://localhost:3000/api/agency';
 
 @Injectable({ providedIn: 'root' })
 export class AgencyService {
@@ -45,5 +45,9 @@ export class AgencyService {
 
   updateAgency(id: number, agencyData: IAgency): Observable<any> {
     return this.http.patch(`${ BASE_URL }/${ id }`, agencyData);
+  }
+
+  deleteAgency(agencyId: number): Observable<any> {
+    return this.http.delete(`${BASE_URL}/${agencyId}`);
   }
 }

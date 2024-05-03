@@ -89,10 +89,10 @@
           <mat-icon>edit</mat-icon>
           <span>Editar</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="onDelete(element.id)">
           <mat-icon>delete</mat-icon>
           <span>Eliminar</span>
-        </button>
+        </button>        
       </mat-menu>
     </mat-cell>
   </ng-container>

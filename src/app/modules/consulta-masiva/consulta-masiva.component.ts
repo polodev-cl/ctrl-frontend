@@ -66,13 +66,13 @@ export class ConsultaMasivaComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    const queryParams: { companyId: number, agencyId: number } = this.route.snapshot.queryParams as { companyId: number, agencyId: number };
+    const queryParams: { empresaId: number, agenciaId: number } = this.route.snapshot.queryParams as { empresaId: number, agenciaId: number };
 
-    if (!queryParams.agencyId || !queryParams.companyId)
+    if (!queryParams.agenciaId || !queryParams.empresaId)
       this.router.navigate([ '/home' ])
 
-    this.agencyId = +queryParams.agencyId;
-    this.companyId = +queryParams.agencyId;
+    this.agencyId = +queryParams.agenciaId;
+    this.companyId = +queryParams.empresaId;
   }
 
   ngOnInit(): void {
@@ -86,14 +86,6 @@ export class ConsultaMasivaComponent implements OnInit {
       this.usages = data.usages;
       console.log('Datos del JSON:', data);
     });
-  }
-
-  getVersions(): string[] {
-    if (!this.systems || !this.selectedSystem) {
-      return [];
-    }
-    const selectedSystem = this.systems.find(system => system.name === this.selectedSystem);
-    return selectedSystem ? selectedSystem.versions : [];
   }
 
   onEquipmentTypeChange() {

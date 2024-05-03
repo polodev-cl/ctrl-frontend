@@ -23,7 +23,7 @@ export class ConsultaMasivaService {
   ): Observable<Consulta[]> {
     let params = new HttpParams();
 
-    params = params.append('companyId', companyId).append('agencyId', agencyId);
+    params = params.append('empresaId', companyId).append('agenciaId', agencyId);
 
     if (tipo) {
       params = params.append('tipo', tipo);

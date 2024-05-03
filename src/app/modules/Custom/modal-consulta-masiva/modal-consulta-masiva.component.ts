@@ -92,8 +92,8 @@ export class ModalConsultaMasivaComponent {
   irAConsultaMasiva() {
     const form = this.modalForm.getRawValue();
     const params = {
-      agencyId: form.agency.id,
-      companyId: form.company.id,
+      agenciaId: form.agency.id,
+      empresaId: form.company.id,
     }
     this.router.navigate([ '/consulta-masiva' ], { queryParams: params });
   }

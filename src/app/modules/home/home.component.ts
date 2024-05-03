@@ -13,6 +13,7 @@ import { ModalGestionUsuarioComponent } from '../Custom/modal-gestion-usuario/mo
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { UserService } from '@app/common/user/services/user.service';
 import { RoleEnum } from '@app/common/auth/enums/role.enum';
+import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +32,7 @@ import { RoleEnum } from '@app/common/auth/enums/role.enum';
     ButtonModule,
     NgForOf,
     NavbarComponent,
-    
+    ModalAdvertenciaComponent,
   ],
 })
 export class HomeComponent implements OnInit {
@@ -39,6 +40,9 @@ export class HomeComponent implements OnInit {
   RoleEnum = RoleEnum;
 
   empresa: any = null;
+  mostrarModalAdvertencia: boolean = false;
+  mensajeModalAdvertencia: string = 'Hubo un error en su solicitud';
+  tituloModalAdvertencia: string = 'Error';
   mostrarModalConsultaMasiva: boolean = false;
   mostrarModalGestionUsuario: boolean = false;
   mostrarModalCargaMasiva: boolean = false;
@@ -104,14 +108,22 @@ export class HomeComponent implements OnInit {
   }
 
   //advertencia
+  cerrarModalAdvertencia(): void {
+    this.mostrarModalAdvertencia = false;
+  }
+  abrirModalAdvertencia(mensaje: string): void {
+    this.mostrarModalCargaMasiva = false;
+    this.tituloModalAdvertencia = 'Error al carga masiva';
+    this.mensajeModalAdvertencia = mensaje;
+    this.mostrarModalAdvertencia = true;
+  }
 
   manejarReemplazo(): void {
-    // Antes de mostrar el modal exitoso, asigna los valores deseados a las propiedades
     this.tituloModalExito = 'Equipos Reemplazados';
     this.mensajeModalExito = 'Los equipos fueron reemplazados con exito.';
 
-    this.mostrarModalDuplicados = false; // Cerrar modal de duplicados
-    this.mostrarModalExito = true; // Abrir modal exitoso
+    this.mostrarModalDuplicados = false; 
+    this.mostrarModalExito = true; 
   }
 
   cerrarModalExito(): void {
@@ -119,11 +131,10 @@ export class HomeComponent implements OnInit {
   }
 
   finalizarCargaMasivaConExito(): void {
-    // Asigna los valores al título y mensaje del modal exitoso
     this.tituloModalExito = 'Carga Masiva';
     this.mensajeModalExito = 'Ingreso masivo realizado con exito.';
 
-    this.mostrarModalCargaMasiva = false; // Cierra el modal de carga masiva
-    this.mostrarModalExito = true; // Abre el modal exitoso
+    this.mostrarModalCargaMasiva = false; 
+    this.mostrarModalExito = true; 
   }
 }

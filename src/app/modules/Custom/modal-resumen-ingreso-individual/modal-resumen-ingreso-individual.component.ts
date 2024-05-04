@@ -19,7 +19,6 @@ export class ModalResumenIngresoIndividualComponent implements OnInit {
     if (this.datosModal && this.datosModal.fechaIngreso) {
       const date = new Date(this.datosModal.fechaIngreso);
       this.formattedDate = date.toLocaleDateString('es-CL', { year: 'numeric', month: '2-digit', day: '2-digit' });
-      this.formattedTime = date.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
     }
     console.log('Datos recibidos en el modal:', this.datosModal);
     console.log('Formatted Date:', this.formattedDate);

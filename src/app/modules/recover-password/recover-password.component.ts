@@ -85,6 +85,6 @@ export class RecoverPasswordComponent {
 
   cerrarModal(): void {
     this.mostrarModal = false;
-    this.router.navigate([ '/sign-up' ]);
+    this.router.navigate([ '/sign-in' ]);
   }
 }

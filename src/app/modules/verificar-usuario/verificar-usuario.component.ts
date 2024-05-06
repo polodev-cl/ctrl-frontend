@@ -1,7 +1,7 @@
 import { NgIf } from "@angular/common";
 import { Component } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { confirmSignUp } from 'aws-amplify/auth';
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
@@ -31,17 +31,18 @@ export class VerificarUsuarioComponent {
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
 
+  constructor(private router: Router) { }
+
   async verificarCodigo() {
     try {
       await confirmSignUp({
         username: this.username,
         confirmationCode: this.confirmationCode
       });
-      // Si llegamos aquí, la verificación fue exitosa
       this.abrirModalExito();
-    } catch ( error: unknown ) {  // Nota el cambio aquí para el tipo 'unknown'
+    } catch ( error: unknown ) {  
       console.error('Error confirmando el registro:', error);
-      if ( error instanceof Error ) {  // Verifica que es un objeto Error
+      if ( error instanceof Error ) {  
         this.error = error.message;
       } else {
         this.error = "Se ha producido un error desconocido.";
@@ -58,6 +59,7 @@ export class VerificarUsuarioComponent {
 
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
-    // Aquí puedes redirigir al usuario a la página de inicio de sesión o donde sea apropiado
+    this.router.navigate(['/sign-in']);
+   
   }
 }

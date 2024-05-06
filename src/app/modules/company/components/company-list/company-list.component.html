@@ -1,3 +1,10 @@
+<app-modal-eliminar-entities
+  *ngIf="mostrarModalEliminar"
+  [titulo]="'Confirmación de Eliminación'"
+  [mensajeModal]="mensajeModalEliminar"
+  (cerrar)="cerrarModalEliminar()"
+  (exito)="confirmarEliminacion()">
+</app-modal-eliminar-entities>
 <!-- Filtros -->
 <button (click)="onCleanFilters()" class="button-style" mat-flat-button>
   <mat-icon>filter_alt_off</mat-icon>

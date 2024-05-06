@@ -31,6 +31,8 @@ import { CompanyQueryDto } from '@modules/company/domain/dto/company-query.dto';
 import { MaterialTableComponent } from '@shared/material-table/material-table.component';
 import { ICompany } from '@modules/company/domain/interface/company.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ModalEliminarEntitiesComponent } from '@app/modules/Custom/modal-eliminar-entities/modal-eliminar-entities.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-company-list',
@@ -56,6 +58,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatMenuItem,
     MatLabel,
     MatError,
+    ModalEliminarEntitiesComponent,
+    CommonModule,
   ],
   templateUrl: './company-list.component.html',
 })
@@ -73,6 +77,10 @@ export class CompanyListComponent {
     'actions',
   ];
   public loading: Observable<boolean> = of(false);
+
+  mostrarModalEliminar: boolean = false;
+  companyIdParaEliminar: number | null = null;
+  mensajeModalEliminar: string = "¿Estás seguro de que quieres eliminar esta empresa?";
 
   constructor(
     private readonly companyService: CompanyService,
@@ -112,27 +120,28 @@ export class CompanyListComponent {
         });
       });
   }
+  onDelete(id: number) {
+    this.companyIdParaEliminar = id;
+    this.mostrarModalEliminar = true;
+  }
 
-  onDelete(companyId: number) {
-    if (confirm('¿Estás seguro de que quieres eliminar esta empresa?')) {
-      this.companyService.deleteCompany(companyId).subscribe({
+  confirmarEliminacion() {
+    if (this.companyIdParaEliminar) {
+      this.companyService.deleteCompany(this.companyIdParaEliminar).subscribe({
         next: () => {
           this.snackBar.open('Empresa eliminada', 'Cerrar', {
             duration: 5000,
             horizontalPosition: 'right',
             verticalPosition: 'top',
           });
-          this.onSearch();
+          this.onSearch(); 
+          this.cerrarModalEliminar();
         },
         error: (error) => {
-          if (
-            error.status === 409 &&
-            error.error.message === 'COMPANY_HAVE_EQUIPMENT'
-          ) {
+          if (error.status === 409 && error.error.message === 'COMPANY_HAVE_EQUIPMENT') {
             this.snackBar.open(
               'No se puede eliminar la empresa: Está asociada a equipos',
-              'Cerrar',
-              {
+              'Cerrar', {
                 duration: 5000,
                 horizontalPosition: 'right',
                 verticalPosition: 'top',
@@ -146,9 +155,15 @@ export class CompanyListComponent {
             });
           }
           console.error('Error al eliminar la empresa:', error);
-        },
+          this.cerrarModalEliminar();
+        }
       });
     }
+  }
+  
+  cerrarModalEliminar() {
+    this.mostrarModalEliminar = false;
+    this.companyIdParaEliminar = null;
   }
 
   onCleanFilters() {

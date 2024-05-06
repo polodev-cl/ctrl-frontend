@@ -5,16 +5,24 @@ import { IAgency } from "@modules/agency/domain/interface/agency.interface";
 import { lastValueFrom } from "rxjs";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { ModalAdvertenciaComponent } from '@app/modules/Custom/modal-advertencia/modal-advertencia.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-agency-create',
   standalone: true,
-  imports: [ AgencyFormComponent ],
+  imports: [ AgencyFormComponent,
+    ModalAdvertenciaComponent,
+    CommonModule,
+   ],
   templateUrl: './agency-create.component.html'
 })
 export class AgencyCreateComponent {
   private _router: Router = inject(Router);
   private _matSnackBar: MatSnackBar = inject(MatSnackBar);
+  mostrarModalAdvertencia: boolean = false;
+  mensajeModalAdvertencia: string = '';
+  tituloModalAdvertencia: string = 'Error al actualizar la agencia';
 
   @ViewChild(AgencyFormComponent, { static: true }) agencyForm!: AgencyFormComponent;
 
@@ -31,9 +39,12 @@ export class AgencyCreateComponent {
         this._router.navigate([ '/agency' ], { queryParams: { id: res.id } }).then();
       })
       .catch((err) => {
-        this._matSnackBar.open('Error al crear la agencia', 'Cerrar', { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
-        throw err;
+        this.mensajeModalAdvertencia = 'Error al editar la agencia: ' + (err.error?.message || 'Error desconocido');
+        this.mostrarModalAdvertencia = true;
       })
       .finally(() => this.agencyForm.agencyForm.enable());
+  }
+  cerrarModalAdvertencia(): void {
+    this.mostrarModalAdvertencia = false;
   }
 }

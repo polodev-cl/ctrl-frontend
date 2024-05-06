@@ -1,1 +1,7 @@
+<app-modal-advertencia
+  *ngIf="mostrarModalAdvertencia"
+  [mensajeModalAdvertencia]="mensajeModalAdvertencia"
+  [tituloModalAdvertencia]="tituloModalAdvertencia"
+  (cerrar)="cerrarModalAdvertencia()">
+</app-modal-advertencia>
 <app-agency-form (onSubmit)="onSubmit($event)" [agency]="agency"></app-agency-form>

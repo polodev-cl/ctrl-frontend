@@ -48,7 +48,7 @@ export class CompanyFormComponent implements OnInit {
       comuna: [ { value: companyDto?.comuna || undefined, disabled: false }, [ Validators.required ] ],
       sitioWeb: [ { value: companyDto?.sitioWeb || undefined, disabled: false } ],
       observaciones: [ { value: companyDto?.observaciones || undefined, disabled: false } ],
-      prestador: [ { value: companyDto?.prestador || undefined, disabled: false }, [ Validators.required ] ]
+      prestador: [ { value: companyDto?.prestador || false, disabled: false }, [ Validators.required ] ]
     })
   }
 }

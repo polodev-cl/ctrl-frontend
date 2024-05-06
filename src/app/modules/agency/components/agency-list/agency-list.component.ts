@@ -25,6 +25,8 @@ import { IAgency } from '@modules/agency/domain/interface/agency.interface';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { AgencyService } from '@modules/ingreso-individual/agency.service';
 import { cleanObjectFields, updateQuerySate } from '@app/utils/utils';
+import { CommonModule } from '@angular/common';
+import { ModalEliminarEntitiesComponent } from '@app/modules/Custom/modal-eliminar-entities/modal-eliminar-entities.component';
 
 @Component({
   selector: 'app-agency-list',
@@ -51,6 +53,8 @@ import { cleanObjectFields, updateQuerySate } from '@app/utils/utils';
     MatHeaderCellDef,
     MatMenuTrigger,
     RouterLink,
+    CommonModule,
+    ModalEliminarEntitiesComponent
   ],
   templateUrl: './agency-list.component.html',
 })
@@ -68,6 +72,9 @@ export class AgencyListComponent {
     'actions',
   ];
   public loading: Observable<boolean> = of(false);
+  mostrarModalEliminar: boolean = false;
+  agencyIdParaEliminar: number | null = null;
+  mensajeModalEliminar: string = "¿Estás seguro de que quieres eliminar esta agencia?";
 
   constructor(
     private readonly agencyService: AgencyService,
@@ -110,8 +117,13 @@ export class AgencyListComponent {
   }
 
   onDelete(agencyId: number) {
-    if (confirm('¿Estás seguro de que quieres eliminar esta agencia?')) {
-      this.agencyService.deleteAgency(agencyId).subscribe({
+    this.agencyIdParaEliminar = agencyId;
+    this.mostrarModalEliminar = true;
+  }
+
+  confirmarEliminacion() {
+    if (this.agencyIdParaEliminar) {
+      this.agencyService.deleteAgency(this.agencyIdParaEliminar).subscribe({
         next: () => {
           this.snackBar.open('Agencia eliminada', 'Cerrar', {
             duration: 3000,
@@ -119,6 +131,7 @@ export class AgencyListComponent {
             verticalPosition: 'top',
           });
           this.onSearch();
+          this.cerrarModalEliminar();
         },
         error: (error) => {
           this.snackBar.open('Error al eliminar la agencia', 'Cerrar', {
@@ -127,11 +140,17 @@ export class AgencyListComponent {
             verticalPosition: 'top',
           });
           console.error('Error al eliminar la agencia:', error);
-        },
+          this.cerrarModalEliminar();
+        }
       });
     }
   }
 
+  cerrarModalEliminar() {
+    this.mostrarModalEliminar = false;
+    this.agencyIdParaEliminar = null;
+  }
+  
   trackByIdFn(index: number, item: IAgency) {
     return item.id;
   }

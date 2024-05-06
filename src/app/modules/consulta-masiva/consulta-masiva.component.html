@@ -71,18 +71,21 @@
       <div class="col-md-2 d-flex align-items-center">
         <button
           (click)="onSearch()"
-          class="search-button px-5 py-2  w-100"
+          class="search-button p-2 w-100"
           pButton
           type="button"
-        >
-          Buscar
-        </button>
+          label="Buscar"
+        ></button>
       </div>
     </div>
   </div>
   <div class="container-fluid tabla my-2 px-0">
     <hr *ngIf="!showTable" />
-    <app-tablas *ngIf="showTable" [data]="filteredContent"></app-tablas>
+    <app-tablas *ngIf="showTable" [data]="filteredContent"
+    [companyId]="companyId" [agencyId]="agencyId"
+    [tipoEquipo]="selectedMachineType"
+    [sistemaOperativo]="selectedSystem"
+    [uso]="selectedUsage"></app-tablas>
     <div class="row my-4 d-flex justify-content-between">
       <div class="col-12 col-md-2 mb-3">
         <button

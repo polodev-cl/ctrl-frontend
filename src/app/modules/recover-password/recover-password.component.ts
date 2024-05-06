@@ -68,7 +68,7 @@ export class RecoverPasswordComponent {
       console.log(`Changing password for ${ this.email }`);
       await this.cognitoService.confirmResetPassword(this.email, this.verificationCode, this.newPassword);
       this.abrirModalExitoso();
-      this.error = ''; // Clear any previous errors
+      this.error = ''; 
       this.emailStateService.clearEmail();
     } catch ( error ) {
       console.error('Error during password confirmation:', error);
@@ -85,6 +85,6 @@ export class RecoverPasswordComponent {
 
   cerrarModal(): void {
     this.mostrarModal = false;
-    this.router.navigate([ '/login' ]);
+    this.router.navigate([ '/sign-up' ]);
   }
 }

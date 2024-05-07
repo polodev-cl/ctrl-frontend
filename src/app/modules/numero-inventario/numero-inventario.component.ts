@@ -1,11 +1,13 @@
-import { NgForOf, NgIf } from "@angular/common";
+import { NgForOf, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ButtonModule } from "primeng/button";
-import { DividerModule } from "primeng/divider";
+import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
-import { ModalHistorialEquipoComponent } from "../Custom/modal-historial-equipo/modal-historial-equipo.component";
-import { NavbarComponent } from "../shared/navbar/navbar.component";
+import { ModalHistorialEquipoComponent } from '../Custom/modal-historial-equipo/modal-historial-equipo.component';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { UserService } from '@app/common/user/services/user.service';
+import { RoleEnum } from '@app/common/auth/enums/role.enum';
 
 @Component({
   selector: 'app-numero-inventario',
@@ -19,8 +21,8 @@ import { NavbarComponent } from "../shared/navbar/navbar.component";
     RouterLink,
     NgForOf,
     ButtonModule,
-    NavbarComponent
-  ]
+    NavbarComponent,
+  ],
 })
 export class NumeroInventarioComponent {
   breadcrumbs = [
@@ -32,17 +34,28 @@ export class NumeroInventarioComponent {
   inventario: number | null = null;
   mostrarModalHistorialEquipo: boolean = false;
   equipoActualId: number | null = null;
+  RoleEnum = RoleEnum;
+  rol!: RoleEnum;
 
-  constructor(private route: ActivatedRoute, private equipmentService: EquipmentService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private equipmentService: EquipmentService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.rol = this.obtenerRolUsuario();
+    console.log('rol de data-usuario', this.rol);
+    this.route.params.subscribe((params) => {
       this.inventario = +params['inventario'];
-      if ( this.inventario ) {
+      if (this.inventario) {
         this.buscarPorInventario(this.inventario);
       }
     });
+  }
+
+  obtenerRolUsuario(): RoleEnum {
+    return this.userService.getUserRole();
   }
 
   buscarPorInventario(inventario: number): void {
@@ -54,10 +67,9 @@ export class NumeroInventarioComponent {
       error: (error) => {
         console.error('Error fetching data:', error);
         this.equipments = [];
-      }
+      },
     });
   }
-
 
   //consulta masiva
   abrirModalHistorialEquipo(equipmentId: number): void {

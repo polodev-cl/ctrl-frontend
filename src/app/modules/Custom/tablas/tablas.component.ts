@@ -7,6 +7,8 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import {
   MatCell,
@@ -22,11 +24,17 @@ import {
   MatTable,
   MatTableDataSource,
 } from '@angular/material/table';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
+import { RoleEnum } from '@app/common/auth/enums/role.enum';
 import { ConsultaMasivaService } from '@app/common/equipment/services/consulta-masiva.service';
+import { EquipmentService } from '@app/common/equipment/services/equipment.service';
+import { UserService } from '@app/common/user/services/user.service';
 import { lastValueFrom } from 'rxjs';
 import * as XLSX from 'xlsx';
 
 interface Consulta {
+  id: number;
   inventario: number;
   equipo: string;
   dcp: string;
@@ -54,7 +62,10 @@ interface Consulta {
     MatRowDef,
     MatPaginator,
     MatNoDataRow,
-    CommonModule
+    CommonModule,
+    MatTooltip,
+    MatIconButton,
+    MatIcon,
   ],
 })
 export class TablasComponent implements OnChanges, AfterViewInit {
@@ -66,10 +77,11 @@ export class TablasComponent implements OnChanges, AfterViewInit {
     'empresa',
     'usuario',
     'modelo',
+    'Acciones',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
- 
+
   @Input() data: Consulta[] = [];
 
   @Input() companyId: number = 0;
@@ -78,52 +90,56 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   @Input() sistemaOperativo: string = '';
   @Input() uso: string = '';
   @Input() loading: boolean = false;
+  RoleEnum = RoleEnum;
+  rol!: RoleEnum;
 
   dataSource = new MatTableDataSource<Consulta>();
 
-  private columns = [
-    { header: 'Empresa', wch: 25 },
-    { header: 'Rut Usuario', wch: 20 },
-    { header: 'Agencia Nombre', wch: 30 },
-    { header: 'Nemonico', wch: 10 },
-    { header: 'DPC', wch: 5 },
-    { header: 'Uso', wch: 15 },
-    { header: 'Ubicacion', wch: 35 },
-    { header: 'Equipo', wch: 15 },
-    { header: 'Marca', wch: 15 },
-    { header: 'Modelo', wch: 30 },
-    { header: 'Sistema Operativo', wch: 20 },
-    { header: 'MAC', wch: 20 },
-    { header: 'Nombre de Maquina', wch: 25 },
-    { header: 'Procesador', wch: 20 },
-    { header: 'RAM', wch: 5 },
-    { header: 'SSD/HDD', wch: 10 },
-    { header: 'IP', wch: 20 },
-    { header: 'DDLL TBK', wch: 20 },
-    { header: 'Numero serie', wch: 25 },
-    { header: 'Numero inventario', wch: 25 },
-    { header: 'Estado', wch: 15 },
-    { header: 'Encargado Agencia', wch: 45 },
-    { header: 'Garantia meses', wch: 15 },
-    { header: 'Orden de compra numero', wch: 25 },
-    { header: 'Fecha Ingreso', wch: 15 },
-  ];
-
-  constructor(private equipmentService: ConsultaMasivaService) {}
+  constructor(
+    private consultaMasivaService: ConsultaMasivaService,
+    private equipmentService: EquipmentService,
+    private userService: UserService,
+    private router: Router
+  ) {}
+  
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.data = this.data;
   }
 
+  ngOnInit() {
+    this.rol = this.obtenerRolUsuario();
+    console.log('rol tabla dpc', this.rol);
+  }
+
+  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && changes['data'].currentValue) {
       this.dataSource.data = changes['data'].currentValue;
+      console.log("Current data:", this.dataSource.data); // Para depurar y ver qué datos se están pasando
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
       }
     }
   }
+  
+
+  goToEdit(equipmentId: number | undefined) {
+    if (equipmentId) {
+      this.router.navigate(['/editar-equipamiento', equipmentId]);
+    } else {
+      console.error("Equipment ID is undefined or not provided");
+    }
+  }
+  
+  
+
+  obtenerRolUsuario(): RoleEnum {
+    return this.userService.getUserRole();
+  }
+
 
   public cargarDatos(data: Consulta[]) {
     console.log(
@@ -142,7 +158,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
 
       const data = (
         await lastValueFrom(
-          this.equipmentService.getMassiveQuery(
+          this.consultaMasivaService.getMassiveQuery(
             this.companyId,
             this.agencyId,
             this.tipoEquipo,
@@ -197,6 +213,34 @@ export class TablasComponent implements OnChanges, AfterViewInit {
       this.loading = false;
     }
   }
+
+  private columns = [
+    { header: 'Empresa', wch: 25 },
+    { header: 'Rut Usuario', wch: 20 },
+    { header: 'Agencia Nombre', wch: 30 },
+    { header: 'Nemonico', wch: 10 },
+    { header: 'DPC', wch: 5 },
+    { header: 'Uso', wch: 15 },
+    { header: 'Ubicacion', wch: 35 },
+    { header: 'Equipo', wch: 15 },
+    { header: 'Marca', wch: 15 },
+    { header: 'Modelo', wch: 30 },
+    { header: 'Sistema Operativo', wch: 20 },
+    { header: 'MAC', wch: 20 },
+    { header: 'Nombre de Maquina', wch: 25 },
+    { header: 'Procesador', wch: 20 },
+    { header: 'RAM', wch: 5 },
+    { header: 'SSD/HDD', wch: 10 },
+    { header: 'IP', wch: 20 },
+    { header: 'DDLL TBK', wch: 20 },
+    { header: 'Numero serie', wch: 25 },
+    { header: 'Numero inventario', wch: 25 },
+    { header: 'Estado', wch: 15 },
+    { header: 'Encargado Agencia', wch: 45 },
+    { header: 'Garantia meses', wch: 15 },
+    { header: 'Orden de compra numero', wch: 25 },
+    { header: 'Fecha Ingreso', wch: 15 },
+  ];
 
   private mapEquipmentStatus(status: number) {
     switch (status) {

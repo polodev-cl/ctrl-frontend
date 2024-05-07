@@ -121,6 +121,16 @@
             >
               <mat-icon>history</mat-icon>
             </button>
+            <button
+              *ngIf="rol === RoleEnum.ADMIN"
+              mat-icon-button
+              (click)="goToEdit(element.id)"
+              matTooltip="Editar"
+              color="primary"
+              aria-label="editar"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
           </div>
         </td>
       </ng-container>

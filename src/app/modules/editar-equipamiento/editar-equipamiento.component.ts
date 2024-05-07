@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf,Location  } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -132,7 +132,8 @@ export class EditarEquipamientoComponent implements OnInit {
     private companyService: CompanyService,
     private equipmentService: EquipmentService,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+  private location: Location
   ) {
     this.ingresoIndividualForm = this._loadForm();
     this.selectorCompany = this.companyService.companiesSelector;
@@ -140,54 +141,220 @@ export class EditarEquipamientoComponent implements OnInit {
   
 
   ngOnInit() {
-    const userId = this.userService.getUserId(); 
-    const firstName =  this.userService.getUserFirstName();
-    const lastName =  this.userService.getUserLastName();
-    console.log('ID del usuario activo:', userId);
-    console.log('Nombre:', firstName, 'Apellido:', lastName);
-    this.firstName = firstName;
-    this.lastName = lastName;
+    const equipmentId = this.route.snapshot.params['id'];
+  
+    if (equipmentId) {
+      this.equipmentService.getEquipmentById(equipmentId).subscribe({
+        next: (equipment) => {
+          this.ingresoIndividualForm = this._loadForm(equipment); 
+          this.loadRelatedData(equipment);
+        },
+        error: (error) => {
+          console.error('Error al cargar el equipamiento', error);
+         
+        }
+      });
+    } else {
+      this.ingresoIndividualForm = this._loadForm(); 
+    }
+  }
   
 
-    this.selectorAgencyFiltered = this.selectorAgency;
+  
+  isEquipmentWithNoOptions(type: string): boolean {
+    return [
+      'Impresora',
+      'Anexos',
+      'Escaner',
+      'LBM',
+      'Monitor',
+      'Pistola',
+      'Print Server',
+      'TBK',
+    ].includes(type);
+  }
 
 
-    const equipmentId = this.route.snapshot.params['id'];
-    console.log(equipmentId)
+  onTypeChange(value: string): void {
+    if (this.isEquipmentWithNoOptions(value)) {
+      this.ingresoIndividualForm.patchValue({
+        // sistemaOperativo: { value: undefined, disabled: true },
+        sistemaOperativo: undefined,
+        sistemaOperativoVersion: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined,
+      });
 
-    this.equipmentService.getEquipmentById(equipmentId).subscribe({
-      next: (equipment) => {
+      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
+      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
+      this.ingresoIndividualForm.get('procesador')?.disable();
+      this.ingresoIndividualForm.get('ramGb')?.disable();
+      this.ingresoIndividualForm.get('disco')?.disable();
+      this.ingresoIndividualForm.get('ddllTbk')?.disable();
+
+      if (value === 'TBK') {
         this.ingresoIndividualForm.patchValue({
-          fechaIngreso: equipment.fechaIngreso,
-          ordenCompra: equipment.ordenCompra,
-          rut: equipment.rut,
-          agenciaId: equipment.agenciaId,
-          agenciaMnemonic: equipment.agenciaMnemonic,
-          agenciaDpc: equipment.agenciaDpc,
-          inventario: equipment.inventario,
-          tipo: equipment.tipo,
-          sistemaOperativo: equipment.sistemaOperativo,
-          uso: equipment.uso,
-          marca: equipment.marca,
-          modelo: equipment.modelo,
-          mac: equipment.mac,
-          ip: equipment.ip,
-          nombre: equipment.nombre,
-          procesador: equipment.procesador,
-          ramGb: equipment.ramGb,
-          disco: equipment.disco,
-          ddllTbk: equipment.ddllTbk,
-          serie: equipment.serie,
-          encargadoAgencia: equipment.encargadoAgencia,
-          ubicacion: equipment.ubicacion,
-          garantiaMeses: equipment.garantiaMeses
+          ddllTbk: undefined,
         });
-        this.loadRelatedData(equipment);
-      },
-      error: (error) => console.error('Error al cargar el equipamiento', error)
+        this.ingresoIndividualForm.get('ddllTbk')?.enable();
+      }
+    } else {
+      this.loadSOData().then(() => {
+        this.ingresoIndividualForm.patchValue({
+          // sistemaOperativo: { value: undefined, disabled: true },
+          sistemaOperativo: undefined,
+          sistemaOperativoVersion: undefined,
+          procesador: undefined,
+          ramGb: undefined,
+          disco: undefined,
+        });
+
+        this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
+        this.ingresoIndividualForm.get('sistemaOperativoVersion')?.enable();
+        this.ingresoIndividualForm.get('procesador')?.enable();
+        this.ingresoIndividualForm.get('ramGb')?.enable();
+        this.ingresoIndividualForm.get('disco')?.enable();
+        this.ingresoIndividualForm.get('ddllTbk')?.disable();
+      });
+    }
+  }
+
+  onMacBlur(): void {
+    const macControl = this.ingresoIndividualForm.get('mac');
+    if (macControl) {
+      const formattedMac = formatMAC(macControl.value);
+      macControl.setValue(formattedMac, { emitEvent: false });
+    }
+  } 
+  limitAndValidateIP(): void {
+    const value = this.ingresoIndividualForm.get('ip')?.value;
+    if (value && value.length > 39)
+      this.ingresoIndividualForm.patchValue({ ip: value.substring(0, 39) });
+  }
+
+  
+  abrirModalExito(): void {
+    this.tituloModalExito = 'Editar Equipamiento';
+    this.mensajeModalExito = 'Se ha modificado con éxito.';
+    this.mostrarModalExito = true;
+  }
+
+  cerrarModalExito(): void {
+    this.mostrarModalExito = false;
+  }
+
+  cerrarModalAdvertencia(): void {
+    this.mostrarModalAdvertencia = false;
+  }
+  abrirModalAdvertencia(mensaje: string): void {
+    this.tituloModalAdvertencia = 'Error al ingresar usuario';
+    this.mensajeModalAdvertencia = mensaje;
+    this.mostrarModalAdvertencia = true;
+  }
+
+
+  loadSOData = () =>
+    lastValueFrom(
+      this.soService.getSODataByType(
+        this.ingresoIndividualForm.get('tipo')?.value
+      )
+    ).then((soOptions) => {
+      this.selectorSistemasOperativos = soOptions;
+      this.selectorSistemasOperativosFiltered = soOptions;
+      this.ingresoIndividualForm.patchValue({
+        sistemaOperativoVersion: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined,
+      });
+    });
+
+  filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
+    switch (field) {
+      case 'agency': {
+        this.selectorAgencyFiltered = this.selectorAgency.pipe(
+          map((agencies) => filterByValue(agencies, target.value, 'nombre'))
+        );
+        break;
+      }
+      case 'company': {
+        this.selectorCompanyFiltered =
+          this.companyService.companiesSelector.pipe(
+            map((companies) =>
+              filterByValue(companies, target.value, 'razonSocial')
+            )
+          );
+        break;
+      }
+      case 'sistemaOperativo': {
+        this.selectorSistemasOperativosFiltered = filterByValue(
+          this.selectorSistemasOperativos,
+          target.value,
+          'so'
+        );
+        break;
+      }
+    }
+  }
+
+
+  displayFnAgency = (agency: Agency) => (agency ? agency.nombre : '');
+
+  displayFnCompany = (company: Company) => (company ? company.razonSocial : '');
+
+  onEmpresaChange(value: any): void {
+    this.ingresoIndividualForm.patchValue({
+      agenciaId: undefined,
+      agenciaDpc: undefined,
+      agenciaMnemonic: undefined,
     });
     
+
+    if (value)
+      lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value))
+        .then((agencies) => (this.selectorAgency = of(agencies)))
+        .then(() => (this.selectorAgencyFiltered = this.selectorAgency))
+        .then(() => this.ingresoIndividualForm.get('agenciaId')?.enable())
+        .catch(console.error);
   }
+
+  onAgencyChange(agency: Agency): void {
+    this.ingresoIndividualForm.patchValue({
+      agenciaDpc: agency?.dpc,
+      agenciaMnemonic: agency?.nemonico,
+    });
+  }
+
+
+
+
+  onSubmit() {
+    if (this.ingresoIndividualForm.valid) {
+      const equipmentData = this.ingresoIndividualForm.value;
+      const equipmentId = this.route.snapshot.params['id']; // Asegúrate de que tienes el ID del equipamiento
+
+      this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
+        (response) => {
+          console.log('Equipo creado con éxito', response);
+         
+        },
+        (error) => {
+          console.error('Error al crear el equipo', error);
+          const errorMessage =
+            error.error.message || 'Se produjo un error inesperado.';
+          console.log('error: ', errorMessage);
+          this.abrirModalAdvertencia(errorMessage);
+        }
+      );
+    }
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
+  
 
   private loadRelatedData(equipment: any) {
     this.agencyService.getAgenciesByCompanyId(equipment.companyId).subscribe({
@@ -199,32 +366,33 @@ export class EditarEquipamientoComponent implements OnInit {
   }
 
 
-  private _loadForm() {
+  private _loadForm(equipment?: any) { // Puedes reemplazar 'any' con 'Iequipment' si tienes definida esa interfaz
     return this.fb.group({
-      fechaIngreso: [undefined, [Validators.required]],
-      ordenCompra: [undefined, [Validators.required]],
-      rut: [undefined],
-      agenciaId: [{ value: undefined, disabled: true }],
-      agenciaMnemonic: [{ value: undefined, disabled: true }],
-      agenciaDpc: [{ value: undefined, disabled: true }],
-      inventario: [undefined, [Validators.min(0)]],
-      tipo: [undefined, [Validators.required]],
-      sistemaOperativo: [undefined],
-      uso: [undefined, [Validators.required]],
-      marca: [undefined, [Validators.required]],
-      modelo: [undefined, [Validators.required]],
-      mac: [undefined, [Validators.pattern(MAC_PATTERN)]],
-      ip: [undefined, [Validators.pattern(IPV4_PATTERN)]],
-      nombre: [undefined, [Validators.required]],
-      procesador: [undefined],
-      ramGb: [undefined, [Validators.min(1)]],
-      disco: [undefined],
-      ddllTbk: [{ value: undefined, disabled: true }],
-      serie: [undefined],
-      encargadoAgencia: [undefined, [Validators.required]],
-      ubicacion: [undefined, [Validators.required]],
-      garantiaMeses: [undefined, [Validators.required, Validators.min(1)]],
-      estado: [1],
+      fechaIngreso: [equipment ? new Date(equipment.fechaIngreso) : undefined, [Validators.required]],
+      ordenCompra: [equipment ? equipment.ordenCompra : undefined, [Validators.required]],
+      rut: [equipment ? equipment.rut : undefined],
+      agenciaId: [{ value: equipment ? equipment.agenciaId : undefined, disabled: equipment ? false : true }],
+      agenciaMnemonic: [{ value: equipment ? equipment.agenciaMnemonic : undefined, disabled: true }],
+      agenciaDpc: [{ value: equipment ? equipment.agenciaDpc : undefined, disabled: true }],
+      inventario: [equipment ? equipment.inventario : undefined, [Validators.min(0)]],
+      tipo: [equipment ? equipment.tipo : undefined, [Validators.required]],
+      sistemaOperativo: [equipment ? equipment.sistemaOperativo : undefined],
+      uso: [equipment ? equipment.uso : undefined, [Validators.required]],
+      marca: [equipment ? equipment.marca : undefined, [Validators.required]],
+      modelo: [equipment ? equipment.modelo : undefined, [Validators.required]],
+      mac: [equipment ? equipment.mac : undefined, [Validators.pattern(MAC_PATTERN)]],
+      ip: [equipment ? equipment.ip : undefined, [Validators.pattern(IPV4_PATTERN)]],
+      nombre: [equipment ? equipment.nombre : undefined, [Validators.required]],
+      procesador: [equipment ? equipment.procesador : undefined],
+      ramGb: [equipment ? equipment.ramGb : undefined, [Validators.min(1)]],
+      disco: [equipment ? equipment.disco : undefined],
+      ddllTbk: [{ value: equipment ? equipment.ddllTbk : undefined, disabled: equipment ? false : true }],
+      serie: [equipment ? equipment.serie : undefined],
+      encargadoAgencia: [equipment ? equipment.encargadoAgencia : undefined, [Validators.required]],
+      ubicacion: [equipment ? equipment.ubicacion : undefined, [Validators.required]],
+      garantiaMeses: [equipment ? equipment.garantiaMeses : undefined, [Validators.required, Validators.min(1)]],
+      estado: [equipment ? equipment.estado : 1], // Asegúrate de manejar el default adecuadamente
     });
   }
+  
 }

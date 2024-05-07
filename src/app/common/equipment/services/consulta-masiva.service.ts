@@ -44,6 +44,7 @@ export class ConsultaMasivaService {
             nombres = item.usuarioCreacion?.nombres + ' ' + item.usuarioCreacion.apellidos;
 
           return {
+            id: item.id,
             inventario: item.inventario,
             equipo: item.nombre,
             dcp: item.agenciaDpc?.toString() || '-',

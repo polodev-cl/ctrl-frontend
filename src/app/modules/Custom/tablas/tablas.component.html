@@ -1,6 +1,5 @@
 <div class="mat-elevation-z0 rounded-5 shadow">
   <div class="table-responsive">
-
     <table [dataSource]="dataSource" mat-table>
       <!-- N° Inventario Column -->
       <ng-container matColumnDef="inventario">
@@ -90,7 +89,7 @@
       <ng-container matColumnDef="modelo">
         <th
           *matHeaderCellDef
-          class="rounded-header last-header color-headers text-center text-light"
+          class="color-headers text-center text-light"
           mat-header-cell
         >
           Modelo
@@ -99,8 +98,34 @@
           {{ element.modelo }}
         </td>
       </ng-container>
+
+      <ng-container matColumnDef="Acciones">
+        <th
+          *matHeaderCellDef
+          class="rounded-header last-header color-headers text-center text-light"
+          mat-header-cell
+        ></th>
+        <td *matCellDef="let element" class="text-center" mat-cell>
+          <div class="d-flex justify-content-evenly align-items-center">
+            <button
+              *ngIf="rol === RoleEnum.ADMIN"
+              mat-icon-button
+              (click)="goToEdit(element.id)"
+              matTooltip="Editar"
+              color="primary"
+              aria-label="editar"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
       <tr *matNoDataRow class="mat-row">
-        <td [attr.colspan]="displayedColumns.length" class="mat-cell text-center fst-italic pt-4">
+        <td
+          [attr.colspan]="displayedColumns.length"
+          class="mat-cell text-center fst-italic pt-4"
+        >
           No se han encontrado equipos que coincidan con la búsqueda.
         </td>
       </tr>

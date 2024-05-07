@@ -40,6 +40,11 @@ export class EquipmentService {
     return this.http.post(this.apiUrl, equipmentData);
   }
 
+  updateEquipment(equipmentId: number, equipmentData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${equipmentId}`, equipmentData)
+      .pipe(tap(data => console.log('Updated equipment:', data)));
+  }
+
   getEquipmentHistory(equipmentId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${equipmentId}/history`);
   }

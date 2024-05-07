@@ -1,1 +1,457 @@
 <app-navbar></app-navbar>
+<app-modal-exitoso
+  (cerrar)="cerrarModalExito()"
+  *ngIf="mostrarModalExito"
+  [mensajeModal]="mensajeModalExito"
+  [titulo]="tituloModalExito"
+>
+</app-modal-exitoso>
+<app-modal-advertencia
+  (cerrar)="cerrarModalAdvertencia()"
+  *ngIf="mostrarModalAdvertencia"
+  [mensajeModalAdvertencia]="mensajeModalAdvertencia"
+  [tituloModalAdvertencia]="tituloModalAdvertencia"
+>
+</app-modal-advertencia>
+<div class="container-md">
+  <div class="frame mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="consultation-title">
+          <img height="16" src="../../../assets/image/logo-amarillo.jpg" />
+          Edición de Equipamiento
+        </h2>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/home']">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Editar Equipamiento
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="ingresoIndividualForm" class="mt-4">
+    <div class="grid-container gap-3">
+      <!-- Fecha de Ingreso -->
+      <div class="grid-item my-3">
+        <div class="card flex flex-wrap gap-3 p-fluid border-0">
+          <div class="flex-auto">
+            <span class="p-float-label">
+              <p-calendar
+                [iconDisplay]="'input'"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                id="fecha_ingreso"
+                inputId="fecha_ingreso"
+                formControlName="fechaIngreso"
+              ></p-calendar>
+              <label class="" for="fecha_ingreso">Fecha de ingreso</label>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RUT -->
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            autocomplete="on"
+            class="w-100 rounded"
+            id="rut"
+            pInputText
+            #rut
+            type="text"
+            [value]="rut.value | rutPipe"
+            formControlName="rut"
+          />
+          <label for="rut">RUT (12345678-9)</label>
+        </span>
+      </div>
+
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Empresa</mat-label>
+          <mat-select (selectionChange)="onEmpresaChange($event.value)">
+            @for (empresa of selectorCompany | async; track empresa.id) {
+            <mat-option [value]="empresa.id">{{
+              empresa.nombreCorto
+            }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Agencia -->
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Agencia</mat-label>
+          <input
+            (blur)="cleanIfNotValid(ingresoIndividualForm, 'agency')"
+            (focus)="filter('agency', $event.target)"
+            (input)="filter('agency', $event.target)"
+            [matAutocomplete]="auto2"
+            aria-label="Agencias"
+            formControlName="agenciaId"
+            matInput
+            placeholder="Selecciona una agencia"
+          />
+          <mat-autocomplete
+            #auto2="matAutocomplete"
+            (optionSelected)="onAgencyChange($event.option.value)"
+            [displayWith]="displayFnAgency"
+            requireSelection="true"
+          >
+            @for (agency of selectorAgencyFiltered | async; track agency.id) {
+            <mat-option [value]="agency">
+              {{ agency.nombre }}
+            </mat-option>
+            } @if ((selectorAgency | async)?.length === 0) {
+            <mat-option disabled>No hay agencias disponibles</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <!-- DPC -->
+
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            id="dpc"
+            pInputText
+            placeholder="DPC"
+            type="text"
+            formControlName="agenciaDpc"
+          />
+          <label for="dpc">DPC</label>
+        </span>
+      </div>
+
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            id="nemonico"
+            pInputText
+            placeholder="Nemónico"
+            type="text"
+            formControlName="agenciaMnemonic"
+          />
+          <label for="nemonico">Nemónico</label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            formControlName="inventario"
+            id="inventario"
+            pInputText
+            type="Number"
+          />
+          <label for="inventario">N° Inventario</label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Tipo de Equipo</mat-label>
+          <mat-select
+            (selectionChange)="onTypeChange($event.value)"
+            formControlName="tipo"
+          >
+            @for (type of equipmentTypes; track type.value) {
+            <mat-option [value]="type.value">{{ type.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Sistema Operativo</mat-label>
+          <input
+            (focus)="filter('sistemaOperativo', $event.target)"
+            (input)="filter('sistemaOperativo', $event.target)"
+            [matAutocomplete]="autoSO"
+            aria-label="Agencias"
+            formControlName="sistemaOperativo"
+            matInput
+            placeholder="Selecciona una agencia"
+          />
+          <mat-autocomplete #autoSO="matAutocomplete" requireSelection="true">
+            @for (so of selectorSistemasOperativosFiltered; track so.so) {
+            <mat-option [value]="so.so">
+              {{ so.so }}
+            </mat-option>
+            } @if (selectorSistemasOperativosFiltered.length === 0) {
+            <mat-option disabled
+              >No hay sistemas operativos disponibles</mat-option
+            >
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Uso</mat-label>
+          <mat-select formControlName="uso">
+            <mat-option value="Administrativo">Administrativo</mat-option>
+            <mat-option value="Caja">Caja</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            autocomplete="on"
+            class="w-100 rounded"
+            id="marca"
+            pInputText
+            type="text"
+            formControlName="marca"
+          />
+          <label for="marca">Marca</label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            autocomplete="on"
+            class="w-100 rounded"
+            id="modelo"
+            pInputText
+            type="text"
+            formControlName="modelo"
+          />
+          <label for="modelo">Modelo</label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            formControlName="mac"
+            id="mac"
+            pInputText
+            type="text"
+            (blur)="onMacBlur()"
+          />
+          <label for="mac">MAC (XX:XX:XX:XX:XX:XX)</label>
+        </span>
+
+        <!--        <div *ngIf="isValidMAC === false" class="text-danger">-->
+        <!--          Dirección MAC no válida-->
+        <!--        </div>-->
+      </div>
+
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            (keyup)="limitAndValidateIP()"
+            class="w-100 rounded"
+            formControlName="ip"
+            id="ip"
+            pInputText
+            type="text"
+          />
+
+          <label for="ip">IP (IPV4)</label>
+        </span>
+        <!--        <div *ngIf="isValidIP === false" class="text-danger"> &lt;!&ndash; TODO: implementar mat-error &ndash;&gt;-->
+        <!--          Dirección IP no válida-->
+        <!--        </div>-->
+      </div>
+
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            formControlName="nombre"
+            id="maquina"
+            pInputText
+            type="text"
+          />
+          <label for="maquina">Nombre Máquina </label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            formControlName="procesador"
+            id="procesador"
+            pInputText
+            type="text"
+          />
+          <label for="procesador">Procesador</label>
+        </span>
+      </div>
+
+      <div class="grid-item my-3">
+        <div class="p-float-label position-relative">
+          <input
+            class="w-100 rounded"
+            formControlName="ramGb"
+            id="ram"
+            pInputText
+            type="text"
+          />
+          <label for="ram">RAM</label>
+          <div
+            *ngIf="!isEquipmentWithNoOptions(selectedType)"
+            class="position-absolute"
+            style="
+              top: 0;
+              right: 10px;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              pointer-events: none;
+            "
+          >
+            GB
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Disco</mat-label>
+          <mat-select formControlName="disco">
+            <mat-option value="SSD">SSD</mat-option>
+            <mat-option value="HDD">HDD</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item my-3">
+        <!-- TODO: revisar appLimitInput, a que corresponde -->
+        <span class="p-float-label">
+          <!-- TODO: usar valueChanges -->
+          <input
+            appLimitInput
+            class="w-100 rounded"
+            formControlName="ddllTbk"
+            id="ddlTbk"
+            pInputText
+            type="text"
+          />
+          <label for="ddlTbk">DDL/TBK</label>
+        </span>
+        <!--        <div *ngIf="isValidDDLTBK === false" class="text-danger">-->
+        <!--          Formato DDL/TBK no válido-->
+        <!--        </div>-->
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            formControlName="serie"
+            id="serie"
+            pInputText
+            type="text"
+          />
+          <label for="serie">Número de Serie </label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            autocomplete="on"
+            class="w-100 rounded"
+            id="encargado"
+            pInputText
+            type="text"
+            formControlName="encargadoAgencia"
+          />
+          <label for="encargado">Encargado Agencia *</label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            class="w-100 rounded"
+            formControlName="ubicacion"
+            id="ubicacion"
+            pInputText
+            type="text"
+          />
+          <label for="ubicacion">Ubicación *</label>
+        </span>
+      </div>
+      <div class="grid-item my-3">
+        <div class="p-float-label position-relative">
+          <input
+            class="w-100 rounded"
+            id="garantia"
+            pInputText
+            type="Number"
+            formControlName="garantiaMeses"
+          />
+          <label for="garantia">Garantía *</label>
+          <div
+            class="position-absolute"
+            style="
+              top: 0;
+              right: 10px;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              pointer-events: none;
+            "
+          >
+            Mes/Meses
+          </div>
+        </div>
+      </div>
+      <div class="grid-item my-3">
+        <span class="p-float-label">
+          <input
+            autocomplete="on"
+            class="w-100 rounded"
+            id="orden_compra"
+            formControlName="ordenCompra"
+            pInputText
+            type="text"
+          />
+          <label for="orden_compra">Orden de compra</label>
+        </span>
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="col">
+      <hr />
+    </div>
+  </div>
+  <div class="row mt-3 mb-5">
+    <div class="col-12">
+      <div class="d-flex justify-content-between">
+        <button
+          class="back-button rounded-xl px-5 py-2"
+          label="Volver"
+          pButton
+          (click)="goBack()"
+          type="button"
+        ></button>
+
+        <button
+          (click)="onSubmit()"
+          class="search-button px-5 py-2"
+          label="Ingresar"
+          [disabled]="!ingresoIndividualForm.valid"
+          pButton
+          type="button"
+        ></button>
+
+       
+      </div>
+    </div>
+  </div>
+</div>

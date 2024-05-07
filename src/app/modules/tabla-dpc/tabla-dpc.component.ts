@@ -29,6 +29,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { EquipmentService } from '@app/common/equipment/services/equipment.service';
 import { lastValueFrom } from 'rxjs';
+import { UserService } from '@app/common/user/services/user.service';
+import { RoleEnum } from '@app/common/auth/enums/role.enum';
+import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabla-dpc',
@@ -48,6 +52,7 @@ import { lastValueFrom } from 'rxjs';
     MatTooltip,
     MatIconButton,
     MatIcon,
+    NgIf
   ],
   templateUrl: './tabla-dpc.component.html',
   styleUrl: './tabla-dpc.component.css',
@@ -58,6 +63,8 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
 
   @Output() requestOpenModal = new EventEmitter<number>();
   dataSource = new MatTableDataSource<any>(this.equipments);
+  RoleEnum = RoleEnum;
+  rol!: RoleEnum;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -77,36 +84,16 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     'Acciones',
   ];
 
-  constructor(private equipmentService: EquipmentService) {}
+  constructor(
+    private equipmentService: EquipmentService,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
-  private columns = [
-    { header: 'Empresa', wch: 25 },
-    { header: 'Rut Usuario', wch: 20 },
-    { header: 'Agencia Nombre', wch: 30 },
-    { header: 'Nemonico', wch: 10 },
-    { header: 'DPC', wch: 5 },
-    { header: 'Uso', wch: 15 },
-    { header: 'Ubicacion', wch: 35 },
-    { header: 'Equipo', wch: 15 },
-    { header: 'Marca', wch: 15 },
-    { header: 'Modelo', wch: 30 },
-    { header: 'Sistema Operativo', wch: 20 },
-    { header: 'MAC', wch: 20 },
-    { header: 'Nombre de Maquina', wch: 25 }, 
-    { header: 'Procesador', wch: 20 },
-    { header: 'RAM', wch: 5 },
-    { header: 'SSD/HDD', wch: 10 }, 
-    { header: 'IP', wch: 20 },
-    { header: 'DDLL TBK', wch: 20 },
-    { header: 'Numero serie', wch: 25 },
-    { header: 'Numero inventario', wch: 25 },
-    { header: 'Estado', wch: 15 },
-    { header: 'Encargado Agencia', wch: 45 },
-    { header: 'Garantia meses', wch: 15 },
-    { header: 'Orden de compra numero', wch: 25 }, 
-    { header: 'Fecha Ingreso', wch: 15 },
-];
-
+  ngOnInit() {
+    this.rol = this.obtenerRolUsuario();
+    console.log('rol tabla dpc', this.rol);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['equipments']) {
@@ -115,6 +102,14 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
         this.dataSource.paginator = this.paginator;
       }
     }
+  }
+
+  goToEdit(equipmentId: number) {
+    this.router.navigate(['/editar-equipamiento', equipmentId]);
+  }
+
+  obtenerRolUsuario(): RoleEnum {
+    return this.userService.getUserRole();
   }
 
   getHistory(equipmentId: number) {
@@ -149,29 +144,54 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
       'Numero serie': equipment.serie || 'N/A',
       'Numero inventario': equipment.inventario || 'N/A',
       Estado: this.mapEquipmentStatus(equipment.estado as number),
-      "Encargado Agencia": equipment.encargadoAgencia || 'N/A',
-      "Garantia Meses" : equipment.garantiaMeses || 'N/A',
-      "Orden Compra": equipment.ordenCompra || 'N/A',
-      "Fecha Ingreso" : equipment.fechaIngreso || 'N/A'
-
-
+      'Encargado Agencia': equipment.encargadoAgencia || 'N/A',
+      'Garantia Meses': equipment.garantiaMeses || 'N/A',
+      'Orden Compra': equipment.ordenCompra || 'N/A',
+      'Fecha Ingreso': equipment.fechaIngreso || 'N/A',
     }));
 
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
       origin: 'A1',
-      
     });
 
     // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
     XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
     ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
-    ws['!autofilter'] = {ref : 'A1:Y1'}
+    ws['!autofilter'] = { ref: 'A1:Y1' };
 
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
     XLSX.writeFile(wb, 'ReporteFiltrado.xlsx');
   }
+
+  private columns = [
+    { header: 'Empresa', wch: 25 },
+    { header: 'Rut Usuario', wch: 20 },
+    { header: 'Agencia Nombre', wch: 30 },
+    { header: 'Nemonico', wch: 10 },
+    { header: 'DPC', wch: 5 },
+    { header: 'Uso', wch: 15 },
+    { header: 'Ubicacion', wch: 35 },
+    { header: 'Equipo', wch: 15 },
+    { header: 'Marca', wch: 15 },
+    { header: 'Modelo', wch: 30 },
+    { header: 'Sistema Operativo', wch: 20 },
+    { header: 'MAC', wch: 20 },
+    { header: 'Nombre de Maquina', wch: 25 },
+    { header: 'Procesador', wch: 20 },
+    { header: 'RAM', wch: 5 },
+    { header: 'SSD/HDD', wch: 10 },
+    { header: 'IP', wch: 20 },
+    { header: 'DDLL TBK', wch: 20 },
+    { header: 'Numero serie', wch: 25 },
+    { header: 'Numero inventario', wch: 25 },
+    { header: 'Estado', wch: 15 },
+    { header: 'Encargado Agencia', wch: 45 },
+    { header: 'Garantia meses', wch: 15 },
+    { header: 'Orden de compra numero', wch: 25 },
+    { header: 'Fecha Ingreso', wch: 15 },
+  ];
 
   private mapEquipmentStatus(status: number) {
     switch (status) {

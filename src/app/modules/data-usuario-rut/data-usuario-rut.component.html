@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="row mt-3 d-flex justify-content-between">
-              <div class="col-12 col-md-4 mb-3 pe-md-0">
+              <div class="col-12 col-md-5 mb-3 pe-md-0">
                 <button
                   (click)="abrirModalHistorialEquipo(equipment.id)"
                   class="historial-button p-2 w-100"
@@ -110,7 +110,7 @@
                   type="button"
                 ></button>
               </div>
-              <div class="col-12 col-md-4 mb-3 ps-md-0">
+              <div class="col-12 col-md-5  mb-3 ps-md-0 " *ngIf="rol === RoleEnum.ADMIN">
                 <button
                   class="equipo-button p-2 w-100 rounded-5"
                   label="Ver Equipo"

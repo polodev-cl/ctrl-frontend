@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
   mostrarModalExito: boolean = false;
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
-  rol!: RoleEnum; // Le dice a TypeScript que la variable definitivamente tendrá un valor antes de cualquier uso
+  rol!: RoleEnum;
   erroresDuplicados: string[] = [];
   constructor(
     private companyService: CompanyService,
@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
   }
 
   obtenerRolUsuario(): RoleEnum {
-    return this.userService.getUserRole(); // Asegúrate de que este método devuelva un 'RoleEnum'
+    return this.userService.getUserRole(); 
   }
 
   cerrarSesion() {

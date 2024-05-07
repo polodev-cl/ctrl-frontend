@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-modal-resumen-ingreso-individual',
@@ -25,11 +27,15 @@ export class ModalResumenIngresoIndividualComponent implements OnInit {
     console.log('Formatted Time:', this.formattedTime);
   }
 
+  constructor(private router: Router) { }
+
+
   cerrarModal(): void {
     this.cerrar.emit();  
   }
 
   confirmarAccion(): void {
-    this.exito.emit();  
+    this.exito.emit();
+    this.router.navigate(['/home']);  
   }
 }

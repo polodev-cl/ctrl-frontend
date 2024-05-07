@@ -11,7 +11,6 @@ import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import {
@@ -35,7 +34,6 @@ import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-adv
     ModalExitosoComponent,
     NgIf,
     DividerModule,
-    UserProfileComponent,
     RouterLink,
     FormsModule,
     InputTextModule,

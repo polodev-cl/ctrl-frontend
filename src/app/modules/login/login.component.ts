@@ -24,6 +24,7 @@ import { CognitoService } from '../../common/auth/cognito-service.service';
   standalone: true
 })
 export class LoginComponent {
+  loading = false;
   usuario: string = '';
   password: string = '';
   newPassword: string = '';
@@ -36,12 +37,16 @@ export class LoginComponent {
   }
 
   signIn() {
+
+    this.loading = true;
     this.cognitoService.signOut()
       .then(() => this.cognitoService.handleSignIn({ username: this.usuario, password: this.password }))
       .then(signInStep => {
         console.log('Sign-in step:', signInStep)
+        
         if ( [ 'SIGNED_IN', 'DONE' ].includes(signInStep) ) {
           return this.router.navigate([ '/home' ]);
+          this.loading = false;
         } else if ( signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED' ) {
           this.requireNewPassword = true;
           return;
@@ -53,6 +58,7 @@ export class LoginComponent {
         console.error('Error during sign-in or sign-out:', error);
         this.errorMessage = error.message || 'Error during sign-in';
         this.errorLogin = true;
+        this.loading = false;
         return;
       });
   }

@@ -76,7 +76,7 @@
       <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Empresa</mat-label>
-          <mat-select (selectionChange)="onEmpresaChange($event.value)">
+          <mat-select (selectionChange)="onEmpresaChange($event.value)" formControlName="empresa">
             @for (empresa of selectorCompany | async; track empresa.id) {
             <mat-option [value]="empresa.id">{{
               empresa.nombreCorto

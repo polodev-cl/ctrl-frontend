@@ -12,7 +12,7 @@ export interface Agency {
   empId: number;
 }
 
-const BASE_URL = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/agency';
+const BASE_URL = ' http://localhost:3000/api/agency';
 
 @Injectable({ providedIn: 'root' })
 export class AgencyService {

@@ -37,7 +37,6 @@ export class LoginComponent {
   }
 
   signIn() {
-
     this.loading = true;
     this.cognitoService.signOut()
       .then(() => this.cognitoService.handleSignIn({ username: this.usuario, password: this.password }))

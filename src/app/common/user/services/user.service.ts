@@ -32,11 +32,18 @@ export class UserService {
 
   set activeUser(data: any) {
     this._activeUser = data;
+    console.log("hola")
     localStorage.setItem('activeUser', JSON.stringify(data));
   }
 
   get activeUser() {
-    return this._activeUser || JSON.parse(localStorage.getItem('activeUser') || '');
+    console.log("Getting active user from memory:", this._activeUser);
+    if (!this._activeUser) {
+      console.log("No active user in memory, retrieving from localStorage");
+      const userData = localStorage.getItem('activeUser');
+      this._activeUser = userData ? JSON.parse(userData) : null;
+    }
+    return this._activeUser;
   }
 
   getUserRole() {

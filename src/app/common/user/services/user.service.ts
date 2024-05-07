@@ -9,8 +9,8 @@ import { User } from '../interface/user.interface';
 export class UserService {
   private _activeUser: any;
 
-  // private apiUrl = 'http://localhost:3000/api/user'; 
-  private apiUrl = 'http://localhost:3000/api/user'
+  // private apiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/user'; 
+  private apiUrl = 'https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/user'
   constructor(private http: HttpClient) { }
 
   getUserByCognitoId(cognitoId: string): Observable<User> {

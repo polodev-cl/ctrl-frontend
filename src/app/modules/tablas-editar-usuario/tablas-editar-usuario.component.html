@@ -3,6 +3,7 @@
     (cerrar)="cerrarModalEliminar()"
     (exito)="confirmarEliminacion()"
     *ngIf="mostrarModalEliminar"
+    
   >
   </app-modal-eliminar>
 
@@ -13,12 +14,22 @@
     [titulo]="tituloModalExito"
   >
   </app-modal-exitoso>
-
+  
+  <app-modal-advertencia
+  *ngIf="mostrarModalAdvertencia"
+  [mensajeModalAdvertencia]="mensajeModalAdvertencia"
+  [tituloModalAdvertencia]="tituloModalAdvertencia"
+  (cerrar)="cerrarModalAdvertencia()">
+</app-modal-advertencia>
   <app-modal-editar
     (cerrar)="cerrarModalEditar()"
     (exitoEditar)="onEditarUsuarioExitoso()"
     *ngIf="mostrarModalEditar"
     [mensajeModalEditar]="mensajeModalEditar"
+    [emailInitial]="emailInitial"
+    [rutInitial]="rutInitial"
+    [perfilInitial]="perfilInitial"
+    [idUsuario]="idUsuario"
   >
   </app-modal-editar>
   <div class="table-responsive">
@@ -84,7 +95,7 @@
         </th>
         <td *matCellDef="let element" class="text-center" mat-cell>
           <div class="d-flex justify-content-evenly align-items-center">
-            <!-- <button
+            <button
               (click)="editarUsuario(element); abrirModalEditar()"
               class="hidden-button"
               mat-button
@@ -94,7 +105,7 @@
                 class="imagen"
                 src="../../../../assets/image/edittabla.svg"
               />
-            </button> -->
+            </button>
             <button
               (click)="abrirModalEliminar(element)"
               class="hidden-button"

@@ -18,6 +18,14 @@ export class UserService {
     .pipe(tap(user => this.activeUser = user));
   }
 
+  updateUser(userId: number, userData: Partial<User>): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/${userId}`, userData)
+      .pipe(tap(updatedUser => {
+        if (userId === this.activeUser?.id) {
+          this.activeUser = {...this.activeUser, ...updatedUser};
+        }
+      }));
+  }
   createUser(userData: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, userData);
   }

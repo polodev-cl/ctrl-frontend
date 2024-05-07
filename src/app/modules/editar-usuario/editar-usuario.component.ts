@@ -1,4 +1,4 @@
-import { NgForOf, NgIf } from '@angular/common';
+import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +21,7 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
     InputTextModule,
     ButtonModule,
     NavbarComponent,
+    CommonModule
   ],
 })
 export class EditarUsuarioComponent implements OnInit {

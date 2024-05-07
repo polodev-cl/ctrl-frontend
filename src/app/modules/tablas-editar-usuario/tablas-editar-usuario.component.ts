@@ -1,14 +1,26 @@
-import { NgIf } from "@angular/common";
+import { CommonModule, NgIf } from '@angular/common';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatButton } from "@angular/material/button";
+import { MatButton } from '@angular/material/button';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatTooltip } from "@angular/material/tooltip";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
+import { MatTooltip } from '@angular/material/tooltip';
 import { EditarUsuarioService } from '../../services/editar-usuario.service';
-import { ModalEditarComponent } from "../Custom/modal-editar/modal-editar.component";
-import { ModalEliminarComponent } from "../Custom/modal-eliminar/modal-eliminar.component";
-import { ModalExitosoComponent } from "../Custom/modal-exitoso/modal-exitoso.component";
+import { ModalEditarComponent } from '../Custom/modal-editar/modal-editar.component';
+import { ModalEliminarComponent } from '../Custom/modal-eliminar/modal-eliminar.component';
+import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
 
 interface Usuario {
   id: number;
@@ -22,7 +34,7 @@ interface Usuario {
 @Component({
   selector: 'app-tablas-editar-usuario',
   templateUrl: './tablas-editar-usuario.component.html',
-  styleUrls: [ './tablas-editar-usuario.component.css' ],
+  styleUrls: ['./tablas-editar-usuario.component.css'],
   standalone: true,
   imports: [
     ModalEliminarComponent,
@@ -41,14 +53,14 @@ interface Usuario {
     MatHeaderRowDef,
     MatRowDef,
     MatCell,
-    MatTooltip
-  ]
+    MatTooltip,
+    CommonModule
+  ],
 })
 export class TablasEditarUsuarioComponent implements AfterViewInit {
   usuarioAEliminar: Usuario | null = null;
 
   displayedColumns: string[] = [
- 
     'nombre',
     'rut',
     'correo',
@@ -65,9 +77,14 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   mostrarModalExito: boolean = false;
   mostrarModalEditar: boolean = false;
   mostrarModalEliminar: boolean = false;
-
-  constructor(private usuarioService: EditarUsuarioService) {
-  }
+  rutInitial: string = '';
+  emailInitial: string = '';
+  perfilInitial: string = '';
+  idUsuario!: number ;
+  mostrarModalAdvertencia: boolean = false;
+  mensajeModalAdvertencia: string = '';
+  tituloModalAdvertencia: string = 'Error al actualizar el Usuario';
+  constructor(private usuarioService: EditarUsuarioService) {}
 
   ngAfterViewInit() {
     this.usuarioService.obtenerUsuarios().subscribe({
@@ -79,13 +96,13 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
       },
       error: (error) => {
         console.error('Error al obtener los datos:', error);
-      }
+      },
     });
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -93,24 +110,29 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
 
   editarUsuario(user: Usuario) {
     console.log('Editando usuario:', user);
-    this.cerrarModalEditar();
+    this.mensajeModalEditar = `Editando a ${user.usuario}`;
+    this.emailInitial = user.correo;
+    this.rutInitial = user.rut;
+    this.perfilInitial = user.perfil;
+    console.log("id de user.id", user.id)
+    this.idUsuario = user.id;
+    console.log("id usuario desde tabla:",this.idUsuario)
+    this.abrirModalEditar();
   }
 
   //editar
   abrirModalEditar(): void {
     this.mostrarModalEditar = true;
-    this.mensajeModalEditar = 'Juan Pérez';
   }
 
   onEditarUsuarioExitoso(): void {
     this.cerrarModalEditar();
     this.tituloModalExito = 'Editar Usuario';
-    this.mensajeModalExito = 'El usuario JPerez ha sido actualizado con éxito.';
+    this.mensajeModalExito = 'El usuario ha sido actualizado con éxito.';
     this.mostrarModalExito = true;
   }
 
   cerrarModalEditar(): void {
-
     this.mostrarModalEditar = false;
   }
 
@@ -120,14 +142,12 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   }
 
   confirmarEliminacion(): void {
-    if ( this.usuarioAEliminar ) {
+    if (this.usuarioAEliminar) {
       this.eliminarUsuario(this.usuarioAEliminar);
     } else {
       console.error('Error: No hay un usuario especificado para eliminar.');
     }
   }
-
-
 
   cerrarModalEliminar(): void {
     this.mostrarModalEliminar = false;
@@ -135,9 +155,9 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   }
 
   abrirModalExito(): void {
-    if ( this.usuarioAEliminar ) {
+    if (this.usuarioAEliminar) {
       this.tituloModalExito = 'Eliminar Usuario';
-      this.mensajeModalExito = `Usuario ${ this.usuarioAEliminar.nombre } ha sido eliminado con éxito.`;
+      this.mensajeModalExito = `Usuario ${this.usuarioAEliminar.nombre} ha sido eliminado con éxito.`;
       this.mostrarModalExito = true;
       this.mostrarModalEliminar = false;
       this.usuarioAEliminar = null;
@@ -146,18 +166,17 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
     }
   }
 
-
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
   }
 
   getPerfilDescripcion(perfil: String): string {
     switch (perfil) {
-      case "1":
+      case '1':
         return 'Administrador';
-      case "2":
+      case '2':
         return 'Ingreso';
-      case "3":
+      case '3':
         return 'Consulta';
       default:
         return 'Desconocido';
@@ -175,11 +194,9 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
       },
       error: (error) => {
         console.error('Error al eliminar el usuario:', error);
-
-      }
+      },
     });
   }
-
 
   recargarUsuarios() {
     this.usuarioService.obtenerUsuarios().subscribe({
@@ -188,10 +205,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
       },
       error: (error) => {
         console.error('Error al obtener los datos:', error);
-
-      }
+      },
     });
   }
-
-
 }

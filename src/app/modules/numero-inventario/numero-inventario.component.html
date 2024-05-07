@@ -91,7 +91,7 @@
                 <p><strong>Fecha Ingreso:</strong> {{ equipment.fechaIngreso }}</p>
               </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3 d-flex justify-content-between">
               <div class="col-12 col-md-4 mb-3 pe-md-0">
                 <button
                 (click)="abrirModalHistorialEquipo(equipment.id)"
@@ -101,6 +101,16 @@
                   type="button"
                 ></button>
               </div>
+              <div class="col-12 col-md-4 mb-3 ps-md-0">
+                <button
+                  class="equipo-button p-2 w-100 rounded-5"
+                  label="Ver Equipo"
+                  pButton
+                  type="button"
+                  [routerLink]="['/editar-equipamiento', equipment.id]"
+                ></button>
+              </div>
+
             </div>
           </div>
         </div>

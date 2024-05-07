@@ -11,6 +11,7 @@ import { FiltrosMasivaService } from '../../services/filtros-masiva.service';
 import { TablasComponent } from '../Custom/tablas/tablas.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { updateQuerySate } from '@app/utils/utils';
+import { CommonModule } from '@angular/common';
 
 interface EquipmentType {
   name: string;
@@ -38,6 +39,7 @@ interface OperatingSystem {
     NavbarComponent,
     AsyncPipe,
     JsonPipe,
+    CommonModule,
   ],
 })
 export class ConsultaMasivaComponent implements OnInit {
@@ -51,6 +53,7 @@ export class ConsultaMasivaComponent implements OnInit {
     { text: 'Consulta masiva', link: '/consulta-masiva' },
   ];
 
+  loading = false;
   agencyId: number;
   companyId: number;
   showTable = false;
@@ -86,7 +89,6 @@ export class ConsultaMasivaComponent implements OnInit {
       this.equipmentTypes = data.equipmentTypes;
       this.systems = data.systems;
       this.usages = data.usages;
-      console.log('Datos del JSON:', data);
     });
   }
 
@@ -103,6 +105,7 @@ export class ConsultaMasivaComponent implements OnInit {
   }
 
   async onSearch() {
+    this.loading = true;
     this.showTable = false;
 
     try {
@@ -130,6 +133,8 @@ export class ConsultaMasivaComponent implements OnInit {
     } catch (error) {
       console.error('Error al obtener los datos filtrados:', error);
       this.showTable = false;
+    } finally {
+      this.loading = false;
     }
   }
 }

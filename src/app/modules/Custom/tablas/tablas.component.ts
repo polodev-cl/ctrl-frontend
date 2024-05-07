@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -53,6 +54,7 @@ interface Consulta {
     MatRowDef,
     MatPaginator,
     MatNoDataRow,
+    CommonModule
   ],
 })
 export class TablasComponent implements OnChanges, AfterViewInit {
@@ -67,7 +69,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+ 
   @Input() data: Consulta[] = [];
 
   @Input() companyId: number = 0;
@@ -75,6 +77,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   @Input() tipoEquipo: string = '';
   @Input() sistemaOperativo: string = '';
   @Input() uso: string = '';
+  @Input() loading: boolean = false;
 
   dataSource = new MatTableDataSource<Consulta>();
 
@@ -91,10 +94,10 @@ export class TablasComponent implements OnChanges, AfterViewInit {
     { header: 'Modelo', wch: 30 },
     { header: 'Sistema Operativo', wch: 20 },
     { header: 'MAC', wch: 20 },
-    { header: 'Nombre de Maquina', wch: 25 }, 
+    { header: 'Nombre de Maquina', wch: 25 },
     { header: 'Procesador', wch: 20 },
     { header: 'RAM', wch: 5 },
-    { header: 'SSD/HDD', wch: 10 }, 
+    { header: 'SSD/HDD', wch: 10 },
     { header: 'IP', wch: 20 },
     { header: 'DDLL TBK', wch: 20 },
     { header: 'Numero serie', wch: 25 },
@@ -102,9 +105,9 @@ export class TablasComponent implements OnChanges, AfterViewInit {
     { header: 'Estado', wch: 15 },
     { header: 'Encargado Agencia', wch: 45 },
     { header: 'Garantia meses', wch: 15 },
-    { header: 'Orden de compra numero', wch: 25 }, 
+    { header: 'Orden de compra numero', wch: 25 },
     { header: 'Fecha Ingreso', wch: 15 },
-];
+  ];
 
   constructor(private equipmentService: ConsultaMasivaService) {}
 
@@ -134,61 +137,65 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   }
 
   async exportToExcel() {
+    try {
+      this.loading = true;
 
-    const data = (
-      await lastValueFrom(
-        this.equipmentService.getMassiveQuery( this.companyId,
-          this.agencyId,
-          this.tipoEquipo,
-          this.sistemaOperativo,
-          this.uso)
-      )
-    ).map((equipment) => ({
-      Empresa: equipment.agencia?.empresa?.nombreCorto || 'N/A',
-      RutUsuario: equipment.rut || 'N/A',
-      AgenciaNombre: equipment.agencia?.nombre || 'N/A',
-      Nemonico: equipment.agenciaMnemonic || 'N/A',
-      DPC: equipment.agenciaDpc || 'N/A',
-      Uso: equipment.uso || 'N/A',
-      Ubicacion: equipment.ubicacion || 'N/A',
-      Equipo: equipment.tipo || 'N/A',
-      Marca: equipment.marca || 'N/A',
-      Modelo: equipment.modelo || 'N/A',
-      'Sistema Operativo': equipment.sistemaOperativo || 'N/A',
-      MAC: equipment.mac || 'N/A',
-      'Nombre Equipo': equipment.nombre || 'N/A',
-      Procesador: equipment.procesador || 'N/A',
-      Ram: equipment.ramGb || 'N/A',
-      Disco: equipment.disco || 'N/A',
-      Ip: equipment.ip || 'N/A',
-      'DDL/TBK': equipment.ddllTbk || 'N/A',
-      'Numero serie': equipment.serie || 'N/A',
-      'Numero inventario': equipment.inventario || 'N/A',
-      Estado: this.mapEquipmentStatus(equipment.estado as number),
-      "Encargado Agencia": equipment.encargadoAgencia || 'N/A',
-      "Garantia Meses" : equipment.garantiaMeses || 'N/A',
-      "Orden Compra": equipment.ordenCompra || 'N/A',
-      "Fecha Ingreso" : equipment.fechaIngreso || 'N/A'
+      const data = (
+        await lastValueFrom(
+          this.equipmentService.getMassiveQuery(
+            this.companyId,
+            this.agencyId,
+            this.tipoEquipo,
+            this.sistemaOperativo,
+            this.uso
+          )
+        )
+      ).map((equipment) => ({
+        Empresa: equipment.agencia?.empresa?.nombreCorto || 'N/A',
+        RutUsuario: equipment.rut || 'N/A',
+        AgenciaNombre: equipment.agencia?.nombre || 'N/A',
+        Nemonico: equipment.agenciaMnemonic || 'N/A',
+        DPC: equipment.agenciaDpc || 'N/A',
+        Uso: equipment.uso || 'N/A',
+        Ubicacion: equipment.ubicacion || 'N/A',
+        Equipo: equipment.tipo || 'N/A',
+        Marca: equipment.marca || 'N/A',
+        Modelo: equipment.modelo || 'N/A',
+        'Sistema Operativo': equipment.sistemaOperativo || 'N/A',
+        MAC: equipment.mac || 'N/A',
+        'Nombre Equipo': equipment.nombre || 'N/A',
+        Procesador: equipment.procesador || 'N/A',
+        Ram: equipment.ramGb || 'N/A',
+        Disco: equipment.disco || 'N/A',
+        Ip: equipment.ip || 'N/A',
+        'DDL/TBK': equipment.ddllTbk || 'N/A',
+        'Numero serie': equipment.serie || 'N/A',
+        'Numero inventario': equipment.inventario || 'N/A',
+        Estado: this.mapEquipmentStatus(equipment.estado as number),
+        'Encargado Agencia': equipment.encargadoAgencia || 'N/A',
+        'Garantia Meses': equipment.garantiaMeses || 'N/A',
+        'Orden Compra': equipment.ordenCompra || 'N/A',
+        'Fecha Ingreso': equipment.fechaIngreso || 'N/A',
+      }));
 
+      const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+      XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
+        origin: 'A1',
+      });
 
-    }));
+      // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
+      XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
+      ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
+      ws['!autofilter'] = { ref: 'A1:Y1' };
 
-    
-    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
-    XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
-      origin: 'A1',
-      
-    });
-
-    // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
-    XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
-    ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
-    ws['!autofilter'] = {ref : 'A1:Y1'}
-
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
-    XLSX.writeFile(wb, 'ReporteFiltrado.xlsx');
-
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
+      XLSX.writeFile(wb, 'ConsultaMasiva.xlsx');
+    } catch (error) {
+      console.error('Error al exportar a Excel:', error);
+    } finally {
+      this.loading = false;
+    }
   }
 
   private mapEquipmentStatus(status: number) {
@@ -203,5 +210,4 @@ export class TablasComponent implements OnChanges, AfterViewInit {
         return 'N/A';
     }
   }
-  
 }

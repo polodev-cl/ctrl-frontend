@@ -43,4 +43,10 @@ export class EquipmentService {
   getEquipmentHistory(equipmentId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${equipmentId}/history`);
   }
+
+  getEquipmentById(equipmentId: number): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiUrl}/${equipmentId}`)
+      .pipe(tap(data => console.log('Equipment data:', data)));
+  }
 }

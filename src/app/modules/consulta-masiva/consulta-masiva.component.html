@@ -74,18 +74,31 @@
           class="search-button p-2 w-100"
           pButton
           type="button"
-          label="Buscar"
-        ></button>
+          [disabled]="loading"
+          [label]="loading ? null : 'Buscar'"
+        >
+          <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
       </div>
     </div>
   </div>
   <div class="container-fluid tabla my-2 px-0">
     <hr *ngIf="!showTable" />
-    <app-tablas *ngIf="showTable" [data]="filteredContent"
-    [companyId]="companyId" [agencyId]="agencyId"
-    [tipoEquipo]="selectedMachineType"
-    [sistemaOperativo]="selectedSystem"
-    [uso]="selectedUsage"></app-tablas>
+    <app-tablas
+      *ngIf="showTable"
+      [data]="filteredContent"
+      [companyId]="companyId"
+      [agencyId]="agencyId"
+      [tipoEquipo]="selectedMachineType"
+      [sistemaOperativo]="selectedSystem"
+      [uso]="selectedUsage"
+      [loading]="loading"
+    ></app-tablas>
     <div class="row my-4 d-flex justify-content-between">
       <div class="col-12 col-md-2 mb-3">
         <button
@@ -97,14 +110,15 @@
         ></button>
       </div>
       <div *ngIf="showTable" class="col-12 col-md-2 mb-3">
-        <button
-          (click)="tablasComponent.exportToExcel()"
-          [disabled]="filteredContent?.length === 0"
-          class="search-button p-2 w-100"
-          label="Excel"
-          pButton
-          type="button"
-        ></button>
+        <button (click)="tablasComponent.exportToExcel()" [disabled]="loading" class="search-button p-2 w-100" pButton type="button">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span>{{ loading ? "Exportando..." : "Excel" }}</span>
+        </button>
+        
+        
+
+        
+        
       </div>
     </div>
   </div>

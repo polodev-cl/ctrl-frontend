@@ -33,7 +33,7 @@ import { Observable, of } from 'rxjs';
     ReactiveFormsModule,
   ],
 })
-export class ModalEditarComponent {
+export class ModalEditarComponent implements OnInit{
   @Output() cerrar = new EventEmitter<void>();
   @Output() exitoEditar = new EventEmitter<void>();
   @Input() mensajeModalEditar: string = '';
@@ -48,10 +48,12 @@ export class ModalEditarComponent {
     private companyService: CompanyService,
     private userService: UserService,
     private readonly fb: FormBuilder
-  ) {
-    this.editForm = this._loadForm();
+  ) { 
   }
 
+  ngOnInit(): void {
+    this.editForm = this._loadForm();
+  }
   onEmpresaChange(empresaId: number) {
     console.log('Empresa seleccionada:', empresaId);
   }
@@ -87,7 +89,7 @@ export class ModalEditarComponent {
   
   private _loadForm() {
     return this.fb.group({
-      rolId: [{ value: +this.perfilInitial }],
+      rolId: [ this.perfilInitial ],
     });
   }
   cerrarModal(): void {

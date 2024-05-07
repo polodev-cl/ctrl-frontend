@@ -2,35 +2,21 @@
   <div class="custom-modal-content rounded-3 text-center">
     <h4 class="my-2">Editar Usuario</h4>
     <p [innerHTML]="mensajeModalEditar"></p>
-   
-      <form [formGroup]="editForm" class="row px-5 mt-5">
+
+    <form [formGroup]="editForm" class="row px-5 mt-5">
       <!-- Añade un espaciado entre columnas -->
       <div class="col-md-6 d-flex align-items-center">
         <!-- Primer columna con inputs -->
-        <div class="form-group"   [formGroup]="editForm" >
-          <input
-            class="input-color color-select py-3 w-100"
-            id="email"
-            pInputText
-            value="{{ emailInitial }}" 
-            placeholder="Correo Electrónico"
-            type="text"
-            disabled
-          />
+        <div class="form-group">
+          <input class="input-color color-select py-3 w-100" id="email" pInputText value="{{ emailInitial }}"
+            placeholder="Correo Electrónico" type="text" disabled />
         </div>
       </div>
       <div class="col-md-6 d-flex align-items-center">
         <!-- Segunda columna con input y select -->
         <div class="form-group">
-          <input
-            class="input-color color-select py-3 w-100"
-            id="rut"
-            pInputText
-            value="{{ rutInitial }}"
-            placeholder="Rut"
-            type="text"
-            disabled
-          />
+          <input class="input-color color-select py-3 w-100" id="rut" pInputText value="{{ rutInitial }}"
+            placeholder="Rut" type="text" disabled />
         </div>
         <!-- <div class="form-group mt-4">
           <mat-form-field appearance="outline" class="w-100">
@@ -44,20 +30,14 @@
         </div> -->
       </div>
       <div class="form-group">
-        <select
-      
-          class="form-select py-3 color-select w-100"
-          id="rolId"
-          value="{{perfilInitial}}"
-          formControlName="rolId" 
-        >
-          <option [value]="1">Administrador</option>
-          <option [value]="2">Ingreso</option>
-          <option [value]="3">Consulta</option>
+        <select class="form-select py-3 color-select w-100" id="rolId" formControlName="rolId">
+          <option value="1">Administrador</option>
+          <option value="2">Ingreso</option>
+          <option value="3">Consulta</option>
         </select>
       </div>
     </form>
- 
+    <pre>{{editForm.getRawValue() | json}}</pre>
     <div class="button-group d-flex justify-content-between my-4">
       <button (click)="cerrarModal()" class="btn btn-outline">Volver</button>
       <button (click)="onSubmit()" class="btn btn-primary">

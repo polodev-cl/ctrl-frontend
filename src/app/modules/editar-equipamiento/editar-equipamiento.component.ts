@@ -319,7 +319,7 @@ export class EditarEquipamientoComponent implements OnInit {
       procesador: [ equipment.procesador || undefined ],
       ramGb: [ equipment.ramGb || undefined, [ Validators.min(1) ] ],
       disco: [ equipment.disco || undefined ],
-      ddllTbk: [ equipment.ddllTbk || undefined ],
+      ddllTbk: [{value: equipment.ddllTbk || undefined , disabled: equipment.tipo !== "TBK" } ],
       serie: [ { value: equipment.serie || undefined, disabled: equipment.serie } ],
       encargadoAgencia: [ equipment.encargadoAgencia || undefined, [ Validators.required ] ],
       ubicacion: [ equipment.ubicacion || undefined, [ Validators.required ] ],

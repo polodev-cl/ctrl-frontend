@@ -98,7 +98,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
         console.error('Error al obtener los datos:', error);
       },
     });
-  }
+  } 
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -130,6 +130,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
     this.tituloModalExito = 'Editar Usuario';
     this.mensajeModalExito = 'El usuario ha sido actualizado con éxito.';
     this.mostrarModalExito = true;
+    this.recargarUsuarios();
   }
 
   cerrarModalEditar(): void {

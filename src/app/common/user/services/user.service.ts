@@ -9,7 +9,7 @@ import { User } from '../interface/user.interface';
 export class UserService {
   private _activeUser: any;
 
-  // private apiUrl = ' http://localhost:3000/api/user'; 
+  // private apiUrl = ' http://localhost:3000/api/user';
   private apiUrl = ' http://localhost:3000/api/user'
   constructor(private http: HttpClient) { }
 
@@ -32,14 +32,11 @@ export class UserService {
 
   set activeUser(data: any) {
     this._activeUser = data;
-    console.log("hola")
     localStorage.setItem('activeUser', JSON.stringify(data));
   }
 
   get activeUser() {
-    console.log("Getting active user from memory:", this._activeUser);
     if (!this._activeUser) {
-      console.log("No active user in memory, retrieving from localStorage");
       const userData = localStorage.getItem('activeUser');
       this._activeUser = userData ? JSON.parse(userData) : null;
     }

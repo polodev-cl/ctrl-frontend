@@ -1,16 +1,7 @@
-import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf,Location  } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  MatAutocomplete,
-  MatAutocompleteTrigger,
-} from '@angular/material/autocomplete';
+import { AsyncPipe, Location, NgClass, NgForOf, NgIf } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteTrigger, } from '@angular/material/autocomplete';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
@@ -21,34 +12,22 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EquipmentService } from '../../common/equipment/services/equipment.service';
-import { RutFormatterDirective } from '../../core/directives/rut-formatter.directive';
-import { RutPipe } from '../../core/pipes/rut.pipe';
-import { Company, CompanyService } from '../../services/company.service';
-import {
-  cleanEmptyFields,
-  cleanIfNotValid,
-  filterByValue,
-  formatMAC,
-  IPV4_PATTERN,
-  MAC_PATTERN,
-} from '../../utils/utils';
+import { EquipmentService } from '@common/equipment/services/equipment.service';
+import { RutFormatterDirective } from '@core/directives/rut-formatter.directive';
+import { RutPipe } from '@core/pipes/rut.pipe';
+import { Company, CompanyService } from '@app/services/company.service';
+import { cleanIfNotValid, filterByValue, formatMAC, IPV4_PATTERN, MAC_PATTERN, } from '@app/utils/utils';
 import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
 import { ModalResumenIngresoIndividualComponent } from '../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { NavbarComponent } from '@shared/navbar/navbar.component';
 import { Agency, AgencyService } from '../ingreso-individual/agency.service';
 import { SoService, SOVersion } from '../ingreso-individual/so.service';
 import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
-import { UserService } from '@app/common/user/services/user.service';
-
 
 interface Option {
   value: string | number;
   label: string;
 }
-
-
-
 
 @Component({
   selector: 'app-editar-equipamiento',
@@ -73,24 +52,18 @@ interface Option {
     MatSelect,
     MatOption,
     MatLabel,
-    JsonPipe,
     RutPipe,
     NavbarComponent,
-    AsyncPipe,
     MatAutocomplete,
     MatAutocompleteTrigger,
     MatInput,
     ModalAdvertenciaComponent,
+    AsyncPipe
   ],
 })
 
-
-
 export class EditarEquipamientoComponent implements OnInit {
-
-
   selectedType: string = '';
-
   equipmentTypes: Option[] = [
     { value: 'PC', label: 'PC' },
     { value: 'Impresora', label: 'Impresora' },
@@ -103,14 +76,12 @@ export class EditarEquipamientoComponent implements OnInit {
     { value: 'Print Server', label: 'Print Server' },
     { value: 'TBK', label: 'TBK' },
   ];
-
   selectorCompany: Observable<Partial<Company>[]> = of([]);
   selectorCompanyFiltered: Observable<Partial<Company>[]> = of([]);
   selectorAgency: Observable<Partial<Agency>[]> = of([]);
   selectorAgencyFiltered: Observable<Partial<Agency>[]> = of([]);
   selectorSistemasOperativos: SOVersion[] = [];
   selectorSistemasOperativosFiltered: SOVersion[] = [];
-
   mostrarModalAdvertencia: boolean = false;
   mensajeModalAdvertencia: string = 'Hubo un error en su solicitud';
   tituloModalAdvertencia: string = 'Error';
@@ -119,11 +90,10 @@ export class EditarEquipamientoComponent implements OnInit {
   mostrarModalExito: boolean = false;
   mostrarModalResumenIngresoIndividual: boolean = false;
   datosParaModal: any = {};
-  ingresoIndividualForm: FormGroup;
+  ingresoIndividualForm!: FormGroup;
   protected readonly cleanIfNotValid = cleanIfNotValid;
-  firstName: any;
-  lastName: any;
-  
+  private readonly _route = inject(ActivatedRoute);
+  private readonly _equipment = this._route.snapshot.data['equipment'];
 
   constructor(
     private route: ActivatedRoute,
@@ -131,36 +101,16 @@ export class EditarEquipamientoComponent implements OnInit {
     private agencyService: AgencyService,
     private companyService: CompanyService,
     private equipmentService: EquipmentService,
-    private userService: UserService,
     private fb: FormBuilder,
-  private location: Location
+    private location: Location
   ) {
-    this.ingresoIndividualForm = this._loadForm();
     this.selectorCompany = this.companyService.companiesSelector;
   }
-  
 
   ngOnInit() {
-    const equipmentId = this.route.snapshot.params['id'];
-  
-    if (equipmentId) {
-      this.equipmentService.getEquipmentById(equipmentId).subscribe({
-        next: (equipment) => {
-          this.ingresoIndividualForm = this._loadForm(equipment); 
-          this.loadRelatedData(equipment);
-        },
-        error: (error) => {
-          console.error('Error al cargar el equipamiento', error);
-         
-        }
-      });
-    } else {
-      this.ingresoIndividualForm = this._loadForm(); 
-    }
+    this.ingresoIndividualForm = this._loadForm(this._equipment);
   }
-  
 
-  
   isEquipmentWithNoOptions(type: string): boolean {
     return [
       'Impresora',
@@ -173,7 +123,6 @@ export class EditarEquipamientoComponent implements OnInit {
       'TBK',
     ].includes(type);
   }
-
 
   onTypeChange(value: string): void {
     if (this.isEquipmentWithNoOptions(value)) {
@@ -226,14 +175,15 @@ export class EditarEquipamientoComponent implements OnInit {
       const formattedMac = formatMAC(macControl.value);
       macControl.setValue(formattedMac, { emitEvent: false });
     }
-  } 
+  }
+
   limitAndValidateIP(): void {
     const value = this.ingresoIndividualForm.get('ip')?.value;
     if (value && value.length > 39)
       this.ingresoIndividualForm.patchValue({ ip: value.substring(0, 39) });
   }
 
-  
+
   abrirModalExito(): void {
     this.tituloModalExito = 'Editar Equipamiento';
     this.mensajeModalExito = 'Se ha modificado con éxito.';
@@ -247,12 +197,12 @@ export class EditarEquipamientoComponent implements OnInit {
   cerrarModalAdvertencia(): void {
     this.mostrarModalAdvertencia = false;
   }
+
   abrirModalAdvertencia(mensaje: string): void {
     this.tituloModalAdvertencia = 'Error al ingresar usuario';
     this.mensajeModalAdvertencia = mensaje;
     this.mostrarModalAdvertencia = true;
   }
-
 
   loadSOData = () =>
     lastValueFrom(
@@ -271,7 +221,7 @@ export class EditarEquipamientoComponent implements OnInit {
     });
 
   filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
-    switch (field) {
+    switch ( field ) {
       case 'agency': {
         this.selectorAgencyFiltered = this.selectorAgency.pipe(
           map((agencies) => filterByValue(agencies, target.value, 'nombre'))
@@ -298,10 +248,7 @@ export class EditarEquipamientoComponent implements OnInit {
     }
   }
 
-
   displayFnAgency = (agency: Agency) => (agency ? agency.nombre : '');
-
-  displayFnCompany = (company: Company) => (company ? company.razonSocial : '');
 
   onEmpresaChange(value: any): void {
     this.ingresoIndividualForm.patchValue({
@@ -309,7 +256,6 @@ export class EditarEquipamientoComponent implements OnInit {
       agenciaDpc: undefined,
       agenciaMnemonic: undefined,
     });
-    
 
     if (value)
       lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value))
@@ -327,8 +273,6 @@ export class EditarEquipamientoComponent implements OnInit {
   }
 
 
-
-
   onSubmit() {
     if (this.ingresoIndividualForm.valid) {
       const equipmentData = this.ingresoIndividualForm.value;
@@ -337,7 +281,7 @@ export class EditarEquipamientoComponent implements OnInit {
       this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
         (response) => {
           console.log('Equipo creado con éxito', response);
-         
+
         },
         (error) => {
           console.error('Error al crear el equipo', error);
@@ -354,46 +298,33 @@ export class EditarEquipamientoComponent implements OnInit {
     this.location.back();
   }
 
-  
-
-  private loadRelatedData(equipment: any) {
-    this.agencyService.getAgenciesByCompanyId(equipment.companyId).subscribe({
-      next: (agencies) => {
-        this.selectorAgency = of(agencies);
-        this.selectorAgencyFiltered = this.selectorAgency;
-      }
-    });
-  }
-
-
-  private _loadForm(equipment?: any) { // Puedes reemplazar 'any' con 'Iequipment' si tienes definida esa interfaz
+  private _loadForm(equipment: any) { // Puedes reemplazar 'any' con 'Iequipment' si tienes definida esa interfaz
     return this.fb.group({
-      fechaIngreso: [equipment ? new Date(equipment.fechaIngreso) : undefined, [Validators.required]],
-      ordenCompra: [equipment ? equipment.ordenCompra : undefined, [Validators.required]],
-      rut: [equipment ? equipment.rut : undefined],
-      empresa: [{ value: equipment ? equipment.agencia?.empresa : undefined, disabled: equipment ? false : true }],
-      agenciaId: [{ value: equipment ? equipment.agencia : undefined, disabled: equipment ? false : true }],
-      agenciaMnemonic: [{ value: equipment ? equipment.agenciaMnemonic : undefined, disabled: true }],
-      agenciaDpc: [{ value: equipment ? equipment.agenciaDpc : undefined, disabled: true }],
-      inventario: [equipment ? equipment.inventario : undefined, [Validators.min(0)]],
-      tipo: [equipment ? equipment.tipo : undefined, [Validators.required]],
-      sistemaOperativo: [equipment ? equipment.sistemaOperativo : undefined],
-      uso: [equipment ? equipment.uso : undefined, [Validators.required]],
-      marca: [equipment ? equipment.marca : undefined, [Validators.required]],
-      modelo: [equipment ? equipment.modelo : undefined, [Validators.required]],
-      mac: [equipment ? equipment.mac : undefined, [Validators.pattern(MAC_PATTERN)]],
-      ip: [equipment ? equipment.ip : undefined, [Validators.pattern(IPV4_PATTERN)]],
-      nombre: [equipment ? equipment.nombre : undefined, [Validators.required]],
-      procesador: [equipment ? equipment.procesador : undefined],
-      ramGb: [equipment ? equipment.ramGb : undefined, [Validators.min(1)]],
-      disco: [equipment ? equipment.disco : undefined],
-      ddllTbk: [{ value: equipment ? equipment.ddllTbk : undefined, disabled: equipment ? false : true }],
-      serie: [equipment ? equipment.serie : undefined],
-      encargadoAgencia: [equipment ? equipment.encargadoAgencia : undefined, [Validators.required]],
-      ubicacion: [equipment ? equipment.ubicacion : undefined, [Validators.required]],
-      garantiaMeses: [equipment ? equipment.garantiaMeses : undefined, [Validators.required, Validators.min(1)]],
-      estado: [equipment ? equipment.estado : 1], // Asegúrate de manejar el default adecuadamente
+      fechaIngreso: [ equipment.fechaIngreso ? new Date(equipment.fechaIngreso) : undefined, [ Validators.required ] ],
+      ordenCompra: [ equipment.ordenCompra || undefined, [ Validators.required ] ],
+      rut: [ equipment.rut || undefined ],
+      empresa: [ { value: equipment ? equipment.agencia?.empresa?.id : undefined, disabled: equipment } ],
+      agenciaId: [ { value: equipment ? equipment.agencia : undefined, disabled: equipment } ],
+      agenciaMnemonic: [ { value: equipment ? equipment.agenciaMnemonic : undefined, disabled: true } ],
+      agenciaDpc: [ { value: equipment ? equipment.agenciaDpc : undefined, disabled: true } ],
+      inventario: [ { value: equipment.inventario || undefined, disabled: equipment.inventario }, [ Validators.min(0) ] ],
+      tipo: [ equipment ? equipment.tipo : undefined, [ Validators.required ] ],
+      sistemaOperativo: [ equipment.sistemaOperativo || undefined ],
+      uso: [ equipment.uso || undefined, [ Validators.required ] ],
+      marca: [ equipment.marca || undefined, [ Validators.required ] ],
+      modelo: [ equipment.modelo || undefined, [ Validators.required ] ],
+      mac: [ { value: equipment.mac || undefined, disabled: equipment.mac }, [ Validators.pattern(MAC_PATTERN) ] ],
+      ip: [ equipment.ip || undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
+      nombre: [ equipment.nombre || undefined, [ Validators.required ] ],
+      procesador: [ equipment.procesador || undefined ],
+      ramGb: [ equipment.ramGb || undefined, [ Validators.min(1) ] ],
+      disco: [ equipment.disco || undefined ],
+      ddllTbk: [ equipment.ddllTbk || undefined ],
+      serie: [ { value: equipment.serie || undefined, disabled: equipment.serie } ],
+      encargadoAgencia: [ equipment.encargadoAgencia || undefined, [ Validators.required ] ],
+      ubicacion: [ equipment.ubicacion || undefined, [ Validators.required ] ],
+      garantiaMeses: [ equipment ? equipment.garantiaMeses : undefined, [ Validators.required, Validators.min(1) ] ],
+      estado: [ equipment.estado || 1 ], // Asegúrate de manejar el default adecuadamente
     });
   }
-  
 }

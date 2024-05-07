@@ -13,6 +13,7 @@
   [tituloModalAdvertencia]="tituloModalAdvertencia"
 >
 </app-modal-advertencia>
+
 <div class="container-md">
   <div class="frame mt-3">
     <div class="row">
@@ -189,9 +190,7 @@
               {{ so.so }}
             </mat-option>
             } @if (selectorSistemasOperativosFiltered.length === 0) {
-            <mat-option disabled
-              >No hay sistemas operativos disponibles</mat-option
-            >
+            <mat-option disabled>No hay sistemas operativos disponibles</mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>
@@ -330,11 +329,9 @@
       </div>
 
       <div class="grid-item my-3">
-        <!-- TODO: revisar appLimitInput, a que corresponde -->
         <span class="p-float-label">
           <!-- TODO: usar valueChanges -->
           <input
-            appLimitInput
             class="w-100 rounded"
             formControlName="ddllTbk"
             id="ddlTbk"
@@ -450,7 +447,7 @@
           type="button"
         ></button>
 
-       
+
       </div>
     </div>
   </div>

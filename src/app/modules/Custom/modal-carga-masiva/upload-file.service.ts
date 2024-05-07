@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UploadFileService {
-    private baseUrl: string = ' http://localhost:3000/api/equipment/upload';
+    private baseUrl: string = ' https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment/upload';
   
     constructor(private http: HttpClient) {}
   

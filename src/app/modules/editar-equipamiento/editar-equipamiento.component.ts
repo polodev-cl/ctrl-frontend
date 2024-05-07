@@ -192,6 +192,7 @@ export class EditarEquipamientoComponent implements OnInit {
 
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
+    this.goBack();
   }
 
   cerrarModalAdvertencia(): void {
@@ -199,7 +200,7 @@ export class EditarEquipamientoComponent implements OnInit {
   }
 
   abrirModalAdvertencia(mensaje: string): void {
-    this.tituloModalAdvertencia = 'Error al ingresar usuario';
+    this.tituloModalAdvertencia = 'Error al editar equipamiento';
     this.mensajeModalAdvertencia = mensaje;
     this.mostrarModalAdvertencia = true;
   }
@@ -281,7 +282,8 @@ export class EditarEquipamientoComponent implements OnInit {
       this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
         (response) => {
           console.log('Equipo creado con éxito', response);
-
+          this.abrirModalExito();
+         
         },
         (error) => {
           console.error('Error al crear el equipo', error);

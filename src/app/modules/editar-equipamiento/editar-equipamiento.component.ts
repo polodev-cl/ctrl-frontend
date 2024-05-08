@@ -192,6 +192,7 @@ export class EditarEquipamientoComponent implements OnInit {
 
   cerrarModalExito(): void {
     this.mostrarModalExito = false;
+    this.goBack();
   }
 
   cerrarModalAdvertencia(): void {
@@ -199,7 +200,7 @@ export class EditarEquipamientoComponent implements OnInit {
   }
 
   abrirModalAdvertencia(mensaje: string): void {
-    this.tituloModalAdvertencia = 'Error al ingresar usuario';
+    this.tituloModalAdvertencia = 'Error al editar equipamiento';
     this.mensajeModalAdvertencia = mensaje;
     this.mostrarModalAdvertencia = true;
   }
@@ -281,7 +282,8 @@ export class EditarEquipamientoComponent implements OnInit {
       this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
         (response) => {
           console.log('Equipo creado con éxito', response);
-
+          this.abrirModalExito();
+         
         },
         (error) => {
           console.error('Error al crear el equipo', error);
@@ -319,7 +321,7 @@ export class EditarEquipamientoComponent implements OnInit {
       procesador: [ equipment.procesador || undefined ],
       ramGb: [ equipment.ramGb || undefined, [ Validators.min(1) ] ],
       disco: [ equipment.disco || undefined ],
-      ddllTbk: [ equipment.ddllTbk || undefined ],
+      ddllTbk: [{value: equipment.ddllTbk || undefined , disabled: equipment.tipo !== "TBK" } ],
       serie: [ { value: equipment.serie || undefined, disabled: equipment.serie } ],
       encargadoAgencia: [ equipment.encargadoAgencia || undefined, [ Validators.required ] ],
       ubicacion: [ equipment.ubicacion || undefined, [ Validators.required ] ],

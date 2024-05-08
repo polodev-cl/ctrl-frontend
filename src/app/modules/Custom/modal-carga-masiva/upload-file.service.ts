@@ -9,9 +9,10 @@ import { IUpload } from "@modules/Custom/modal-carga-masiva/domain/interfaces/up
   providedIn: 'root',
 })
 export class UploadFileService {
-  private baseUrl: string = 'http://localhost:3000/api/equipment/upload';
+  private baseUrl: string = ' https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment/upload';
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   uploadFile(file: File): Promise<IUpload> {
     return new Promise((resolve, reject) => {
@@ -36,14 +37,14 @@ export class UploadFileService {
   }
 
   uploadFileOld(file: File): Observable<HttpEvent<any>> {
-      const formData: FormData = new FormData();
-      formData.append('file', file);
+    const formData: FormData = new FormData();
+    formData.append('file', file);
 
     const req = new HttpRequest('POST', this.baseUrl, formData, {
-        reportProgress: true,
-        responseType: 'json',
-      });
+      reportProgress: true,
+      responseType: 'json',
+    });
 
     return this.http.request(req);
-    }
   }
+}

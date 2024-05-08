@@ -385,6 +385,23 @@
         </span>
       </div>
       <div class="grid-item my-3">
+        <div class="card flex flex-wrap gap-3 p-fluid border-0">
+          <div class="flex-auto">
+            <span class="p-float-label">
+              <p-calendar
+                [iconDisplay]="'input'"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                id="fecha_compra"
+                inputId="fecha_compra"
+                formControlName="fechaCompra"
+              ></p-calendar>
+              <label class="" for="fecha_compra">Fecha de compra</label>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="grid-item my-3">
         <div class="p-float-label position-relative">
           <input
             class="w-100 rounded"

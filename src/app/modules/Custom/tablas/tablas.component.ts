@@ -89,7 +89,6 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   @Input() tipoEquipo: string = '';
   @Input() sistemaOperativo: string = '';
   @Input() uso: string = '';
-  @Input() loading: boolean = false;
   RoleEnum = RoleEnum;
   rol!: RoleEnum;
 
@@ -153,65 +152,62 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   }
 
   async exportToExcel() {
-    try {
-      this.loading = true;
 
-      const data = (
-        await lastValueFrom(
-          this.consultaMasivaService.getMassiveQuery(
-            this.companyId,
-            this.agencyId,
-            this.tipoEquipo,
-            this.sistemaOperativo,
-            this.uso
-          )
-        )
-      ).map((equipment) => ({
-        Empresa: equipment.agencia?.empresa?.nombreCorto || 'N/A',
-        RutUsuario: equipment.rut || 'N/A',
-        AgenciaNombre: equipment.agencia?.nombre || 'N/A',
-        Nemonico: equipment.agenciaMnemonic || 'N/A',
-        DPC: equipment.agenciaDpc || 'N/A',
-        Uso: equipment.uso || 'N/A',
-        Ubicacion: equipment.ubicacion || 'N/A',
-        Equipo: equipment.tipo || 'N/A',
-        Marca: equipment.marca || 'N/A',
-        Modelo: equipment.modelo || 'N/A',
-        'Sistema Operativo': equipment.sistemaOperativo || 'N/A',
-        MAC: equipment.mac || 'N/A',
-        'Nombre Equipo': equipment.nombre || 'N/A',
-        Procesador: equipment.procesador || 'N/A',
-        Ram: equipment.ramGb || 'N/A',
-        Disco: equipment.disco || 'N/A',
-        Ip: equipment.ip || 'N/A',
-        'DDL/TBK': equipment.ddllTbk || 'N/A',
-        'Numero serie': equipment.serie || 'N/A',
-        'Numero inventario': equipment.inventario || 'N/A',
-        Estado: this.mapEquipmentStatus(equipment.estado as number),
-        'Encargado Agencia': equipment.encargadoAgencia || 'N/A',
-        'Garantia Meses': equipment.garantiaMeses || 'N/A',
-        'Orden Compra': equipment.ordenCompra || 'N/A',
-        'Fecha Ingreso': equipment.fechaIngreso || 'N/A',
-      }));
+    const data = (
+      await lastValueFrom(
+        this.consultaMasivaService.getMassiveQuery( this.companyId,
+          this.agencyId,
+          this.tipoEquipo,
+          this.sistemaOperativo,
+          this.uso)
+      )
+    ).map((equipment) => ({
+      Empresa: equipment.agencia?.empresa?.nombreCorto || 'N/A',
+      RutUsuario: equipment.rut || 'N/A',
+      AgenciaNombre: equipment.agencia?.nombre || 'N/A',
+      Nemonico: equipment.agenciaMnemonic || 'N/A',
+      DPC: equipment.agenciaDpc || 'N/A',
+      Uso: equipment.uso || 'N/A',
+      Ubicacion: equipment.ubicacion || 'N/A',
+      Equipo: equipment.tipo || 'N/A',
+      Marca: equipment.marca || 'N/A',
+      Modelo: equipment.modelo || 'N/A',
+      'Sistema Operativo': equipment.sistemaOperativo || 'N/A',
+      MAC: equipment.mac || 'N/A',
+      'Nombre Equipo': equipment.nombre || 'N/A',
+      Procesador: equipment.procesador || 'N/A',
+      Ram: equipment.ramGb || 'N/A',
+      Disco: equipment.disco || 'N/A',
+      Ip: equipment.ip || 'N/A',
+      'DDL/TBK': equipment.ddllTbk || 'N/A',
+      'Numero serie': equipment.serie || 'N/A',
+      'Numero inventario': equipment.inventario || 'N/A',
+      Estado: this.mapEquipmentStatus(equipment.estado as number),
+      "Encargado Agencia": equipment.encargadoAgencia || 'N/A',
+      "Fecha Compra": equipment.fechaCompra || 'N/A',
+      "Garantia Meses" : equipment.garantiaMeses || 'N/A',
+      "Orden Compra": equipment.ordenCompra || 'N/A',
+      "Fecha Ingreso" : equipment.fechaIngreso || 'N/A'
 
-      const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
-      XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
-        origin: 'A1',
-      });
 
-      // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
-      XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
-      ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
-      ws['!autofilter'] = { ref: 'A1:Y1' };
+    }));
 
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
-      XLSX.writeFile(wb, 'ConsultaMasiva.xlsx');
-    } catch (error) {
-      console.error('Error al exportar a Excel:', error);
-    } finally {
-      this.loading = false;
-    }
+    
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
+      origin: 'A1',
+      
+    });
+
+    // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
+    XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
+    ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
+    ws['!autofilter'] = {ref : 'A1:Y1'}
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
+    XLSX.writeFile(wb, 'ReporteFiltrado.xlsx');
+
   }
 
   private columns = [
@@ -237,6 +233,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
     { header: 'Numero inventario', wch: 25 },
     { header: 'Estado', wch: 15 },
     { header: 'Encargado Agencia', wch: 45 },
+    { header: 'Fecha Compra', wch: 15 },
     { header: 'Garantia meses', wch: 15 },
     { header: 'Orden de compra numero', wch: 25 },
     { header: 'Fecha Ingreso', wch: 15 },

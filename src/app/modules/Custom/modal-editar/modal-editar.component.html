@@ -39,9 +39,11 @@
     </form>
     <div class="button-group d-flex justify-content-between my-4">
       <button (click)="cerrarModal()" class="btn btn-outline">Volver</button>
-      <button (click)="onSubmit()" class="btn btn-primary">
-        Actualizar
+      <button (click)="onSubmit()" class="btn btn-primary" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{ loading ? '' : 'Actualizar' }}
       </button>
+      
     </div>
   </div>
 </div>

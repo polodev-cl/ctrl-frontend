@@ -62,6 +62,7 @@ export class IngresarUsuarioComponent implements OnInit{
   mostrarModalExito: boolean = false;
   tituloModalExito: string = '';
   mensajeModalExito: string = '';
+  loading = false;
   // selectorCompany: Observable<Partial<Company>[]> = of([]);
   empresas: Company[] = [];
 
@@ -106,6 +107,7 @@ export class IngresarUsuarioComponent implements OnInit{
 
 
   onSubmit() {
+    this.loading = true; 
     if (this.usuarioForm.valid) {
       const formData = cleanEmptyFields(this.usuarioForm.getRawValue());
       formData.rolId = Number(formData.rolId);
@@ -117,18 +119,22 @@ export class IngresarUsuarioComponent implements OnInit{
           if (response.temporaryPassword) {
             this.abrirModalExito(response.temporaryPassword);
           }
+          this.loading = false; 
         },
         error: (error) => {
           console.error('Error al crear el usuario', error);
           const errorMessage = error.error.message || 'Se produjo un error inesperado.';
-          console.log("error: ",errorMessage)
+          console.log("error: ", errorMessage);
           this.abrirModalAdvertencia(errorMessage);
+          this.loading = false; 
         }
       });
     } else {
       this.abrirModalAdvertencia('Por favor, verifica que todos los campos estén correctos.');
+      this.loading = false; 
     }
   }
+  
   abrirModalExito(temporaryPassword: string): void {
     this.tituloModalExito = 'Ingreso Usuario';
     this.mensajeModalExito = `Usuario ha sido ingresado con éxito. Contraseña temporal: ${temporaryPassword}`

@@ -135,8 +135,6 @@ export class IngresoIndividualComponent implements OnInit {
     const userId = this.userService.getUserId(); 
     const firstName =  this.userService.getUserFirstName();
     const lastName =  this.userService.getUserLastName();
-    console.log('ID del usuario activo:', userId);
-    console.log('Nombre:', firstName, 'Apellido:', lastName);
     this.firstName = firstName;
     this.lastName = lastName;
   
@@ -376,6 +374,7 @@ export class IngresoIndividualComponent implements OnInit {
       serie: [undefined],
       encargadoAgencia: [undefined, [Validators.required]],
       ubicacion: [undefined, [Validators.required]],
+      fechaCompra: [undefined, [Validators.required]],
       garantiaMeses: [undefined, [Validators.required, Validators.min(1)]],
       estado: [1],
     });

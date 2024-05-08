@@ -65,7 +65,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        
+
         <div class="grid-item mb-3">
           <span class="p-float-label">
             <input
@@ -123,8 +123,6 @@
             <label for="apellidos">Apellidos</label>
           </span>
         </div>
-
-        
       </form>
     </div>
     <div class="container-fluid px-0">
@@ -145,9 +143,17 @@
             (click)="onSubmit()"
             class="search-button p-2 w-100"
             pButton
-            label="Registrar"
+            [disabled]="loading"
+            [label]="loading ? null : 'Registrar'"
             type="button"
-          ></button>
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
         </div>
       </div>
     </div>

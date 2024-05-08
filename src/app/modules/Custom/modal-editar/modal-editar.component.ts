@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
@@ -31,6 +31,7 @@ import { Observable, of } from 'rxjs';
     MatSelect,
     MatOption,
     ReactiveFormsModule,
+    NgIf
   ],
 })
 export class ModalEditarComponent implements OnInit{
@@ -43,6 +44,7 @@ export class ModalEditarComponent implements OnInit{
   @Input() idUsuario!: number;
   empresas: Observable<Partial<Company>[]> = of([]);
   editForm!: FormGroup;
+  loading = false;
 
   constructor(
     private companyService: CompanyService,
@@ -58,34 +60,39 @@ export class ModalEditarComponent implements OnInit{
     console.log('Empresa seleccionada:', empresaId);
   }
 
-  onSubmit() {
-    if (this.editForm.dirty && this.editForm.valid) {
-      const userId = this.idUsuario;
-      console.log("userid",userId)
-      const values = this.editForm.getRawValue();
-      console.log('mi values: ', values);
-  
-      const rolIdAsNumber = Number(values.rolId);
-      const formData = {
-        rut: this.rutInitial,
-        rolId: isNaN(rolIdAsNumber) ? undefined : rolIdAsNumber,
-      };
-  
-      if (formData.rolId !== Number(this.perfilInitial)) {  
-        this.userService.updateUser(userId, formData).subscribe({
-          next: (user) => {
-            console.log('Usuario actualizado:', user);
-            this.editarUsuarioExitoso();
-          },
-          error: (error) => {
-            console.error('Error actualizando usuario:', error);
-          },
-        });
-      } else {
-        console.log('No se detectaron cambios en el formulario.');
-      }
+onSubmit() {
+  if (this.editForm.dirty && this.editForm.valid) {
+    this.loading = true; // Activar el indicador de carga al iniciar el envío
+    const userId = this.idUsuario;
+    console.log("userid", userId);
+    const values = this.editForm.getRawValue();
+    console.log('mi values: ', values);
+
+    const rolIdAsNumber = Number(values.rolId);
+    const formData = {
+      rut: this.rutInitial,
+      rolId: isNaN(rolIdAsNumber) ? undefined : rolIdAsNumber,
+    };
+
+    if (formData.rolId !== Number(this.perfilInitial)) {
+      this.userService.updateUser(userId, formData).subscribe({
+        next: (user) => {
+          console.log('Usuario actualizado:', user);
+          this.editarUsuarioExitoso();
+          this.loading = false; // Desactivar el indicador de carga tras una respuesta exitosa
+        },
+        error: (error) => {
+          console.error('Error actualizando usuario:', error);
+          this.loading = false; // Desactivar el indicador de carga en caso de error
+        }
+      });
+    } else {
+      console.log('No se detectaron cambios en el formulario.');
+      this.loading = false; // Desactivar el indicador de carga si no hay cambios
     }
   }
+}
+
   
   private _loadForm() {
     return this.fb.group({

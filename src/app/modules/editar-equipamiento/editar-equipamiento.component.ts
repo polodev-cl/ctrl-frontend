@@ -91,6 +91,7 @@ export class EditarEquipamientoComponent implements OnInit {
   mostrarModalResumenIngresoIndividual: boolean = false;
   datosParaModal: any = {};
   ingresoIndividualForm!: FormGroup;
+  loading = false;
   protected readonly cleanIfNotValid = cleanIfNotValid;
   private readonly _route = inject(ActivatedRoute);
   private readonly _equipment = this._route.snapshot.data['equipment'];
@@ -275,26 +276,30 @@ export class EditarEquipamientoComponent implements OnInit {
 
 
   onSubmit() {
+    this.loading = true;  
     if (this.ingresoIndividualForm.valid) {
       const equipmentData = this.ingresoIndividualForm.value;
-      const equipmentId = this.route.snapshot.params['id']; // Asegúrate de que tienes el ID del equipamiento
-
+      const equipmentId = this.route.snapshot.params['id']; 
+  
       this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
         (response) => {
-          console.log('Equipo creado con éxito', response);
+          console.log('Equipo actualizado con éxito', response);
           this.abrirModalExito();
-         
+          this.loading = false; 
         },
         (error) => {
-          console.error('Error al crear el equipo', error);
-          const errorMessage =
-            error.error.message || 'Se produjo un error inesperado.';
+          console.error('Error al actualizar el equipo', error);
+          const errorMessage = error.error.message || 'Se produjo un error inesperado.';
           console.log('error: ', errorMessage);
           this.abrirModalAdvertencia(errorMessage);
+          this.loading = false; 
         }
       );
+    } else {
+      this.loading = false; 
     }
   }
+  
 
   goBack() {
     this.location.back();
@@ -302,7 +307,7 @@ export class EditarEquipamientoComponent implements OnInit {
 
   private _loadForm(equipment: any) { // Puedes reemplazar 'any' con 'Iequipment' si tienes definida esa interfaz
     return this.fb.group({
-      fechaIngreso: [ equipment.fechaIngreso ? new Date(equipment.fechaIngreso) : undefined, [ Validators.required ] ],
+      fechaIngreso: [{ value: equipment.fechaIngreso ? new Date(equipment.fechaIngreso) : undefined, disabled: true }],
       ordenCompra: [ equipment.ordenCompra || undefined, [ Validators.required ] ],
       rut: [ equipment.rut || undefined ],
       empresa: [ { value: equipment ? equipment.agencia?.empresa?.id : undefined, disabled: equipment } ],
@@ -325,6 +330,7 @@ export class EditarEquipamientoComponent implements OnInit {
       serie: [ { value: equipment.serie || undefined, disabled: equipment.serie } ],
       encargadoAgencia: [ equipment.encargadoAgencia || undefined, [ Validators.required ] ],
       ubicacion: [ equipment.ubicacion || undefined, [ Validators.required ] ],
+      fechaCompra: [{ value: equipment.fechaCompra ? new Date(equipment.fechaCompra) : undefined, disabled: true }],
       garantiaMeses: [ equipment ? equipment.garantiaMeses : undefined, [ Validators.required, Validators.min(1) ] ],
       estado: [ equipment.estado || 1 ], // Asegúrate de manejar el default adecuadamente
     });

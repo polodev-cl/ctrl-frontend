@@ -16,7 +16,7 @@
           <div class="">
             <label class="form-label me-1 blue-label fw-bold" for="registroPor"> Fecha: </label>
             <span class="form-text mb-0 ms-1" id="registroPor">
-              {{ formattedDate || "N/A" }}
+              {{ formattedDateIngreso || "N/A" }}
             </span>
           </div>
         </div>
@@ -172,6 +172,17 @@
 
         <div class="grid-item my-0">
           <div class="">
+            <label class="form-label me-1 blue-label fw-bold" for="registroPor30">
+              Fecha de compra:</label
+            >
+            <span class="form-text mb-0" id="registroPor30">
+              {{ formattedDateCompra || "N/A" }}
+            </span>
+          </div>
+        </div>
+
+        <div class="grid-item my-0">
+          <div class="">
             <label class="form-label me-1 blue-label fw-bold" for="registroPor17">
               Garantía en meses:</label
             >
@@ -180,6 +191,7 @@
             </span>
           </div>
         </div>
+      
         <div class="grid-item my-0">
           <div class="">
             <label class="form-label me-1 blue-label fw-bold" for="registroPor18">

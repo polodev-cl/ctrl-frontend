@@ -108,3 +108,10 @@
     padding: 1.5rem; /* Y tal vez menos padding */
   }
 }
+
+
+button[disabled] {
+  background-color: #ccc;
+  color: #666;
+  border: none;
+}

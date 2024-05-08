@@ -77,7 +77,10 @@
       <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Empresa</mat-label>
-          <mat-select (selectionChange)="onEmpresaChange($event.value)" formControlName="empresa">
+          <mat-select
+            (selectionChange)="onEmpresaChange($event.value)"
+            formControlName="empresa"
+          >
             @for (empresa of selectorCompany | async; track empresa.id) {
             <mat-option [value]="empresa.id">{{
               empresa.nombreCorto
@@ -190,7 +193,9 @@
               {{ so.so }}
             </mat-option>
             } @if (selectorSistemasOperativosFiltered.length === 0) {
-            <mat-option disabled>No hay sistemas operativos disponibles</mat-option>
+            <mat-option disabled
+              >No hay sistemas operativos disponibles</mat-option
+            >
             }
           </mat-autocomplete>
         </mat-form-field>
@@ -381,6 +386,24 @@
           <label for="ubicacion">Ubicación *</label>
         </span>
       </div>
+
+      <div class="grid-item my-3">
+        <div class="card flex flex-wrap gap-3 p-fluid border-0">
+          <div class="flex-auto">
+            <span class="p-float-label">
+              <p-calendar
+                [iconDisplay]="'input'"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                id="fecha_compra"
+                inputId="fecha_compra"
+                formControlName="fechaCompra"
+              ></p-calendar>
+              <label class="" for="fecha_compra">Fecha de compra</label>
+            </span>
+          </div>
+        </div>
+      </div>
       <div class="grid-item my-3">
         <div class="p-float-label position-relative">
           <input
@@ -437,17 +460,22 @@
           (click)="goBack()"
           type="button"
         ></button>
-
         <button
           (click)="onSubmit()"
           class="search-button px-5 py-2"
-          label="Editar"
+          [disabled]="loading"
+          [label]="loading ? null : 'Editar'"
           [disabled]="!ingresoIndividualForm.valid"
           pButton
           type="button"
-        ></button>
-
-
+        >
+          <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
       </div>
     </div>
   </div>

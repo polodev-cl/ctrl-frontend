@@ -8,7 +8,7 @@ import { ModalHistorialEquipoComponent } from '../Custom/modal-historial-equipo/
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { UserService } from '@app/common/user/services/user.service';
 import { RoleEnum } from '@app/common/auth/enums/role.enum';
-
+import { parseISO, differenceInMonths, addMonths } from 'date-fns';
 @Component({
   selector: 'app-numero-inventario',
   templateUrl: './numero-inventario.component.html',
@@ -41,7 +41,7 @@ export class NumeroInventarioComponent {
     private route: ActivatedRoute,
     private equipmentService: EquipmentService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.rol = this.obtenerRolUsuario();
@@ -58,11 +58,27 @@ export class NumeroInventarioComponent {
     return this.userService.getUserRole();
   }
 
+  calcularMesesGarantiaRestantes(fechaCompra: string, garantiaMeses: number): number {
+    console.log('Fecha de compra recibida:', fechaCompra);
+    console.log('Meses de garantía:', garantiaMeses);
+    if (!fechaCompra) {
+      console.error('La fecha de compra es nula o no está definida.');
+      return 0;
+    }
+    const fechaCompraDate = parseISO(fechaCompra);
+    const fechaFinGarantia = addMonths(fechaCompraDate, garantiaMeses);
+    const fechaActual = new Date();
+    const mesesRestantes = differenceInMonths(fechaFinGarantia, fechaActual);
+    console.log('Fecha de fin de garantía:', fechaFinGarantia);
+    console.log('Meses restantes de garantía:', mesesRestantes);
+    return mesesRestantes > 0 ? mesesRestantes : 0;
+  }
+
   buscarPorInventario(inventario: number): void {
     this.equipmentService.getEquipmentByInventory(inventario).subscribe({
       next: (data) => {
         this.equipments = data;
-        console.log('Received equipments:', data);
+        console.log('Received equipmentsInv?:', data);
       },
       error: (error) => {
         console.error('Error fetching data:', error);

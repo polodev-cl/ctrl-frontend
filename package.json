@@ -27,6 +27,7 @@
     "aws-amplify": "^6.0.28",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "date-fns": "^3.6.0",
     "dropzone": "^6.0.0-beta.2",
     "feather-icons": "^4.29.1",
     "primeng": "^17.14.1",

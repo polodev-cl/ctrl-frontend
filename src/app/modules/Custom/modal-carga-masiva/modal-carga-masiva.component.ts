@@ -1,28 +1,21 @@
 import { NgIf } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild, } from '@angular/core';
 import { UploadFileService } from './upload-file.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { timeout } from 'rxjs';
+import { IUpload } from "@modules/Custom/modal-carga-masiva/domain/interfaces/upload.interface";
+import { of } from "rxjs";
 
 @Component({
   selector: 'app-modal-carga-masiva',
   templateUrl: './modal-carga-masiva.component.html',
-  styleUrls: ['./modal-carga-masiva.component.css'],
+  styleUrls: [ './modal-carga-masiva.component.css' ],
   standalone: true,
-  imports: [NgIf],
+  imports: [ NgIf ],
 })
 export class ModalCargaMasivaComponent implements AfterViewInit {
   @Output() cerrar = new EventEmitter<void>();
   @Output() errorOcurrido = new EventEmitter<string>();
   @Output() cargaExitosa = new EventEmitter<void>();
-  @Output() mostrarModalDuplicados = new EventEmitter<string[]>(); 
+  @Output() mostrarModalDuplicados = new EventEmitter<string[]>();
 
   @ViewChild('fileDropzone', { static: false }) fileDropzone!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -35,9 +28,11 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
   showUploadButton: boolean = false;
   selectedFile?: File;
 
-  constructor(private uploadService: UploadFileService) {}
+  constructor(private uploadService: UploadFileService) {
+  }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -54,44 +49,43 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
   onUpload(): void {
     if (this.selectedFile) {
       this.fileLoading = true;
-      this.progress = 33;  
-  
-      this.uploadService.uploadFile(this.selectedFile).subscribe({
-        next: (event: HttpEvent<any>) => {
-          if (event.type === HttpEventType.UploadProgress && event.total) {
-            const calculatedProgress = Math.round((100 * event.loaded) / event.total);
-            if (calculatedProgress >= 50 && calculatedProgress < 100) {
-              this.progress = 50;
-            } else if (calculatedProgress < 50) {
-              this.progress = 33;
-            }
-          } else if (event.type === HttpEventType.Response) {
-            setTimeout(() => {
+      this.progress = 33;
+      // with settimeout we simulate the time it takes to validate the file
+      setTimeout(() => {
+        this.progress = 50;
+      }, 500);
+
+      this.uploadService.uploadFile(this.selectedFile)
+        .then((response: IUpload) => {
+          if (response.completed) {
+            this.fileLoading = false;
+            this.fileLoaded = false;
               this.progress = 100;
-              this.fileLoaded = true; 
-              this.cargaExitosa.emit(); 
-              this.fileLoading = false;
-            }, 500);
+            this.cargaExitosa.emit();
           }
-        },
-        error: (error) => {
+        })
+        .catch((error) => {
           this.fileLoading = false;
           this.fileLoaded = false;
-          
+
           const errorMessages = error.error.message.errors;
           const errorStep = error.error.message.step;
           console.log(error)
           if (errorStep === "VALIDATING") {
-            this.errorOcurrido.emit(errorMessages); 
+            this.errorOcurrido.emit(errorMessages);
           } else if (errorStep === "LOOKING_FOR_DUPLICATES") {
             console.log("error step:", errorStep)
-            this.mostrarModalDuplicados.emit(errorMessages); 
+            this.mostrarModalDuplicados.emit(errorMessages);
           }
-        },
-      });
+          return of({ completed: false, step: 'UPLOAD' } as IUpload);
+        })
+
+      // this.uploadService.uploadFile(this.selectedFile).subscribe((response: IUpload) => {
+      //
+      // });
     }
   }
-  
+
   cerrarModal(): void {
     this.cerrar.emit();
   }

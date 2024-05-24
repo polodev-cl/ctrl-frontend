@@ -316,7 +316,7 @@ export class IngresoIndividualComponent implements OnInit {
     this.mostrarModalAdvertencia = false;
   }
   abrirModalAdvertencia(mensaje: string): void {
-    this.tituloModalAdvertencia = 'Error al ingresar usuario';
+    this.tituloModalAdvertencia = 'Error al ingresar equipo';
     this.mensajeModalAdvertencia = mensaje;
     this.mostrarModalAdvertencia = true;
   }

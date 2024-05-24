@@ -9,7 +9,7 @@ import { environment } from "../../../../environments/environment";
   providedIn: 'root',
 })
 export class ConsultaMasivaService {
-  private baseUrl: string = environment + '/api/equipment';
+  private baseUrl: string = environment.apiBaseUrl + '/api/equipment';
 
   constructor(private http: HttpClient) {
   }

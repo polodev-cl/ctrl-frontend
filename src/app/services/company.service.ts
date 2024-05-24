@@ -16,7 +16,7 @@ export interface Company {
   providedIn: 'root',
 })
 export class CompanyService {
-  private baseUrl: string = environment + 'api/company';
+  private baseUrl: string = environment.apiBaseUrl + '/api/company';
 
   constructor(private http: HttpClient) {
   }

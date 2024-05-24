@@ -15,7 +15,7 @@ export interface Usuario {
 
 @Injectable({ providedIn: 'root' })
 export class EditarUsuarioService {
-  private baseUrl: string = environment + '/api/user';
+  private baseUrl: string = environment.apiBaseUrl + '/api/user';
 
   constructor(private http: HttpClient) {
   }

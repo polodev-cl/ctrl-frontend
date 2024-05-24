@@ -15,7 +15,7 @@ export interface Agency {
 
 @Injectable({ providedIn: 'root' })
 export class AgencyService {
-  private baseUrl: string = environment + '/api/agency';
+  private baseUrl: string = environment.apiBaseUrl + '/api/agency';
 
   constructor(private http: HttpClient) {
   }

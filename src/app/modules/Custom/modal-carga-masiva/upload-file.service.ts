@@ -10,7 +10,7 @@ import { environment } from "../../../../environments/environment";
   providedIn: 'root',
 })
 export class UploadFileService {
-  private baseUrl: string = environment + '/api/equipment/upload';
+  private baseUrl: string = environment.apiBaseUrl + '/api/equipment/upload';
 
   constructor(private http: HttpClient) {
   }

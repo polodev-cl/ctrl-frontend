@@ -7,33 +7,41 @@
           <img alt="logo" class="logo" src="../../../assets/image/LogoGrande.svg"/>
         </div>
         <p-card class="row justify-content-center">
-          <form (ngSubmit)="signIn()" *ngIf="!requireNewPassword" class="p-fluid">
+          <form #loginForm="ngForm" (ngSubmit)="signIn()" *ngIf="!requireNewPassword" class="p-fluid">
             <div *ngIf="errorLogin" class="p-error mt-3">Usuario o contraseña incorrectos.</div>
-            <div class="p-field mt-3">
+            <div *ngIf="isBlocked" class="p-error mt-3">{{ errorMessage }}</div>
+
+            <div class="p-field mt-3" [ngClass]="{'p-invalid': !emailModel.valid && emailModel.touched}">
               <input [(ngModel)]="usuario" class="input-color" id="username" name="usuario" pInputText
-                     placeholder="Correo corporativo" type="text" [disabled]="loading"/>
+                     placeholder="Correo corporativo" type="email" #emailModel="ngModel" [disabled]="loading" required email/>
+              <div *ngIf="emailModel.errors?.required && emailModel.touched" class="p-error mt-1">
+                El correo es requerido.
+              </div>
+              <div *ngIf="emailModel.errors?.email && emailModel.touched" class="p-error mt-1">
+                Por favor, ingrese un correo electrónico válido.
+              </div>
             </div>
+
             <div class="p-field mt-3">
               <p-password [(ngModel)]="password" [feedback]="false" [toggleMask]="true" class="input-color"
                           name="password" placeholder="Contraseña" [disabled]="loading"></p-password>
             </div>
-           
+
             <button
-          
-            class="p-button-rounded mt-5"
-            pButton
-            type="submit"
-            [disabled]="loading"
-            [label]="loading ? null : 'Iniciar Sesión'"
-          >
-            <span
-              *ngIf="loading"
-              class="spinner-border spinner-border-sm"
-              role="status"
-              aria-hidden="true"
-            ></span>
-          </button>
-         
+              class="p-button-rounded mt-5"
+              pButton
+              type="submit"
+              [disabled]="loading || isBlocked || !loginForm.valid"
+              [label]="loading ? null : 'Iniciar Sesión'"
+            >
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </button>
+
           </form>
           <p-card *ngIf="requireNewPassword" class="row justify-content-center">
             <form #newPasswordForm="ngForm" (ngSubmit)="submitNewPassword()" class="p-fluid">

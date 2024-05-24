@@ -30,22 +30,29 @@ export class LoginComponent {
   newPassword: string = '';
   confirmPassword: string = '';
   errorLogin: boolean = false;
-  errorMessage: string = '';  // Store the user-facing error message
+  errorMessage: string = '';
   requireNewPassword: boolean = false;
+  failedAttempts: number = 0;
+  isBlocked: boolean = false;
 
   constructor(private router: Router, private cognitoService: CognitoService) {
   }
 
   signIn() {
+    if (this.isBlocked) {
+      this.errorMessage = 'Demasiados intentos fallidos. Inténtalo de nuevo en un minuto.';
+      this.errorLogin = true;
+      return;
+    }
     this.loading = true;
     this.cognitoService.signOut()
       .then(() => this.cognitoService.handleSignIn({ username: this.usuario, password: this.password }))
       .then(signInStep => {
         console.log('Sign-in step:', signInStep)
-        
+
         if ( [ 'SIGNED_IN', 'DONE' ].includes(signInStep) ) {
+          this.failedAttempts = 0;
           return this.router.navigate([ '/home' ]);
-          this.loading = false;
         } else if ( signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED' ) {
           this.requireNewPassword = true;
           return;
@@ -58,6 +65,11 @@ export class LoginComponent {
         this.errorMessage = error.message || 'Error during sign-in';
         this.errorLogin = true;
         this.loading = false;
+
+        this.failedAttempts++;
+        if (this.failedAttempts >= 3) {
+          this.blockLogin();
+        }
         return;
       });
   }
@@ -82,5 +94,14 @@ export class LoginComponent {
       this.errorMessage = 'Error setting new password';
       this.errorLogin = true;
     }
+  }
+  blockLogin() {
+    this.isBlocked = true;
+    this.errorMessage = 'Demasiados intentos fallidos. Inténtalo de nuevo en un minuto.';
+    setTimeout(() => {
+      this.isBlocked = false;
+      this.failedAttempts = 0;
+      this.errorMessage = '';
+    }, 60000);
   }
 }

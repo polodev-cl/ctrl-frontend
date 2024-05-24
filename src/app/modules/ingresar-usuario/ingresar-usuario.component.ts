@@ -24,6 +24,7 @@ import { Company, CompanyService } from '@app/services/company.service';
 import { cleanEmptyFields } from '@app/utils/utils';
 import { UserService } from '@app/common/user/services/user.service';
 import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
+import { catchError, delay, of, retryWhen, scan, switchMap, throwError, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-ingresar-usuario',
@@ -65,7 +66,7 @@ export class IngresarUsuarioComponent implements OnInit{
   loading = false;
   // selectorCompany: Observable<Partial<Company>[]> = of([]);
   empresas: Company[] = [];
-
+  maxRetries: number = 3;
   usuarioForm: FormGroup;
   constructor(
     private fb: FormBuilder,
@@ -79,12 +80,14 @@ export class IngresarUsuarioComponent implements OnInit{
     this.loadCompanies();
   }
 
+
+
   private loadCompanies() {
     this.companyService.getCompanies().subscribe({
       next: (companies) => {
         console.log("empresas:", companies)
         this.empresas = companies;
-     
+
       },
       error: (error) => {
         console.error('Error al cargar las empresas:', error);
@@ -106,35 +109,54 @@ export class IngresarUsuarioComponent implements OnInit{
 
 
 
+
   onSubmit() {
-    this.loading = true; 
+    this.loading = true;
     if (this.usuarioForm.valid) {
       const formData = cleanEmptyFields(this.usuarioForm.getRawValue());
       formData.rolId = Number(formData.rolId);
       formData.empresaId = formData.empresa;
-  
-      this.userService.createUser(formData).subscribe({
+
+      of(formData).pipe(
+        switchMap((data) => this.userService.createUser(data).pipe(
+          timeout(8000),
+          retryWhen(errors =>
+            errors.pipe(
+              scan((retryCount, error) => {
+                if (retryCount >= this.maxRetries || error.name !== 'TimeoutError') {
+                  throw error;
+                }
+                return retryCount + 1;
+              }, 0),
+              delay(1000)
+            )
+          ),
+          catchError((error) => {
+            console.error('Error al crear el usuario', error);
+            const errorMessage = error.error?.message || 'Se produjo un error inesperado.';
+            this.abrirModalAdvertencia(errorMessage);
+            this.loading = false;
+            return throwError(error);
+          })
+        ))
+      ).subscribe({
         next: (response) => {
           console.log('Usuario creado con éxito', response);
           if (response.temporaryPassword) {
             this.abrirModalExito(response.temporaryPassword);
           }
-          this.loading = false; 
+          this.loading = false;
         },
-        error: (error) => {
-          console.error('Error al crear el usuario', error);
-          const errorMessage = error.error.message || 'Se produjo un error inesperado.';
-          console.log("error: ", errorMessage);
-          this.abrirModalAdvertencia(errorMessage);
-          this.loading = false; 
+        error: () => {
+          this.loading = false;
         }
       });
     } else {
       this.abrirModalAdvertencia('Por favor, verifica que todos los campos estén correctos.');
-      this.loading = false; 
+      this.loading = false;
     }
   }
-  
+
   abrirModalExito(temporaryPassword: string): void {
     this.tituloModalExito = 'Ingreso Usuario';
     this.mensajeModalExito = `Usuario ha sido ingresado con éxito. Contraseña temporal: ${temporaryPassword}`

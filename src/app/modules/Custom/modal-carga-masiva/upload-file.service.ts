@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import * as xlsx from 'xlsx';
 import { CreateMassiveDto } from "@modules/Custom/modal-carga-masiva/domain/dto/create-massive.dto";
 import { IUpload } from "@modules/Custom/modal-carga-masiva/domain/interfaces/upload.interface";
+import { environment } from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class UploadFileService {
-  private baseUrl: string = ' https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment/upload';
+  private baseUrl: string = environment + '/api/equipment/upload';
 
   constructor(private http: HttpClient) {
   }

@@ -4,6 +4,7 @@ import { Observable, ReplaySubject, tap } from 'rxjs';
 import { CompanyQueryDto } from "@modules/company/domain/dto/company-query.dto";
 import { CreateCompanyDto } from "@modules/company/domain/dto/create-company.dto";
 import { UpdateCompanyDto } from "@modules/company/domain/dto/update-company.dto";
+import { environment } from "../../environments/environment";
 
 export interface Company {
   id: number;
@@ -11,12 +12,12 @@ export interface Company {
   nombreCorto: string;
 }
 
-const BASE_URL = ' https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/company';
-
 @Injectable({
   providedIn: 'root',
 })
 export class CompanyService {
+  private baseUrl: string = environment + 'api/company';
+
   constructor(private http: HttpClient) {
   }
 
@@ -28,30 +29,30 @@ export class CompanyService {
 
   getCompaniesSelector(): Observable<Partial<Company>[]> {
     return this.http
-      .get<any>(BASE_URL + '/selector')
+      .get<any>(this.baseUrl + '/selector')
       .pipe(tap((companies) => this._companiesSelector.next(companies)));
   }
 
   getCompanies = (query?: CompanyQueryDto): Observable<any> => {
     const queryParams: HttpParams = new HttpParams({ fromObject: query || {} as any });
 
-    return this.http.get<any>(BASE_URL, { params: queryParams });
+    return this.http.get<any>(this.baseUrl, { params: queryParams });
   }
 
   getCompanyById(id: number): Observable<Company> {
-    return this.http.get<Company>(`${ BASE_URL }/${ id }`);
+    return this.http.get<Company>(`${ this.baseUrl }/${ id }`);
   }
 
   createCompany(companyData: CreateCompanyDto): Observable<any> {
-    return this.http.post(BASE_URL, companyData);
+    return this.http.post(this.baseUrl, companyData);
   }
 
   updateCompany(id: number, companyData: UpdateCompanyDto): Observable<any> {
-    return this.http.patch(`${ BASE_URL }/${ id }`, companyData);
+    return this.http.patch(`${ this.baseUrl }/${ id }`, companyData);
   }
 
   deleteCompany(companyId: number): Observable<any> {
-    return this.http.delete(`${BASE_URL}/${companyId}`);
+    return this.http.delete(`${ this.baseUrl }/${ companyId }`);
   }
 }
 

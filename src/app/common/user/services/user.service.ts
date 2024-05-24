@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { User } from '../interface/user.interface';
+import { environment } from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -9,17 +10,17 @@ import { User } from '../interface/user.interface';
 export class UserService {
   private _activeUser: any;
 
-  // private apiUrl = ' https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/user';
-  private apiUrl = ' https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/user'
+  private baseUrl: string = environment + '/api/user';
+
   constructor(private http: HttpClient) { }
 
   getUserByCognitoId(cognitoId: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${cognitoId}`)
+    return this.http.get<User>(`${ this.baseUrl }/${ cognitoId }`)
     .pipe(tap(user => this.activeUser = user));
   }
 
   updateUser(userId: number, userData: Partial<User>): Observable<User> {
-    return this.http.patch<User>(`${this.apiUrl}/${userId}`, userData)
+    return this.http.patch<User>(`${ this.baseUrl }/${ userId }`, userData)
       .pipe(tap(updatedUser => {
         if (userId === this.activeUser?.id) {
           this.activeUser = {...this.activeUser, ...updatedUser};
@@ -27,7 +28,7 @@ export class UserService {
       }));
   }
   createUser(userData: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, userData);
+    return this.http.post<User>(this.baseUrl, userData);
   }
 
   set activeUser(data: any) {

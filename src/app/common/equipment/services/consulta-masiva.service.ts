@@ -1,18 +1,18 @@
-// src/app/services/consulta-masiva.service.ts
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { Consulta } from '../interfaces/consulta-equipment.interface';
 import { Equipamiento } from '../interfaces/equipamiento.interface';
+import { environment } from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConsultaMasivaService {
-  private apiUrl =
-    ' https://3b8lqih9ze.execute-api.us-east-1.amazonaws.com/stage/api/equipment';
+  private baseUrl: string = environment + '/api/equipment';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   obtenerEquipamientoFiltrado(
     companyId: number,
@@ -35,7 +35,7 @@ export class ConsultaMasivaService {
       params = params.append('uso', uso);
     }
 
-    return this.http.get<Equipamiento[]>(this.apiUrl, { params }).pipe(
+    return this.http.get<Equipamiento[]>(this.baseUrl, { params }).pipe(
       map((data) =>
         data.map((item) => {
           let nombres = undefined;
@@ -58,7 +58,6 @@ export class ConsultaMasivaService {
     );
   }
 
-
   getMassiveQuery(
     companyId: number,
     agencyId: number,
@@ -67,9 +66,9 @@ export class ConsultaMasivaService {
     uso: string
   ) {
     let params = new HttpParams();
-  
+
     params = params.append('empresaId', companyId).append('agenciaId', agencyId);
-  
+
     if (tipo) {
       params = params.append('tipo', tipo);
     }
@@ -79,10 +78,9 @@ export class ConsultaMasivaService {
     if (uso) {
       params = params.append('uso', uso);
     }
-  
+
     return this.http
-      .get<any[]>(this.apiUrl, { params })
+      .get<any[]>(this.baseUrl, { params })
       .pipe(tap((data) => console.log('Data from API:', data)));
   }
-  
 }

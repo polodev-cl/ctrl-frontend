@@ -3,7 +3,7 @@
   /* Usa flexbox para centrar el contenido del modal */
   position: fixed;
   /* Posición fija respecto al viewport */
-  z-index: 2001;
+  z-index: 60;
   /* Asegura que el modal esté por encima de otros elementos */
   left: 0;
   top: 0;

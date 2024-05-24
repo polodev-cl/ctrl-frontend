@@ -1,5 +1,5 @@
 import { NgForOf, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
@@ -24,7 +24,17 @@ import { Company, CompanyService } from '@app/services/company.service';
 import { cleanEmptyFields } from '@app/utils/utils';
 import { UserService } from '@app/common/user/services/user.service';
 import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
-import { catchError, delay, of, retryWhen, scan, switchMap, throwError, timeout } from 'rxjs';
+import {
+  catchError,
+  delay,
+  of,
+  retryWhen,
+  scan,
+  switchMap,
+  throwError,
+  timeout,
+} from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-ingresar-usuario',
@@ -51,14 +61,14 @@ import { catchError, delay, of, retryWhen, scan, switchMap, throwError, timeout 
     ModalAdvertenciaComponent,
   ],
 })
-export class IngresarUsuarioComponent implements OnInit{
+export class IngresarUsuarioComponent implements OnInit {
   breadcrumbs = [
     { text: 'Home', link: '/home' },
     { text: 'Ingresar-usuario', link: '/ingresar-usuario' },
   ];
 
-   mostrarModalAdvertencia: boolean = false;
-   mensajeModalAdvertencia: string = 'Hubo un error en su solicitud';
+  mostrarModalAdvertencia: boolean = false;
+  mensajeModalAdvertencia: string = 'Hubo un error en su solicitud';
   tituloModalAdvertencia: string = 'Error';
   mostrarModalExito: boolean = false;
   tituloModalExito: string = '';
@@ -66,12 +76,14 @@ export class IngresarUsuarioComponent implements OnInit{
   loading = false;
   // selectorCompany: Observable<Partial<Company>[]> = of([]);
   empresas: Company[] = [];
-  maxRetries: number = 3;
+  maxRetries: number = 5;
   usuarioForm: FormGroup;
+  private readonly _matSnackBar: MatSnackBar = inject(MatSnackBar);
   constructor(
     private fb: FormBuilder,
     private companyService: CompanyService,
     private userService: UserService,
+    private router: Router
   ) {
     this.usuarioForm = this._loadForm();
   }
@@ -80,18 +92,15 @@ export class IngresarUsuarioComponent implements OnInit{
     this.loadCompanies();
   }
 
-
-
   private loadCompanies() {
     this.companyService.getCompanies().subscribe({
       next: (companies) => {
-        console.log("empresas:", companies)
+        console.log('empresas:', companies);
         this.empresas = companies;
-
       },
       error: (error) => {
         console.error('Error al cargar las empresas:', error);
-      }
+      },
     });
   }
 
@@ -107,9 +116,6 @@ export class IngresarUsuarioComponent implements OnInit{
     });
   }
 
-
-
-
   onSubmit() {
     this.loading = true;
     if (this.usuarioForm.valid) {
@@ -117,49 +123,78 @@ export class IngresarUsuarioComponent implements OnInit{
       formData.rolId = Number(formData.rolId);
       formData.empresaId = formData.empresa;
 
-      of(formData).pipe(
-        switchMap((data) => this.userService.createUser(data).pipe(
-          timeout(8000),
-          retryWhen(errors =>
-            errors.pipe(
-              scan((retryCount, error) => {
-                if (retryCount >= this.maxRetries || error.name !== 'TimeoutError') {
-                  throw error;
-                }
-                return retryCount + 1;
-              }, 0),
-              delay(1000)
+      of(formData)
+        .pipe(
+          switchMap((data) =>
+            this.userService.createUser(data).pipe(
+              timeout(8000),
+              retryWhen((errors) =>
+                errors.pipe(
+                  scan((retryCount, error) => {
+                    if (
+                      retryCount >= this.maxRetries ||
+                      error.name !== 'TimeoutError'
+                    ) {
+                      throw error;
+                    }
+                    return retryCount + 1;
+                  }, 0),
+                  delay(1000)
+                )
+              ),
+              catchError((error) => {
+                console.error('Error al crear el usuario', error);
+                const errorMessage =
+                  error.error?.message || 'Se produjo un error inesperado.';
+                this.abrirModalAdvertencia(errorMessage);
+                this.loading = false;
+                return throwError(error);
+              })
             )
-          ),
-          catchError((error) => {
-            console.error('Error al crear el usuario', error);
-            const errorMessage = error.error?.message || 'Se produjo un error inesperado.';
-            this.abrirModalAdvertencia(errorMessage);
+          )
+        )
+        .subscribe({
+          next: (response) => {
+            console.log('Usuario creado con éxito', response);
+            if (response.temporaryPassword) {
+              this.usuarioForm.reset();
+              this.abrirModalExito(response.temporaryPassword);
+            }
             this.loading = false;
-            return throwError(error);
-          })
-        ))
-      ).subscribe({
-        next: (response) => {
-          console.log('Usuario creado con éxito', response);
-          if (response.temporaryPassword) {
-            this.abrirModalExito(response.temporaryPassword);
-          }
-          this.loading = false;
-        },
-        error: () => {
-          this.loading = false;
-        }
-      });
+          },
+          error: () => {
+            this.loading = false;
+          },
+        });
     } else {
-      this.abrirModalAdvertencia('Por favor, verifica que todos los campos estén correctos.');
+      this.abrirModalAdvertencia(
+        'Por favor, verifica que todos los campos estén correctos.'
+      );
       this.loading = false;
     }
   }
 
   abrirModalExito(temporaryPassword: string): void {
     this.tituloModalExito = 'Ingreso Usuario';
-    this.mensajeModalExito = `Usuario ha sido ingresado con éxito. Contraseña temporal: ${temporaryPassword}`
+    this.mensajeModalExito = `Usuario ha sido ingresado con éxito. Por favor copiar los valores:<br/><br/>
+    <strong>Contraseña temporal:</strong>${temporaryPassword}`;
+    navigator.clipboard
+      .writeText(temporaryPassword)
+      .then(() => {
+        console.log('Contraseña temporal copiada al portapapeles');
+        this._matSnackBar.open(
+          'Contraseña temporal copiada al portapapeles',
+          'Cerrar',
+          {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          }
+        );
+      })
+      .catch((err) => {
+        console.error('Error al copiar al portapapeles: ', err);
+      });
     this.mostrarModalExito = true;
   }
 

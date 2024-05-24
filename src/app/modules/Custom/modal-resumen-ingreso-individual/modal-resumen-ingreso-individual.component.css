@@ -1,7 +1,7 @@
 .custom-modal {
   display: flex;
   position: fixed;
-  z-index: 1000;
+  z-index: 60;
   left: 0;
   top: 0;
   width: 100%;

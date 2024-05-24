@@ -7,6 +7,9 @@
           <img alt="logo" class="logo" src="../../../assets/image/LogoGrande.svg"/>
         </div>
         <p-card class="row justify-content-center">
+          <div *ngIf="requireNewPassword" class="p-card-title">
+            Establecer nueva contraseña
+          </div>
           <form #loginForm="ngForm" (ngSubmit)="signIn()" *ngIf="!requireNewPassword" class="p-fluid">
             <div *ngIf="errorLogin" class="p-error mt-3">Usuario o contraseña incorrectos.</div>
             <div *ngIf="isBlocked" class="p-error mt-3">{{ errorMessage }}</div>
@@ -43,6 +46,7 @@
             </button>
 
           </form>
+          <!-- Formulario de nueva contraseña -->
           <p-card *ngIf="requireNewPassword" class="row justify-content-center">
             <form #newPasswordForm="ngForm" (ngSubmit)="submitNewPassword()" class="p-fluid">
               <div *ngIf="errorLogin" class="p-error mt-3">{{ errorMessage }}</div>
@@ -66,7 +70,7 @@
                             placeholder="Confirmar Nueva contraseña"
                             required></p-password>
                 <div *ngIf="confirmPasswordModel.errors?.['required'] && confirmPasswordModel.touched"
-                     class="p-error mt-1">confirmar contraseña es requerido.
+                     class="p-error mt-1">Confirmar contraseña es requerido.
                 </div>
                 <div *ngIf="newPassword !== confirmPassword && confirmPasswordModel.touched" class="p-error mt-1">Las
                   contraseñas no coinciden.
@@ -78,7 +82,6 @@
                       type="submit"></button>
             </form>
           </p-card>
-
 
         </p-card>
 

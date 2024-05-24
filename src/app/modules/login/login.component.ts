@@ -1,5 +1,5 @@
 import { NgIf } from "@angular/common";
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from "primeng/button";
@@ -23,7 +23,7 @@ import { CognitoService } from '../../common/auth/cognito-service.service';
   ],
   standalone: true
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loading = false;
   usuario: string = '';
   password: string = '';
@@ -34,6 +34,13 @@ export class LoginComponent {
   requireNewPassword: boolean = false;
   failedAttempts: number = 0;
   isBlocked: boolean = false;
+
+  ngOnInit() {
+    const isBlocked = localStorage.getItem('isBlocked');
+    if (isBlocked === 'true') {
+      this.blockLogin();
+    }
+  }
 
   constructor(private router: Router, private cognitoService: CognitoService) {
   }
@@ -68,6 +75,7 @@ export class LoginComponent {
 
         this.failedAttempts++;
         if (this.failedAttempts >= 3) {
+          localStorage.setItem('isBlocked', 'true');
           this.blockLogin();
         }
         return;
@@ -95,6 +103,7 @@ export class LoginComponent {
       this.errorLogin = true;
     }
   }
+
   blockLogin() {
     this.isBlocked = true;
     this.errorMessage = 'Demasiados intentos fallidos. Inténtalo de nuevo en un minuto.';
@@ -102,6 +111,13 @@ export class LoginComponent {
       this.isBlocked = false;
       this.failedAttempts = 0;
       this.errorMessage = '';
+      localStorage.removeItem('isBlocked');
     }, 60000);
   }
+
+  clearErrors() {
+    this.errorLogin = false;
+    this.errorMessage = '';
+  }
+
 }

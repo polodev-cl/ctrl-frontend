@@ -56,15 +56,11 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.cognitoService.signOut()
       .then(() => this.cognitoService.handleSignIn({ username: this.usuario, password: this.password }))
-      .then(async (signInStep) => {
-        const user = await this.cognitoService.getCurrentUser();
-        await lastValueFrom(this.userService.getUserByCognitoId(user.username))
-
-        return signInStep;
-      })
-      .then(signInStep => {
+      .then(async signInStep => {
         if ( [ 'SIGNED_IN', 'DONE' ].includes(signInStep) ) {
           this.failedAttempts = 0;
+          const user = await this.cognitoService.getCurrentUser();
+          await lastValueFrom(this.userService.getUserByCognitoId(user.username))
           return this.router.navigate([ '/home' ]);
         } else if ( signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED' ) {
           this.requireNewPassword = true;
@@ -103,6 +99,8 @@ export class LoginComponent implements OnInit {
 
     try {
       await this.cognitoService.confirmNewPassword({ username: this.usuario, newPassword: this.newPassword });
+      const user = await this.cognitoService.getCurrentUser();
+      await lastValueFrom(this.userService.getUserByCognitoId(user.username))
       this.router.navigate([ '/home' ]);
     } catch ( error ) {
       this.errorMessage = 'Error setting new password';

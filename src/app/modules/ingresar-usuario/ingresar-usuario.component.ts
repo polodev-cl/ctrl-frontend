@@ -122,6 +122,7 @@ export class IngresarUsuarioComponent implements OnInit {
       const formData = cleanEmptyFields(this.usuarioForm.getRawValue());
       formData.rolId = Number(formData.rolId);
       formData.empresaId = formData.empresa;
+      delete formData.empresa;
       formData.usuarioCreacionId = this.userService.getUserId()
       this.userService.createUser(formData)
         .pipe(

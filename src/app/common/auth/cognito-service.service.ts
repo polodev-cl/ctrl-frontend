@@ -10,7 +10,7 @@ interface ConfirmPasswordInput {
 @Injectable({ providedIn: 'root', })
 export class CognitoService {
   private readonly _router: Router = inject(Router);
-  private _currentUser: any;
+  private currentUser: any;
 
   async handleSignIn({ username, password }: SignInInput): Promise<string> {
     const { isSignedIn, nextStep } = await signIn({ username, password });
@@ -45,11 +45,7 @@ export class CognitoService {
     }
   }
 
-  get currentUser() {
-    return this._currentUser;
-  }
-
-  getCurrentUser = () => getCurrentUser().then((user) => this._currentUser = user);
+  getCurrentUser = () => getCurrentUser().then((user) => this.currentUser = user);
 
   async resetPassword(username: string) {
     try {

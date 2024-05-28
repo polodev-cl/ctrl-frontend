@@ -122,36 +122,17 @@ export class IngresarUsuarioComponent implements OnInit {
       const formData = cleanEmptyFields(this.usuarioForm.getRawValue());
       formData.rolId = Number(formData.rolId);
       formData.empresaId = formData.empresa;
-
-      of(formData)
+      formData.usuarioCreacionId = this.userService.getUserId()
+      this.userService.createUser(formData)
         .pipe(
-          switchMap((data) =>
-            this.userService.createUser(data).pipe(
-              timeout(8000),
-              retryWhen((errors) =>
-                errors.pipe(
-                  scan((retryCount, error) => {
-                    if (
-                      retryCount >= this.maxRetries ||
-                      error.name !== 'TimeoutError'
-                    ) {
-                      throw error;
-                    }
-                    return retryCount + 1;
-                  }, 0),
-                  delay(1000)
-                )
-              ),
-              catchError((error) => {
-                console.error('Error al crear el usuario', error);
-                const errorMessage =
-                  error.error?.message || 'Se produjo un error inesperado.';
-                this.abrirModalAdvertencia(errorMessage);
-                this.loading = false;
-                return throwError(error);
-              })
-            )
-          )
+          catchError((error) => {
+            console.error('Error al crear el usuario', error);
+            const errorMessage =
+              error.error?.message || 'Se produjo un error inesperado.';
+            this.abrirModalAdvertencia(errorMessage);
+            this.loading = false;
+            return throwError(error);
+          })
         )
         .subscribe({
           next: (response) => {
@@ -173,7 +154,7 @@ export class IngresarUsuarioComponent implements OnInit {
       this.loading = false;
     }
   }
-
+  
   abrirModalExito(temporaryPassword: string): void {
     this.tituloModalExito = 'Ingreso Usuario';
     this.mensajeModalExito = `Usuario ha sido ingresado con éxito. Por favor copiar los valores:<br/><br/>

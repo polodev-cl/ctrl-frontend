@@ -8,7 +8,7 @@ import { environment } from "../../../../environments/environment";
   providedIn: 'root'
 })
 export class UserService {
-  private _activeUser: any;
+  private _activeUser?: User;
 
   private baseUrl: string = environment.apiBaseUrl + '/api/user';
 
@@ -45,7 +45,7 @@ export class UserService {
   }
 
   getUserRole() {
-    return this._activeUser?.rolId;
+    return this._activeUser?.rolId || 3;
   }
 
   getUserId() {

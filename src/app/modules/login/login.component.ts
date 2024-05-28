@@ -6,7 +6,9 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
-import { CognitoService } from '../../common/auth/cognito-service.service';
+import { CognitoService } from '@common/auth/cognito-service.service';
+import { UserService } from "@common/user/services/user.service";
+import { lastValueFrom } from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  constructor(private router: Router, private cognitoService: CognitoService) {
+  constructor(private router: Router, private cognitoService: CognitoService, private userService: UserService) {
   }
 
   signIn() {
@@ -54,9 +56,13 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.cognitoService.signOut()
       .then(() => this.cognitoService.handleSignIn({ username: this.usuario, password: this.password }))
-      .then(signInStep => {
-        console.log('Sign-in step:', signInStep)
+      .then(async (signInStep) => {
+        const user = await this.cognitoService.getCurrentUser();
+        await lastValueFrom(this.userService.getUserByCognitoId(user.username))
 
+        return signInStep;
+      })
+      .then(signInStep => {
         if ( [ 'SIGNED_IN', 'DONE' ].includes(signInStep) ) {
           this.failedAttempts = 0;
           return this.router.navigate([ '/home' ]);

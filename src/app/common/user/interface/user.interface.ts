@@ -1,4 +1,5 @@
 export interface User {
+  id: number;
   rut: string;
   activo: boolean;
   email: string;

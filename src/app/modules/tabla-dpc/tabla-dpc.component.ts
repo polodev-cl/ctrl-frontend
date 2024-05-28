@@ -1,27 +1,6 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
-  EventEmitter,
-  Output,
-  AfterViewInit,
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef,
-  MatHeaderRow,
-  MatHeaderRowDef,
-  MatRow,
-  MatRowDef,
-  MatTable,
-  MatTableDataSource,
-} from '@angular/material/table';
+import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource, } from '@angular/material/table';
 import { MatTooltip } from '@angular/material/tooltip';
 import * as XLSX from 'xlsx';
 
@@ -33,7 +12,7 @@ import { UserService } from '@app/common/user/services/user.service';
 import { RoleEnum } from '@app/common/auth/enums/role.enum';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { parseISO, differenceInMonths, addMonths } from 'date-fns';
+import { addMonths, differenceInMonths, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-tabla-dpc',
@@ -109,12 +88,12 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     if (!fechaCompra || !garantiaMeses) {
       return 0;
     }
-  
+
     const fechaCompraDate = parseISO(fechaCompra);
     const fechaFinGarantia = addMonths(fechaCompraDate, garantiaMeses);
     const fechaActual = new Date();
     const mesesRestantes = differenceInMonths(fechaFinGarantia, fechaActual);
-  
+
     return mesesRestantes > 0 ? mesesRestantes : 0;
   }
 
@@ -123,7 +102,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
   }
 
   obtenerRolUsuario(): RoleEnum {
-    return this.userService.getUserRole();
+    return this.userService.getUserRole() as RoleEnum;
   }
 
   getHistory(equipmentId: number) {

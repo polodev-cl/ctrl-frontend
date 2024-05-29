@@ -24,7 +24,7 @@ export class CompanyCreateComponent {
   mensajeModalAdvertencia: string = '';
   tituloModalAdvertencia: string = 'Error al crear la empresa';
 
-  @ViewChild('companyForm', { static: true }) companyForm!: CompanyFormComponent;
+  @ViewChild(CompanyFormComponent, { static: true }) companyForm!: CompanyFormComponent;
 
   constructor(private companyService: CompanyService) {
   }

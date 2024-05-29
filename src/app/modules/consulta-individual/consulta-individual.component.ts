@@ -33,7 +33,6 @@ export class ConsultaIndividualComponent {
 
   abrirModalConsultaIndividual(tipo: 'usuario' | 'agencia' | 'inventario'): void {
     this.tipoConsulta = tipo;
-    console.log(this.tipoConsulta);
     this.mostrarModalConsultaIndividual = true;
   }
 

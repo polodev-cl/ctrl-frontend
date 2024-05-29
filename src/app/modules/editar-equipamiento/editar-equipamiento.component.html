@@ -40,6 +40,17 @@
     <div class="grid-container gap-3">
       <!-- Fecha de Ingreso -->
       <div class="grid-item my-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="estado">
+            <mat-option [value]="0">Inactivo</mat-option>
+            <mat-option [value]="1">Activo</mat-option>
+            <mat-option [value]="2">Bodega</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+      <div class="grid-item my-3">
         <div class="card flex flex-wrap gap-3 p-fluid border-0">
           <div class="flex-auto">
             <span class="p-float-label">
@@ -442,6 +453,9 @@
           <label for="orden_compra">Orden de compra</label>
         </span>
       </div>
+
+     
+
     </div>
   </form>
 

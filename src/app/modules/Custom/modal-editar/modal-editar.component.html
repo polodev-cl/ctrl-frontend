@@ -4,30 +4,17 @@
     <p [innerHTML]="mensajeModalEditar"></p>
 
     <form [formGroup]="editForm" class="row px-5 mt-5">
-      <!-- Añade un espaciado entre columnas -->
       <div class="col-md-6 d-flex align-items-center">
-        <!-- Primer columna con inputs -->
         <div class="form-group">
           <input class="input-color color-select py-3 w-100" id="email" pInputText value="{{ emailInitial }}"
             placeholder="Correo Electrónico" type="text" disabled />
         </div>
       </div>
       <div class="col-md-6 d-flex align-items-center">
-        <!-- Segunda columna con input y select -->
         <div class="form-group">
           <input class="input-color color-select py-3 w-100" id="rut" pInputText value="{{ rutInitial }}"
             placeholder="Rut" type="text" disabled />
         </div>
-        <!-- <div class="form-group mt-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Empresa</mat-label>
-            <mat-select (selectionChange)="onEmpresaChange($event.value)">
-              <mat-option *ngFor="let empresa of empresas | async" [value]="empresa.id">
-                {{ empresa.nombreCorto }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div> -->
       </div>
       <div class="form-group">
         <select class="form-select py-3 color-select w-100" id="rolId" formControlName="rolId">

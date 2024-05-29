@@ -61,7 +61,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.rol = this.obtenerRolUsuario();
-    console.log('rol de home', this.rol);
   }
 
   obtenerRolUsuario(): RoleEnum {

@@ -14,32 +14,21 @@ export class CognitoService {
 
   async handleSignIn({ username, password }: SignInInput): Promise<string> {
     const { isSignedIn, nextStep } = await signIn({ username, password });
-    if ( nextStep ) {
+    if (nextStep) {
       return nextStep.signInStep;
-    } else if ( isSignedIn ) {
+    } else if (isSignedIn) {
       return 'SIGNED_IN';
     }
     throw new Error('Authentication failed with unknown state');
   }
 
-  async confirmNewPassword({ username, newPassword, }: ConfirmPasswordInput): Promise<void> {
+  async confirmNewPassword({ username, newPassword }: ConfirmPasswordInput): Promise<void> {
     try {
       const confirmInput: ConfirmSignInInput = {
         challengeResponse: newPassword,
       };
-      const confirmResult = await confirmSignIn(confirmInput);
-
-      if ( confirmResult.isSignedIn ) {
-        console.log(
-          'User has successfully set a new password and is signed in.'
-        );
-      } else {
-        console.log(
-          'Next step after setting new password:',
-          confirmResult.nextStep
-        );
-      }
-    } catch ( error ) {
+      await confirmSignIn(confirmInput);
+    } catch (error) {
       console.error('Error confirming new password:', error);
       throw error;
     }
@@ -50,7 +39,7 @@ export class CognitoService {
   async resetPassword(username: string) {
     try {
       return await resetPassword({ username });
-    } catch ( error ) {
+    } catch (error) {
       console.error('Error during password reset:', error);
       throw error;
     }
@@ -67,8 +56,7 @@ export class CognitoService {
         confirmationCode: code,
         newPassword,
       });
-      console.log('Password reset successfully');
-    } catch ( error ) {
+    } catch (error) {
       console.error('Error during password confirmation:', error);
       throw error;
     }
@@ -77,12 +65,11 @@ export class CognitoService {
   async updatePassword(oldPassword: string, newPassword: string) {
     try {
       await updatePassword({ oldPassword, newPassword });
-      console.log('Password updated successfully');
-    } catch ( error ) {
+    } catch (error) {
       console.error('Error updating password:', error);
       throw error;
     }
   }
 
-  signOut = () => signOut().then(() => this._router.navigate([ '/sign-in' ]).then());
+  signOut = () => signOut().then(() => this._router.navigate(['/sign-in']).then());
 }

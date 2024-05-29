@@ -1,30 +1,19 @@
 <app-navbar> </app-navbar>
-<app-modal-consulta-individual
-  (cerrar)="cerrarModalConsultaIndividual()"
-  *ngIf="mostrarModalConsultaIndividual"
-  [tipoConsulta]="tipoConsulta"
->
+<app-modal-consulta-individual (cerrar)="cerrarModalConsultaIndividual()" *ngIf="mostrarModalConsultaIndividual"
+  [tipoConsulta]="tipoConsulta">
 </app-modal-consulta-individual>
 <div class="container-md">
   <div class="frame mt-3" id="frame_middletop">
     <div class="row">
       <div class="col-md-12">
         <h2 class="consultation-title">
-          <img
-            class=""
-            height="16"
-            src="../../../assets/image/logo-amarillo.jpg"
-          />
+          <img class="" height="16" src="../../../assets/image/logo-amarillo.jpg" />
           Consulta Individual
         </h2>
 
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li
-              *ngFor="let crumb of breadcrumbs; let last = last"
-              [class.active]="last"
-              class="breadcrumb-item"
-            >
+            <li *ngFor="let crumb of breadcrumbs; let last = last" [class.active]="last" class="breadcrumb-item">
               <a *ngIf="!last" [routerLink]="crumb.link">{{ crumb.text }}</a>
               <span *ngIf="last">{{ crumb.text }}</span>
             </li>
@@ -35,30 +24,23 @@
     <div class="row mt-4 mb-3">
       <div class="col-md-12 mt-4 mt-md-0">
         <div class="card border rounded card-shadow-box">
-          <div
-            class="card-header py-2 header-individual text-md-start text-center ps-md-3"
-          >
-            <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">Usuario / Rut</p>
+          <div class="card-header py-2 header-individual text-md-start text-center ps-md-3">
+            <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">Rut</p>
           </div>
 
           <div class="card-body">
             <div class="row mt-1">
               <div class="col-md-9 col-12 d-flex align-items-center">
                 <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">
-                  Aquí debería ir una pequeña descripción de consulta
-                  individual. Aquí debería ir una pequeña descripción de
-                  consulta individual.
+                  Esta consulta permite al usuario buscar información sobre equipos específicos utilizando:
+                  <br>
+                  <strong> RUT del propietario o responsable del equipo. </strong>
                 </p>
               </div>
               <div class="col-md-3 col-12 ps-0 mt-3 mt-md-0">
                 <div class="container">
-                  <button
-                    (click)="abrirModalConsultaIndividual('usuario')"
-                    class="consultar-button p-2 w-100"
-                    label="Consultar"
-                    pButton
-                    type="button"
-                  ></button>
+                  <button (click)="abrirModalConsultaIndividual('usuario')" class="consultar-button p-2 w-100"
+                    label="Consultar" pButton type="button"></button>
                 </div>
               </div>
             </div>
@@ -69,30 +51,24 @@
     <div class="row mt-4 mb-3">
       <div class="col-md-12 mt-4 mt-md-0">
         <div class="card border rounded card-shadow-box">
-          <div
-            class="card-header py-2 header-individual text-md-start text-center ps-md-3"
-          >
-            <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">Agencia / DPC</p>
+          <div class="card-header py-2 header-individual text-md-start text-center ps-md-3">
+            <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">DPC</p>
           </div>
 
           <div class="card-body">
             <div class="row mt-1">
               <div class="col-md-9 col-12 d-flex align-items-center">
                 <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">
-                  Aquí debería ir una pequeña descripción de consulta
-                  individual. Aquí debería ir una pequeña descripción de
-                  consulta individual.
+                  Esta consulta permite al usuario buscar información sobre equipos específicos utilizando :
+                  <br>
+                  <strong> DPC de una agencia. </strong>
+
                 </p>
               </div>
               <div class="col-md-3 col-12 ps-0 mt-3 mt-md-0">
                 <div class="container">
-                  <button
-                    (click)="abrirModalConsultaIndividual('agencia')"
-                    class="consultar-button p-2 w-100"
-                    label="Consultar"
-                    pButton
-                    type="button"
-                  ></button>
+                  <button (click)="abrirModalConsultaIndividual('agencia')" class="consultar-button p-2 w-100"
+                    label="Consultar" pButton type="button"></button>
                 </div>
               </div>
             </div>
@@ -103,9 +79,7 @@
     <div class="row mt-4 mb-3">
       <div class="col-md-12 mt-4 mt-md-0">
         <div class="card border rounded card-shadow-box">
-          <div
-            class="card-header py-2 header-individual text-md-start text-center ps-md-3"
-          >
+          <div class="card-header py-2 header-individual text-md-start text-center ps-md-3">
             <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">Número de inventario</p>
           </div>
 
@@ -113,20 +87,15 @@
             <div class="row mt-1">
               <div class="col-md-9 col-12 d-flex align-items-center">
                 <p class="my-0 mx-md-5 px-md-3 mx-0 px-0">
-                  Aquí debería ir una pequeña descripción de consulta
-                  individual. Aquí debería ir una pequeña descripción de
-                  consulta individual.
+                  Esta consulta permite al usuario buscar información sobre equipos específicos utilizando:
+                  <br>
+                  <strong>Número de inventario del equipo.</strong>
                 </p>
               </div>
               <div class="col-md-3 col-12 ps-0 mt-3 mt-md-0">
                 <div class="container">
-                  <button
-                    (click)="abrirModalConsultaIndividual('inventario')"
-                    class="consultar-button p-2 w-100"
-                    label="Consultar"
-                    pButton
-                    type="button"
-                  ></button>
+                  <button (click)="abrirModalConsultaIndividual('inventario')" class="consultar-button p-2 w-100"
+                    label="Consultar" pButton type="button"></button>
                 </div>
               </div>
             </div>
@@ -137,13 +106,7 @@
 
     <div class="row my-5">
       <div class="col-md-2 col-12">
-        <button
-          class="back-button p-2 w-100"
-          label="Volver"
-          pButton
-          routerLink="/home"
-          type="button"
-        ></button>
+        <button class="back-button p-2 w-100" label="Volver" pButton routerLink="/home" type="button"></button>
       </div>
     </div>
   </div>

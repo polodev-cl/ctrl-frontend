@@ -283,7 +283,6 @@ export class EditarEquipamientoComponent implements OnInit {
   
       this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
         (response) => {
-          console.log('Equipo actualizado con éxito', response);
           this.abrirModalExito();
           this.loading = false; 
         },

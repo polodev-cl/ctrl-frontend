@@ -300,7 +300,6 @@ export class IngresoIndividualComponent implements OnInit {
       apellidoUsuario: this.lastName
       
     };
-    console.log('Datos enviados al modal:', this.datosParaModal);
     this.mostrarModalResumenIngresoIndividual = true;
   }
 
@@ -332,7 +331,6 @@ export class IngresoIndividualComponent implements OnInit {
 
       this.equipmentService.createEquipment(formData).subscribe(
         (response) => {
-          console.log('Equipo creado con éxito', response);
           this.abrirModalResumenIngresoIndividual();
         },
         (error) => {

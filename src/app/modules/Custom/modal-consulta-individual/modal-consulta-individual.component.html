@@ -2,7 +2,7 @@
   <div class="custom-modal-content rounded-3 text-center">
     <h4 class="my-2">Consulta individual</h4>
     <div *ngIf="tipoConsulta === 'usuario'">
-      <div>Usuario / rut</div>
+      <div>Rut</div>
       <div class="form-group mt-3">
         <input [(ngModel)]="rut" class="input-color" id="usuarioInput" pInputText placeholder="Ingresar usuario o rut" type="text" />
         <div *ngIf="noResultsFound" class="alert alert-warning mt-2">
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div *ngIf="tipoConsulta === 'agencia'">
-      <div>Agencia / DPC</div>
+      <div>DPC</div>
       <div class="form-group mt-3">
         <input [(ngModel)]="dpc" class="input-color" pInputText placeholder="Ingresar agencia o DPC" type="number" />
         <div *ngIf="noResultsFound" class="alert alert-warning mt-2">

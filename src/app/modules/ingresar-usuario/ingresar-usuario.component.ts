@@ -95,7 +95,6 @@ export class IngresarUsuarioComponent implements OnInit {
   private loadCompanies() {
     this.companyService.getCompanies().subscribe({
       next: (companies) => {
-        console.log('empresas:', companies);
         this.empresas = companies;
       },
       error: (error) => {
@@ -137,7 +136,6 @@ export class IngresarUsuarioComponent implements OnInit {
         )
         .subscribe({
           next: (response) => {
-            console.log('Usuario creado con éxito', response);
             if (response.temporaryPassword) {
               this.usuarioForm.reset();
               this.abrirModalExito(response.temporaryPassword);

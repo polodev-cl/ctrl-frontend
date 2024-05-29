@@ -89,7 +89,7 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.usuarioService.obtenerUsuarios().subscribe({
       next: (usuarios) => {
-        console.log('Usuarios obtenidos:', usuarios);
+
         this.dataSource.data = usuarios;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -109,14 +109,14 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   }
 
   editarUsuario(user: Usuario) {
-    console.log('Editando usuario:', user);
+
     this.mensajeModalEditar = `Editando a ${user.usuario}`;
     this.emailInitial = user.correo;
     this.rutInitial = user.rut;
     this.perfilInitial = user.perfil;
-    console.log("id de user.id", user.id)
+
     this.idUsuario = user.id;
-    console.log("id usuario desde tabla:",this.idUsuario)
+
     this.abrirModalEditar();
   }
 
@@ -185,11 +185,10 @@ export class TablasEditarUsuarioComponent implements AfterViewInit {
   }
 
   eliminarUsuario(user: Usuario) {
-    console.log('Intentando eliminar usuario:', user);
+
 
     this.usuarioService.eliminarUsuario(user.id).subscribe({
       next: (response) => {
-        console.log('Usuario eliminado con éxito', response);
         this.abrirModalExito();
         this.recargarUsuarios();
       },

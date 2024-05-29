@@ -4,7 +4,7 @@ import { inject } from "@angular/core";
 import { UserService } from "@app/common/user/services/user.service";
 
 export function roleGuard(requiredRoles: RoleEnum[], defaultRedirect: string = '/'): CanActivateFn {
-    console.log('Guard Role')
+
     return () => {
         const userService = inject(UserService);
         const router = inject(Router);

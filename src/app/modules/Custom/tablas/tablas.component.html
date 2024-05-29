@@ -108,7 +108,7 @@
         <td *matCellDef="let element" class="text-center" mat-cell>
           <div class="d-flex justify-content-evenly align-items-center">
             <button
-              *ngIf="rol === RoleEnum.ADMIN"
+              *ngIf="rol === RoleEnum.ADMIN || rol === RoleEnum.INGRESO"
               mat-icon-button
               (click)="goToEdit(element.id)"
               matTooltip="Editar"

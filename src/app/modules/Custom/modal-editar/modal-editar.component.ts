@@ -56,18 +56,12 @@ export class ModalEditarComponent implements OnInit{
   ngOnInit(): void {
     this.editForm = this._loadForm();
   }
-  onEmpresaChange(empresaId: number) {
-    console.log('Empresa seleccionada:', empresaId);
-  }
 
 onSubmit() {
   if (this.editForm.dirty && this.editForm.valid) {
-    this.loading = true; // Activar el indicador de carga al iniciar el envío
+    this.loading = true;
     const userId = this.idUsuario;
-    console.log("userid", userId);
     const values = this.editForm.getRawValue();
-    console.log('mi values: ', values);
-
     const rolIdAsNumber = Number(values.rolId);
     const formData = {
       rut: this.rutInitial,
@@ -77,18 +71,16 @@ onSubmit() {
     if (formData.rolId !== Number(this.perfilInitial)) {
       this.userService.updateUser(userId, formData).subscribe({
         next: (user) => {
-          console.log('Usuario actualizado:', user);
           this.editarUsuarioExitoso();
-          this.loading = false; // Desactivar el indicador de carga tras una respuesta exitosa
+          this.loading = false; 
         },
         error: (error) => {
           console.error('Error actualizando usuario:', error);
-          this.loading = false; // Desactivar el indicador de carga en caso de error
+          this.loading = false; 
         }
       });
     } else {
-      console.log('No se detectaron cambios en el formulario.');
-      this.loading = false; // Desactivar el indicador de carga si no hay cambios
+      this.loading = false;
     }
   }
 }

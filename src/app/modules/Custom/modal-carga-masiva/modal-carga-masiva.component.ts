@@ -50,7 +50,6 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
     if (this.selectedFile) {
       this.fileLoading = true;
       this.progress = 33;
-      // with settimeout we simulate the time it takes to validate the file
       setTimeout(() => {
         this.progress = 50;
       }, 500);

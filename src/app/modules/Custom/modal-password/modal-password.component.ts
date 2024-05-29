@@ -22,7 +22,6 @@ export class ModalPasswordComponent {
   }
 
   onContinue() {
-    console.log('Email before navigation:', this.email);
     this.router.navigate([ '/recover-password' ]);
     this.display = false;
   }

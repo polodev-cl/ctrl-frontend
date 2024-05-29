@@ -50,7 +50,6 @@ export class RecoverPasswordComponent {
   }
 
   async changePassword(): Promise<void> {
-    console.log('Attempting to change password...');
     if (!this.newPassword || !this.confirmPassword || !this.verificationCode) {
       this.error = 'All fields are required.';
       return;
@@ -65,7 +64,6 @@ export class RecoverPasswordComponent {
     }
 
     try {
-      console.log(`Changing password for ${ this.email }`);
       await this.cognitoService.confirmResetPassword(this.email, this.verificationCode, this.newPassword);
       this.abrirModalExitoso();
       this.error = ''; 

@@ -59,6 +59,11 @@ import { ModalEliminarEntitiesComponent } from '@app/modules/Custom/modal-elimin
   templateUrl: './agency-list.component.html',
 })
 export class AgencyListComponent {
+
+  breadcrumbs = [
+    { text: 'Home', link: '/home' },
+    { text: 'Agencias', link: '/agency' },
+  ];
   public searchForm: FormGroup;
   public agencies: IAgency[] = [];
   public messageNoData: string =

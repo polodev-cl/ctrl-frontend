@@ -23,7 +23,6 @@ export class ModalHistorialEquipoComponent {
 
 
   ngOnInit() {
-    console.log("Received equipoId in modal:", this.equipoId);
     if (this.equipoId) {
       this.buscarHistorialEquipo(this.equipoId);
     }
@@ -38,7 +37,6 @@ export class ModalHistorialEquipoComponent {
   buscarHistorialEquipo(equipmentId: number): void {
     this.equipmentService.getEquipmentHistory(equipmentId).subscribe({
       next: (data: HistorialEquipment[]) => {
-        console.log("Datos: ", data);
         this.dataSource = new MatTableDataSource(data); 
       },
       error: (error) => {

@@ -46,7 +46,7 @@ export const routes: Routes = [
       { path: 'ingreso-individual', canActivate: [roleGuard([RoleEnum.ADMIN, RoleEnum.INGRESO], '/')], loadComponent: () => import('./modules/ingreso-individual/ingreso-individual.component').then(m => m.IngresoIndividualComponent) },
       {
         path: 'editar-equipamiento/:id',
-        canActivate: [ roleGuard([ RoleEnum.ADMIN ], '/') ],
+        canActivate: [roleGuard([RoleEnum.ADMIN, RoleEnum.INGRESO], '/')],
         resolve: {
           equipment: equipmentResolver
         },

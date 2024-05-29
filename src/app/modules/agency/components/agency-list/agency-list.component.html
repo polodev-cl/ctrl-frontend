@@ -1,12 +1,16 @@
-
-<app-modal-eliminar-entities
-  *ngIf="mostrarModalEliminar"
-  [titulo]="'Confirmación de Eliminación'"
-  [mensajeModal]="mensajeModalEliminar"
-  (cerrar)="cerrarModalEliminar()"
-  (exito)="confirmarEliminacion()">
+<app-modal-eliminar-entities *ngIf="mostrarModalEliminar" [titulo]="'Confirmación de Eliminación'"
+  [mensajeModal]="mensajeModalEliminar" (cerrar)="cerrarModalEliminar()" (exito)="confirmarEliminacion()">
 </app-modal-eliminar-entities>
-<!-- Filtros -->
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li *ngFor="let crumb of breadcrumbs; let last = last" [class.active]="last" class="breadcrumb-item">
+      <a *ngIf="!last" [routerLink]="crumb.link">{{ crumb.text }}</a>
+      <span *ngIf="last">{{ crumb.text }}</span>
+    </li>
+  </ol>
+</nav>
+
 <button (click)="onCleanFilters()" class="button-style" mat-flat-button>
   <mat-icon>filter_alt_off</mat-icon>
   <span>Limpiar filtros</span>
@@ -32,31 +36,18 @@
       </mat-form-field>
     </div>
     <div class="col-md-3 d-flex h-56 gap-4">
-      <button
-        [disabled]="searchForm.invalid"
-        class="h-100 search-button flex-grow-1"
-        mat-flat-button
-      >
+      <button [disabled]="searchForm.invalid" class="h-100 search-button flex-grow-1" mat-flat-button>
         Buscar
       </button>
-      <a
-        [routerLink]="['create']"
-        class="flex-grow-0 custom-bg-primary"
-        color="primary"
-        mat-fab matTooltip="Agregar Nueva Agencia"
-        type="button">
+      <a [routerLink]="['create']" class="flex-grow-0 custom-bg-primary" color="primary" mat-fab
+        matTooltip="Agregar Nueva Agencia" type="button">
         <mat-icon>add</mat-icon>
       </a>
     </div>
   </div>
 </form>
-<material-table
-  [data]="agencies"
-  [displayedColumns]="displayedColumns"
-  [loading]="loading"
-  [messageNoData]="messageNoData"
-  [trackByFn]="trackByIdFn"
->
+<material-table [data]="agencies" [displayedColumns]="displayedColumns" [loading]="loading"
+  [messageNoData]="messageNoData" [trackByFn]="trackByIdFn">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
     <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
@@ -97,7 +88,7 @@
         <button mat-menu-item (click)="onDelete(element.id)">
           <mat-icon>delete</mat-icon>
           <span>Eliminar</span>
-        </button>        
+        </button>
       </mat-menu>
     </mat-cell>
   </ng-container>

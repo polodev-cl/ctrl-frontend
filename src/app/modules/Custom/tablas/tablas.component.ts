@@ -109,7 +109,6 @@ export class TablasComponent implements OnChanges, AfterViewInit {
 
   ngOnInit() {
     this.rol = this.obtenerRolUsuario();
-    console.log('rol tabla dpc', this.rol);
   }
 
   
@@ -117,7 +116,6 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && changes['data'].currentValue) {
       this.dataSource.data = changes['data'].currentValue;
-      console.log("Current data:", this.dataSource.data); // Para depurar y ver qué datos se están pasando
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
       }
@@ -141,10 +139,6 @@ export class TablasComponent implements OnChanges, AfterViewInit {
 
 
   public cargarDatos(data: Consulta[]) {
-    console.log(
-      'Datos recibidos en TablasComponent para cargar en la tabla:',
-      data
-    );
     this.dataSource.data = data;
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;

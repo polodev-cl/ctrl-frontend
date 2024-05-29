@@ -72,7 +72,6 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
 
   ngOnInit() {
     this.rol = this.obtenerRolUsuario();
-    console.log('rol tabla dpc', this.rol);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -106,7 +105,6 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
   }
 
   getHistory(equipmentId: number) {
-    console.log('ID ENVIADO', equipmentId);
     this.requestOpenModal.emit(equipmentId);
   }
 

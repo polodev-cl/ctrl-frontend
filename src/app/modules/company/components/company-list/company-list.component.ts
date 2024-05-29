@@ -64,6 +64,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './company-list.component.html',
 })
 export class CompanyListComponent {
+
+  breadcrumbs = [
+    { text: 'Home', link: '/home' },
+    { text: 'Compañias', link: '/company' },
+  ];
   public searchForm: FormGroup;
   public companies: ICompany[] = [];
   public messageNoData: string =

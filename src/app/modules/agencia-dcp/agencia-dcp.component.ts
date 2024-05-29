@@ -56,7 +56,6 @@ export class AgenciaDcpComponent {
     this.equipmentService.getEquipmentByDPC(dpc).subscribe({
       next: (data) => {
         this.equipments = data;
-        console.log('Received equipmentsDpc?:', data);
       },
       error: (error) => {
         console.error('Error fetching data:', error);

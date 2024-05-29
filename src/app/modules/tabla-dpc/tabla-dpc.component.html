@@ -126,7 +126,7 @@
               <mat-icon>history</mat-icon>
             </button>
             <button
-              *ngIf="rol === RoleEnum.ADMIN"
+              *ngIf="rol === RoleEnum.ADMIN || rol === RoleEnum.INGRESO"
               mat-icon-button
               (click)="goToEdit(element.id)"
               matTooltip="Editar"

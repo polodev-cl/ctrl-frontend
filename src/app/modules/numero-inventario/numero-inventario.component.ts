@@ -45,7 +45,6 @@ export class NumeroInventarioComponent {
 
   ngOnInit() {
     this.rol = this.obtenerRolUsuario();
-    console.log('rol de data-usuario', this.rol);
     this.route.params.subscribe((params) => {
       this.inventario = +params['inventario'];
       if (this.inventario) {
@@ -59,8 +58,7 @@ export class NumeroInventarioComponent {
   }
 
   calcularMesesGarantiaRestantes(fechaCompra: string, garantiaMeses: number): number {
-    console.log('Fecha de compra recibida:', fechaCompra);
-    console.log('Meses de garantía:', garantiaMeses);
+
     if (!fechaCompra) {
       console.error('La fecha de compra es nula o no está definida.');
       return 0;
@@ -69,8 +67,6 @@ export class NumeroInventarioComponent {
     const fechaFinGarantia = addMonths(fechaCompraDate, garantiaMeses);
     const fechaActual = new Date();
     const mesesRestantes = differenceInMonths(fechaFinGarantia, fechaActual);
-    console.log('Fecha de fin de garantía:', fechaFinGarantia);
-    console.log('Meses restantes de garantía:', mesesRestantes);
     return mesesRestantes > 0 ? mesesRestantes : 0;
   }
 
@@ -78,7 +74,6 @@ export class NumeroInventarioComponent {
     this.equipmentService.getEquipmentByInventory(inventario).subscribe({
       next: (data) => {
         this.equipments = data;
-        console.log('Received equipmentsInv?:', data);
       },
       error: (error) => {
         console.error('Error fetching data:', error);

@@ -76,7 +76,11 @@ export class SoService {
     {
       type: 'TBK',
       soOptions: []
-    }
+    },
+    {
+      type: 'Pasaje Matico',
+      soOptions: []
+    },
   ];
 
   getSODataByType(type: string): Observable<SOVersion[]> {

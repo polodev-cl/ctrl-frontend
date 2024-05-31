@@ -176,7 +176,7 @@ export class EditarEquipamientoComponent implements OnInit {
       this.ingresoIndividualForm.get('inventario')?.enable();
 
 
-    }  else if (this.isEquipmentWithAnexoOrPrintServer(value)) {
+    } else if (this.isEquipmentWithAnexoOrPrintServer(value)) {
       this.ingresoIndividualForm.patchValue({
         sistemaOperativo: undefined,
         sistemaOperativoVersion: undefined,
@@ -359,7 +359,7 @@ export class EditarEquipamientoComponent implements OnInit {
     });
 
   filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
-    switch ( field ) {
+    switch (field) {
       case 'agency': {
         this.selectorAgencyFiltered = this.selectorAgency.pipe(
           map((agencies) => filterByValue(agencies, target.value, 'nombre'))
@@ -443,31 +443,31 @@ export class EditarEquipamientoComponent implements OnInit {
   private _loadForm(equipment: any) { // Puedes reemplazar 'any' con 'Iequipment' si tienes definida esa interfaz
     return this.fb.group({
       fechaIngreso: [{ value: equipment.fechaIngreso ? new Date(equipment.fechaIngreso) : undefined, disabled: true }],
-      ordenCompra: [ equipment.ordenCompra || undefined, [ Validators.required ] ],
-      rut: [ equipment.rut || undefined ],
-      empresa: [ { value: equipment ? equipment.agencia?.empresa?.id : undefined, disabled: equipment } ],
-      agenciaId: [ { value: equipment ? equipment.agencia : undefined, disabled: equipment } ],
-      agenciaMnemonic: [ { value: equipment ? equipment.agenciaMnemonic : undefined, disabled: true } ],
-      agenciaDpc: [ { value: equipment ? equipment.agenciaDpc : undefined, disabled: true } ],
-      inventario: [ { value: equipment.inventario || undefined, disabled: equipment.inventario }, [ Validators.min(0) ] ],
-      tipo: [ equipment ? equipment.tipo : undefined, [ Validators.required ] ],
-      sistemaOperativo: [ equipment.sistemaOperativo || undefined ],
-      uso: [ equipment.uso || undefined, [ Validators.required ] ],
-      marca: [ equipment.marca || undefined, [ Validators.required ] ],
-      modelo: [ equipment.modelo || undefined, [ Validators.required ] ],
-      mac: [ { value: equipment.mac || undefined, disabled: equipment.mac }, [ Validators.pattern(MAC_PATTERN) ] ],
-      ip: [ equipment.ip || undefined, [ Validators.pattern(IPV4_PATTERN) ] ],
-      nombre: [ equipment.nombre || undefined, [ Validators.required ] ],
-      procesador: [ equipment.procesador || undefined ],
-      ramGb: [ equipment.ramGb || undefined, [ Validators.min(1) ] ],
-      disco: [ equipment.disco || undefined ],
-      ddllTbk: [{value: equipment.ddllTbk || undefined , disabled: equipment.tipo !== "TBK" } ],
-      serie: [ { value: equipment.serie || undefined, disabled: equipment.serie } ],
-      encargadoAgencia: [ equipment.encargadoAgencia || undefined, [ Validators.required ] ],
-      ubicacion: [ equipment.ubicacion || undefined, [ Validators.required ] ],
+      ordenCompra: [equipment.ordenCompra || undefined, [Validators.required]],
+      rut: [equipment.rut || undefined],
+      empresa: [{ value: equipment ? equipment.agencia?.empresa?.id : undefined, disabled: equipment }],
+      agenciaId: [{ value: equipment ? equipment.agencia : undefined, disabled: equipment }],
+      agenciaMnemonic: [{ value: equipment ? equipment.agenciaMnemonic : undefined, disabled: true }],
+      agenciaDpc: [{ value: equipment ? equipment.agenciaDpc : undefined, disabled: true }],
+      inventario: [{ value: equipment.inventario || undefined, disabled: equipment.inventario }, [Validators.min(0)]],
+      tipo: [equipment ? equipment.tipo : undefined, [Validators.required]],
+      sistemaOperativo: [equipment.sistemaOperativo || undefined],
+      uso: [equipment.uso || undefined, [Validators.required]],
+      marca: [equipment.marca || undefined, [Validators.required]],
+      modelo: [equipment.modelo || undefined, [Validators.required]],
+      mac: [{ value: equipment.mac || undefined, disabled: equipment.mac }, [Validators.pattern(MAC_PATTERN)]],
+      ip: [equipment.ip || undefined, [Validators.pattern(IPV4_PATTERN)]],
+      nombre: [equipment.nombre || undefined, [Validators.required]],
+      procesador: [equipment.procesador || undefined],
+      ramGb: [equipment.ramGb || undefined, [Validators.min(1)]],
+      disco: [equipment.disco || undefined],
+      ddllTbk: [{ value: equipment.ddllTbk || undefined, disabled: equipment.tipo !== "TBK" }],
+      serie: [{ value: equipment.serie || undefined, disabled: equipment.serie }],
+      encargadoAgencia: [equipment.encargadoAgencia || undefined, [Validators.required]],
+      ubicacion: [equipment.ubicacion || undefined, [Validators.required]],
       fechaCompra: [{ value: equipment.fechaCompra ? new Date(equipment.fechaCompra) : undefined, disabled: true }],
-      garantiaMeses: [ equipment ? equipment.garantiaMeses : undefined, [ Validators.required, Validators.min(0) ] ],
-      estado: [ equipment.estado || 1 ], // Asegúrate de manejar el default adecuadamente
+      garantiaMeses: [equipment ? equipment.garantiaMeses : undefined, [Validators.required, Validators.min(0)]],
+      estado: [equipment.estado || 1], // Asegúrate de manejar el default adecuadamente
     });
   }
 }

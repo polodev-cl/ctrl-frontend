@@ -3,7 +3,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource, } from '@angular/material/table';
 import { MatTooltip } from '@angular/material/tooltip';
 import * as XLSX from 'xlsx';
-
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { EquipmentService } from '@app/common/equipment/services/equipment.service';
@@ -13,6 +12,7 @@ import { RoleEnum } from '@app/common/auth/enums/role.enum';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { addMonths, differenceInMonths, parseISO } from 'date-fns';
+import { EstatusEnum } from '@app/common/auth/enums/estatus.enum';
 
 @Component({
   selector: 'app-tabla-dpc',
@@ -55,6 +55,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
   displayedColumns: string[] = [
     'dpc',
     'equipo',
+    'estado',
     'modelo',
     'garantia',
     'inventario',
@@ -114,6 +115,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
         this.equipmentService.getEquipment({ agenciaDpc: this.dpc })
       )
     ).map((equipment) => ({
+      Estado: this.mapEquipmentStatus(equipment.estado as number),
       Empresa: equipment.agencia?.empresa?.nombreCorto || 'N/A',
       RutUsuario: equipment.rut || 'N/A',
       AgenciaNombre: equipment.agencia?.nombre || 'N/A',
@@ -134,7 +136,6 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
       'DDL/TBK': equipment.ddllTbk || 'N/A',
       'Numero serie': equipment.serie || 'N/A',
       'Numero inventario': equipment.inventario || 'N/A',
-      Estado: this.mapEquipmentStatus(equipment.estado as number),
       'Encargado Agencia': equipment.encargadoAgencia || 'N/A',
       'Fecha Compra': equipment.fechaCompra || 'N/A',
       'Garantia Meses': equipment.garantiaMeses || 'N/A',
@@ -158,6 +159,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
   }
 
   private columns = [
+    { header: 'Estado', wch: 15 },
     { header: 'Empresa', wch: 25 },
     { header: 'Rut Usuario', wch: 20 },
     { header: 'Agencia Nombre', wch: 30 },
@@ -178,7 +180,6 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     { header: 'DDLL TBK', wch: 20 },
     { header: 'Numero serie', wch: 25 },
     { header: 'Numero inventario', wch: 25 },
-    { header: 'Estado', wch: 15 },
     { header: 'Encargado Agencia', wch: 45 },
     { header: 'Fecha Compra', wch: 15 },
     { header: 'Garantia meses', wch: 15 },
@@ -188,11 +189,11 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
 
   private mapEquipmentStatus(status: number) {
     switch (status) {
-      case 0:
+      case EstatusEnum.INACTIVO:
         return 'BAJA';
-      case 1:
+      case EstatusEnum.ACTIVO:
         return 'ACTIVO';
-      case 2:
+      case EstatusEnum.BODEGA:
         return 'BODEGA';
       default:
         return 'N/A';

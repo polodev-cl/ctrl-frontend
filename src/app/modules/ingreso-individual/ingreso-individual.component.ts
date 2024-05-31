@@ -1,16 +1,7 @@
 import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  MatAutocomplete,
-  MatAutocompleteTrigger,
-} from '@angular/material/autocomplete';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteTrigger, } from '@angular/material/autocomplete';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
@@ -25,14 +16,7 @@ import { EquipmentService } from '../../common/equipment/services/equipment.serv
 import { RutFormatterDirective } from '../../core/directives/rut-formatter.directive';
 import { RutPipe } from '../../core/pipes/rut.pipe';
 import { Company, CompanyService } from '../../services/company.service';
-import {
-  cleanEmptyFields,
-  cleanIfNotValid,
-  filterByValue,
-  formatMAC,
-  IPV4_PATTERN,
-  MAC_PATTERN,
-} from '../../utils/utils';
+import { cleanEmptyFields, cleanIfNotValid, filterByValue, formatMAC, IPV4_PATTERN, MAC_PATTERN, } from '../../utils/utils';
 import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
 import { ModalResumenIngresoIndividualComponent } from '../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
@@ -134,8 +118,8 @@ export class IngresoIndividualComponent implements OnInit {
 
   ngOnInit() {
     const userId = this.userService.getUserId();
-    const firstName =  this.userService.getUserFirstName();
-    const lastName =  this.userService.getUserLastName();
+    const firstName = this.userService.getUserFirstName();
+    const lastName = this.userService.getUserLastName();
     this.firstName = firstName;
     this.lastName = lastName;
 
@@ -265,7 +249,7 @@ export class IngresoIndividualComponent implements OnInit {
       this.ingresoIndividualForm.get('inventario')?.enable();
 
 
-    }  else if (this.isEquipmentWithAnexoOrPrintServer(value)) {
+    } else if (this.isEquipmentWithAnexoOrPrintServer(value)) {
       this.ingresoIndividualForm.patchValue({
         sistemaOperativo: undefined,
         sistemaOperativoVersion: undefined,

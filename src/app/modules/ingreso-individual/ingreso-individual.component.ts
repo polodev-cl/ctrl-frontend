@@ -509,7 +509,7 @@ export class IngresoIndividualComponent implements OnInit {
       encargadoAgencia: [undefined, [Validators.required]],
       ubicacion: [undefined, [Validators.required]],
       fechaCompra: [undefined, [Validators.required]],
-      garantiaMeses: [undefined, [Validators.required, Validators.min(1)]],
+      garantiaMeses: [undefined, [Validators.required, Validators.min(0)]],
       estado: [1],
     });
   }

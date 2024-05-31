@@ -75,6 +75,7 @@ export class EditarEquipamientoComponent implements OnInit {
     { value: 'Pistola', label: 'Pistola' },
     { value: 'Print Server', label: 'Print Server' },
     { value: 'TBK', label: 'TBK' },
+    { value: 'Pasaje Matico', label: 'Pasaje Matico' },
   ];
   selectorCompany: Observable<Partial<Company>[]> = of([]);
   selectorCompanyFiltered: Observable<Partial<Company>[]> = of([]);
@@ -114,14 +115,35 @@ export class EditarEquipamientoComponent implements OnInit {
 
   isEquipmentWithNoOptions(type: string): boolean {
     return [
-      'Impresora',
-      'Anexos',
       'Escaner',
       'LBM',
       'Monitor',
       'Pistola',
+    ].includes(type);
+  }
+
+  isEquipmentWithAnexoOrPrintServer(type: string): boolean {
+    return [
+      'Anexos',
       'Print Server',
+    ].includes(type);
+  }
+
+  isEquipmentWithPrinter(type: string): boolean {
+    return [
+      'Impresora',
+    ].includes(type);
+  }
+
+  isEquipmentWithTBK(type: string): boolean {
+    return [
       'TBK',
+    ].includes(type);
+  }
+
+  isEquipmentWithPasajeMatico(type: string): boolean {
+    return [
+      'Pasaje Matico',
     ].includes(type);
   }
 
@@ -131,41 +153,155 @@ export class EditarEquipamientoComponent implements OnInit {
         // sistemaOperativo: { value: undefined, disabled: true },
         sistemaOperativo: undefined,
         sistemaOperativoVersion: undefined,
+        mac: undefined,
+        nombre: undefined,
         procesador: undefined,
         ramGb: undefined,
         disco: undefined,
+        ip: undefined,
+        ddllTbk: undefined,
+        inventario: undefined,
+
       });
 
       this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
       this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
+      this.ingresoIndividualForm.get('mac')?.disable();
+      this.ingresoIndividualForm.get('nombre')?.disable();
       this.ingresoIndividualForm.get('procesador')?.disable();
       this.ingresoIndividualForm.get('ramGb')?.disable();
       this.ingresoIndividualForm.get('disco')?.disable();
+      this.ingresoIndividualForm.get('ip')?.disable();
       this.ingresoIndividualForm.get('ddllTbk')?.disable();
+      this.ingresoIndividualForm.get('inventario')?.enable();
 
-      if (value === 'TBK') {
-        this.ingresoIndividualForm.patchValue({
-          ddllTbk: undefined,
-        });
-        this.ingresoIndividualForm.get('ddllTbk')?.enable();
-      }
-    } else {
+
+    }  else if (this.isEquipmentWithAnexoOrPrintServer(value)) {
+      this.ingresoIndividualForm.patchValue({
+        sistemaOperativo: undefined,
+        sistemaOperativoVersion: undefined,
+        mac: undefined,
+        nombre: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined,
+        ip: undefined,
+        ddllTbk: undefined,
+        inventario: undefined,
+      });
+
+      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
+      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
+      this.ingresoIndividualForm.get('mac')?.enable();
+      this.ingresoIndividualForm.get('nombre')?.disable();
+      this.ingresoIndividualForm.get('procesador')?.disable();
+      this.ingresoIndividualForm.get('ramGb')?.disable();
+      this.ingresoIndividualForm.get('disco')?.disable();
+      this.ingresoIndividualForm.get('ip')?.enable();
+      this.ingresoIndividualForm.get('ddllTbk')?.disable();
+      this.ingresoIndividualForm.get('inventario')?.enable();
+    }
+    else if (this.isEquipmentWithPrinter(value)) {
+      this.ingresoIndividualForm.patchValue({
+        sistemaOperativo: undefined,
+        sistemaOperativoVersion: undefined,
+        mac: undefined,
+        nombre: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined,
+        ip: undefined,
+        ddllTbk: undefined,
+        inventario: undefined,
+      });
+
+      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
+      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
+      this.ingresoIndividualForm.get('mac')?.disable();
+      this.ingresoIndividualForm.get('nombre')?.disable();
+      this.ingresoIndividualForm.get('procesador')?.disable();
+      this.ingresoIndividualForm.get('ramGb')?.disable();
+      this.ingresoIndividualForm.get('disco')?.disable();
+      this.ingresoIndividualForm.get('ip')?.disable();
+      this.ingresoIndividualForm.get('ddllTbk')?.enable();
+      this.ingresoIndividualForm.get('inventario')?.disable();
+    }
+    else if (this.isEquipmentWithTBK(value)) {
+      this.ingresoIndividualForm.patchValue({
+        sistemaOperativo: undefined,
+        sistemaOperativoVersion: undefined,
+        mac: undefined,
+        nombre: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined,
+        ip: undefined,
+        ddllTbk: undefined,
+        inventario: undefined,
+      });
+
+      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
+      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
+      this.ingresoIndividualForm.get('mac')?.disable();
+      this.ingresoIndividualForm.get('nombre')?.disable();
+      this.ingresoIndividualForm.get('procesador')?.disable();
+      this.ingresoIndividualForm.get('ramGb')?.disable();
+      this.ingresoIndividualForm.get('disco')?.disable();
+      this.ingresoIndividualForm.get('ip')?.disable();
+      this.ingresoIndividualForm.get('ddllTbk')?.enable();
+      this.ingresoIndividualForm.get('inventario')?.disable();
+    }
+    else if (this.isEquipmentWithPasajeMatico(value)) {
+      this.ingresoIndividualForm.patchValue({
+        sistemaOperativo: undefined,
+        sistemaOperativoVersion: undefined,
+        mac: undefined,
+        nombre: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined,
+        ip: undefined,
+        ddllTbk: undefined,
+        inventario: undefined,
+      });
+
+      this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
+      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.enable();
+      this.ingresoIndividualForm.get('mac')?.enable();
+      this.ingresoIndividualForm.get('nombre')?.enable();
+      this.ingresoIndividualForm.get('procesador')?.enable();
+      this.ingresoIndividualForm.get('ramGb')?.enable();
+      this.ingresoIndividualForm.get('disco')?.enable();
+      this.ingresoIndividualForm.get('ip')?.enable();
+      this.ingresoIndividualForm.get('ddllTbk')?.disable();
+      this.ingresoIndividualForm.get('inventario')?.disable();
+    }
+    else {
       this.loadSOData().then(() => {
         this.ingresoIndividualForm.patchValue({
           // sistemaOperativo: { value: undefined, disabled: true },
           sistemaOperativo: undefined,
           sistemaOperativoVersion: undefined,
+          mac: undefined,
+          nombre: undefined,
           procesador: undefined,
           ramGb: undefined,
           disco: undefined,
+          ip: undefined,
+          ddllTbk: undefined,
+
         });
 
         this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
         this.ingresoIndividualForm.get('sistemaOperativoVersion')?.enable();
+        this.ingresoIndividualForm.get('mac')?.enable();
+        this.ingresoIndividualForm.get('nombre')?.enable();
         this.ingresoIndividualForm.get('procesador')?.enable();
         this.ingresoIndividualForm.get('ramGb')?.enable();
         this.ingresoIndividualForm.get('disco')?.enable();
+        this.ingresoIndividualForm.get('ip')?.enable();
         this.ingresoIndividualForm.get('ddllTbk')?.disable();
+        this.ingresoIndividualForm.get('inventario')?.enable();
       });
     }
   }
@@ -276,29 +412,29 @@ export class EditarEquipamientoComponent implements OnInit {
 
 
   onSubmit() {
-    this.loading = true;  
+    this.loading = true;
     if (this.ingresoIndividualForm.valid) {
       const equipmentData = this.ingresoIndividualForm.value;
-      const equipmentId = this.route.snapshot.params['id']; 
-  
+      const equipmentId = this.route.snapshot.params['id'];
+
       this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
         (response) => {
           this.abrirModalExito();
-          this.loading = false; 
+          this.loading = false;
         },
         (error) => {
           console.error('Error al actualizar el equipo', error);
           const errorMessage = error.error.message || 'Se produjo un error inesperado.';
           console.log('error: ', errorMessage);
           this.abrirModalAdvertencia(errorMessage);
-          this.loading = false; 
+          this.loading = false;
         }
       );
     } else {
-      this.loading = false; 
+      this.loading = false;
     }
   }
-  
+
 
   goBack() {
     this.location.back();
@@ -330,7 +466,7 @@ export class EditarEquipamientoComponent implements OnInit {
       encargadoAgencia: [ equipment.encargadoAgencia || undefined, [ Validators.required ] ],
       ubicacion: [ equipment.ubicacion || undefined, [ Validators.required ] ],
       fechaCompra: [{ value: equipment.fechaCompra ? new Date(equipment.fechaCompra) : undefined, disabled: true }],
-      garantiaMeses: [ equipment ? equipment.garantiaMeses : undefined, [ Validators.required, Validators.min(1) ] ],
+      garantiaMeses: [ equipment ? equipment.garantiaMeses : undefined, [ Validators.required, Validators.min(0) ] ],
       estado: [ equipment.estado || 1 ], // Asegúrate de manejar el default adecuadamente
     });
   }

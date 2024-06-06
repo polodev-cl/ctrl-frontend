@@ -324,35 +324,9 @@ export class IngresoIndividualComponent implements OnInit {
       this.ingresoIndividualForm.get('ddllTbk')?.enable();
       this.ingresoIndividualForm.get('inventario')?.disable();
     }
-    else if (this.isEquipmentWithPasajeMatico(value)) {
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.enable();
-      this.ingresoIndividualForm.get('mac')?.enable();
-      this.ingresoIndividualForm.get('nombre')?.enable();
-      this.ingresoIndividualForm.get('procesador')?.enable();
-      this.ingresoIndividualForm.get('ramGb')?.enable();
-      this.ingresoIndividualForm.get('disco')?.enable();
-      this.ingresoIndividualForm.get('ip')?.enable();
-      this.ingresoIndividualForm.get('ddllTbk')?.disable();
-      this.ingresoIndividualForm.get('inventario')?.disable();
-    }
     else {
       this.loadSOData().then(() => {
         this.ingresoIndividualForm.patchValue({
-          // sistemaOperativo: { value: undefined, disabled: true },
           sistemaOperativo: undefined,
           sistemaOperativoVersion: undefined,
           mac: undefined,
@@ -362,7 +336,7 @@ export class IngresoIndividualComponent implements OnInit {
           disco: undefined,
           ip: undefined,
           ddllTbk: undefined,
-
+          inventario: undefined,
         });
 
         this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
@@ -374,7 +348,7 @@ export class IngresoIndividualComponent implements OnInit {
         this.ingresoIndividualForm.get('disco')?.enable();
         this.ingresoIndividualForm.get('ip')?.enable();
         this.ingresoIndividualForm.get('ddllTbk')?.disable();
-        this.ingresoIndividualForm.get('inventario')?.enable();
+        this.ingresoIndividualForm.get('inventario')?.disable();
       });
     }
   }

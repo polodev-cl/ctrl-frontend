@@ -79,7 +79,17 @@ export class SoService {
     },
     {
       type: 'Pasaje Matico',
-      soOptions: []
+      soOptions: [
+        { so: 'Windows 10' },
+        { so: 'Windows 10 Pro' },
+        { so: 'Windows 11' },
+        { so: 'Fedora 24' },
+        { so: 'Fedora 14' },
+        { so: 'Windows 8.1' },
+        { so: 'Windows 7' },
+        { so: 'Windows Server 2019' },
+        { so: 'macOS 14.0' }
+      ]
     },
   ];
 

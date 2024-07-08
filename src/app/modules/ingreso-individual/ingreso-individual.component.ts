@@ -1,29 +1,47 @@
 import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteTrigger, } from '@angular/material/autocomplete';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
+import { UserService } from '@app/common/user/services/user.service';
 import { CalendarModule } from 'primeng/calendar';
 import { DividerModule } from 'primeng/divider';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { EquipmentService } from '../../common/equipment/services/equipment.service';
 import { RutFormatterDirective } from '../../core/directives/rut-formatter.directive';
 import { RutPipe } from '../../core/pipes/rut.pipe';
 import { Company, CompanyService } from '../../services/company.service';
-import { cleanEmptyFields, cleanIfNotValid, filterByValue, formatMAC, IPV4_PATTERN, MAC_PATTERN, } from '../../utils/utils';
+import {
+  cleanEmptyFields,
+  cleanIfNotValid,
+  filterByValue,
+  formatMAC,
+  IPV4_PATTERN,
+  MAC_PATTERN,
+} from '../../utils/utils';
+import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
 import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
 import { ModalResumenIngresoIndividualComponent } from '../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { Agency, AgencyService } from './agency.service';
 import { SoService, SOVersion } from './so.service';
-import { ModalAdvertenciaComponent } from '../Custom/modal-advertencia/modal-advertencia.component';
-import { UserService } from '@app/common/user/services/user.service';
 
 interface Option {
   value: string | number;
@@ -123,7 +141,6 @@ export class IngresoIndividualComponent implements OnInit {
     this.firstName = firstName;
     this.lastName = lastName;
 
-
     this.selectorAgencyFiltered = this.selectorAgency;
   }
 
@@ -164,37 +181,23 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   isEquipmentWithNoOptions(type: string): boolean {
-    return [
-      'Escaner',
-      'LBM',
-      'Monitor',
-      'Pistola',
-    ].includes(type);
+    return ['Escaner', 'LBM', 'Monitor', 'Pistola'].includes(type);
   }
 
   isEquipmentWithAnexoOrPrintServer(type: string): boolean {
-    return [
-      'Anexos',
-      'Print Server',
-    ].includes(type);
+    return ['Anexos', 'Print Server'].includes(type);
   }
 
   isEquipmentWithPrinter(type: string): boolean {
-    return [
-      'Impresora',
-    ].includes(type);
+    return ['Impresora'].includes(type);
   }
 
   isEquipmentWithTBK(type: string): boolean {
-    return [
-      'TBK',
-    ].includes(type);
+    return ['TBK'].includes(type);
   }
 
   isEquipmentWithPasajeMatico(type: string): boolean {
-    return [
-      'Pasaje Matico',
-    ].includes(type);
+    return ['Pasaje Matico'].includes(type);
   }
 
   onEmpresaChange(value: any): void {
@@ -203,7 +206,6 @@ export class IngresoIndividualComponent implements OnInit {
       agenciaDpc: undefined,
       agenciaMnemonic: undefined,
     });
-
 
     if (value)
       lastValueFrom(this.agencyService.getAgenciesByCompanyId(+value))
@@ -221,134 +223,53 @@ export class IngresoIndividualComponent implements OnInit {
   }
 
   onTypeChange(value: string): void {
+    this.ingresoIndividualForm.patchValue({
+      sistemaOperativo: undefined,
+      sistemaOperativoVersion: undefined,
+      mac: undefined,
+      nombre: undefined,
+      procesador: undefined,
+      ramGb: undefined,
+      disco: undefined,
+      ip: undefined,
+      ddllTbk: undefined,
+      inventario: undefined,
+    });
+
+    this.disableControl('nombre', true);
+    this.disableControl('sistemaOperativo', true);
+    this.disableControl('mac', true);
+    this.disableControl('procesador', true);
+    this.disableControl('ramGb', true);
+    this.disableControl('disco', true);
+    this.disableControl('ip', true);
+    this.disableControl('ddllTbk', true);
+    this.disableControl('inventario', false);
+
     if (this.isEquipmentWithNoOptions(value)) {
-      this.ingresoIndividualForm.patchValue({
-        // sistemaOperativo: { value: undefined, disabled: true },
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.disable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.disable();
-      this.ingresoIndividualForm.get('ddllTbk')?.disable();
       this.ingresoIndividualForm.get('inventario')?.enable();
-
-
+    } else if (this.isEquipmentWithTBK(value)) {
+      this.enableControl('ddllTbk', [Validators.required]);
+    } else if (this.isEquipmentWithPrinter(value)) {
+      this.enableControl('mac');
+      this.enableControl('ip');
+      this.enableControl('inventario');
     } else if (this.isEquipmentWithAnexoOrPrintServer(value)) {
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.enable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.enable();
-      this.ingresoIndividualForm.get('ddllTbk')?.disable();
-      this.ingresoIndividualForm.get('inventario')?.enable();
-    }
-    else if (this.isEquipmentWithPrinter(value)) {
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.disable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.disable();
-      this.ingresoIndividualForm.get('ddllTbk')?.enable();
-      this.ingresoIndividualForm.get('inventario')?.disable();
-    }
-    else if (this.isEquipmentWithTBK(value)) {
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.disable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.disable();
-      this.ingresoIndividualForm.get('ddllTbk')?.enable();
-      this.ingresoIndividualForm.get('inventario')?.disable();
-    }
-    else {
+      this.enableControl('mac', [Validators.required]);
+      this.enableControl('ip', [Validators.required]);
+      this.enableControl('inventario');
+    } else {
       this.loadSOData().then(() => {
-        this.ingresoIndividualForm.patchValue({
-          sistemaOperativo: undefined,
-          sistemaOperativoVersion: undefined,
-          mac: undefined,
-          nombre: undefined,
-          procesador: undefined,
-          ramGb: undefined,
-          disco: undefined,
-          ip: undefined,
-          ddllTbk: undefined,
-          inventario: undefined,
-        });
+        this.enableControl('nombre', [Validators.required]);
+        this.enableControl('sistemaOperativo', [Validators.required]);
+        this.enableControl('mac', [Validators.required]);
+        this.enableControl('procesador', [Validators.required]);
+        this.enableControl('ramGb', [Validators.required, Validators.min(1)]);
+        this.enableControl('disco', [Validators.required]);
+        this.enableControl('ip', [Validators.required]);
 
-        this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
-        this.ingresoIndividualForm.get('sistemaOperativoVersion')?.enable();
-        this.ingresoIndividualForm.get('mac')?.enable();
-        this.ingresoIndividualForm.get('nombre')?.enable();
-        this.ingresoIndividualForm.get('procesador')?.enable();
-        this.ingresoIndividualForm.get('ramGb')?.enable();
-        this.ingresoIndividualForm.get('disco')?.enable();
-        this.ingresoIndividualForm.get('ip')?.enable();
-        this.ingresoIndividualForm.get('ddllTbk')?.disable();
-        this.ingresoIndividualForm.get('inventario')?.disable();
+        if (value !== 'Pasaje Matico')
+          this.enableControl('inventario');
       });
     }
   }
@@ -375,6 +296,24 @@ export class IngresoIndividualComponent implements OnInit {
       this.ingresoIndividualForm.patchValue({ ip: value.substring(0, 39) });
   }
 
+  disableControl(controlName: string, removeValidators: boolean): void {
+    this.ingresoIndividualForm.get(controlName)?.disable();
+
+    if (removeValidators)
+      this.ingresoIndividualForm.get(controlName)?.clearValidators();
+
+    this.ingresoIndividualForm.get(controlName)?.updateValueAndValidity();
+  }
+
+  enableControl(controlName: string, validators?: ValidatorFn[]): void {
+    this.ingresoIndividualForm.get(controlName)?.enable();
+
+    if (validators)
+      this.ingresoIndividualForm.get(controlName)?.setValidators(validators);
+
+    this.ingresoIndividualForm.get(controlName)?.updateValueAndValidity();
+  }
+
   onMacInput() {
     const value = this.ingresoIndividualForm.get('mac')?.value;
     return value ? formatMAC(value) : value;
@@ -391,8 +330,7 @@ export class IngresoIndividualComponent implements OnInit {
     this.datosParaModal = {
       ...this.ingresoIndividualForm.getRawValue(),
       nombreUsuario: this.firstName,
-      apellidoUsuario: this.lastName
-
+      apellidoUsuario: this.lastName,
     };
     this.mostrarModalResumenIngresoIndividual = true;
   }

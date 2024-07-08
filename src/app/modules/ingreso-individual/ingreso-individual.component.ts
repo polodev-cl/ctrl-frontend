@@ -354,7 +354,13 @@ export class IngresoIndividualComponent implements OnInit {
 
   onSubmit() {
     if (this.ingresoIndividualForm.valid) {
+      this.ingresoIndividualForm.disable();
       const values = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
+
+      if(!values.nombre || values.nombre === ''){
+        values.nombre = 'N/A'
+      }
+
       const formData = {
         ...values,
         usuarioIdCreacion: this.userService.getUserId(),
@@ -366,6 +372,7 @@ export class IngresoIndividualComponent implements OnInit {
           this.abrirModalResumenIngresoIndividual();
         },
         (error) => {
+          this.ingresoIndividualForm.enable();
           console.error('Error al crear el equipo', error);
           const errorMessage =
             error.error.message || 'Se produjo un error inesperado.';

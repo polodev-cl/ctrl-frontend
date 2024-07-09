@@ -181,10 +181,10 @@
             (focus)="filter('sistemaOperativo', $event.target)"
             (input)="filter('sistemaOperativo', $event.target)"
             [matAutocomplete]="autoSO"
-            aria-label="Agencias"
+            aria-label="sistemaOperativo"
             formControlName="sistemaOperativo"
             matInput
-            placeholder="Selecciona una agencia"
+            placeholder="Selecciona un sistema operativo"
           />
           <mat-autocomplete #autoSO="matAutocomplete" requireSelection="true">
             @for (so of selectorSistemasOperativosFiltered; track so.so) {

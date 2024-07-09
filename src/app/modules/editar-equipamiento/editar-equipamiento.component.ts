@@ -1,7 +1,17 @@
 import { AsyncPipe, Location, NgClass, NgForOf, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteTrigger, } from '@angular/material/autocomplete';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
@@ -16,7 +26,13 @@ import { EquipmentService } from '@common/equipment/services/equipment.service';
 import { RutFormatterDirective } from '@core/directives/rut-formatter.directive';
 import { RutPipe } from '@core/pipes/rut.pipe';
 import { Company, CompanyService } from '@app/services/company.service';
-import { cleanIfNotValid, filterByValue, formatMAC, IPV4_PATTERN, MAC_PATTERN, } from '@app/utils/utils';
+import {
+  cleanIfNotValid,
+  filterByValue,
+  formatMAC,
+  IPV4_PATTERN,
+  MAC_PATTERN,
+} from '@app/utils/utils';
 import { ModalExitosoComponent } from '../Custom/modal-exitoso/modal-exitoso.component';
 import { ModalResumenIngresoIndividualComponent } from '../Custom/modal-resumen-ingreso-individual/modal-resumen-ingreso-individual.component';
 import { NavbarComponent } from '@shared/navbar/navbar.component';
@@ -58,10 +74,9 @@ interface Option {
     MatAutocompleteTrigger,
     MatInput,
     ModalAdvertenciaComponent,
-    AsyncPipe
+    AsyncPipe,
   ],
 })
-
 export class EditarEquipamientoComponent implements OnInit {
   selectedType: string = '';
   equipmentTypes: Option[] = [
@@ -114,171 +129,109 @@ export class EditarEquipamientoComponent implements OnInit {
   }
 
   isEquipmentWithNoOptions(type: string): boolean {
-    return [
-      'Escaner',
-      'LBM',
-      'Monitor',
-      'Pistola',
-    ].includes(type);
+    return ['Escaner', 'LBM', 'Monitor', 'Pistola'].includes(type);
   }
 
   isEquipmentWithAnexoOrPrintServer(type: string): boolean {
-    return [
-      'Anexos',
-      'Print Server',
-    ].includes(type);
+    return ['Anexos', 'Print Server'].includes(type);
   }
 
   isEquipmentWithPrinter(type: string): boolean {
-    return [
-      'Impresora',
-    ].includes(type);
+    return ['Impresora'].includes(type);
   }
 
   isEquipmentWithTBK(type: string): boolean {
-    return [
-      'TBK',
-    ].includes(type);
+    return ['TBK'].includes(type);
   }
 
   isEquipmentWithPasajeMatico(type: string): boolean {
-    return [
-      'Pasaje Matico',
-    ].includes(type);
+    return ['Pasaje Matico'].includes(type);
   }
 
   onTypeChange(value: string): void {
+    this.ingresoIndividualForm.patchValue({
+      sistemaOperativo: undefined,
+      sistemaOperativoVersion: undefined,
+      mac: undefined,
+      nombre: undefined,
+      procesador: undefined,
+      ramGb: undefined,
+      disco: undefined,
+      ip: undefined,
+      ddllTbk: undefined,
+      inventario: undefined,
+    });
+
+    this.disableControl('nombre', true);
+    this.disableControl('sistemaOperativo', true);
+    this.disableControl('mac', true);
+    this.disableControl('procesador', true);
+    this.disableControl('ramGb', true);
+    this.disableControl('disco', true);
+    this.disableControl('ip', true);
+    this.disableControl('ddllTbk', true);
+    this.disableControl('inventario', false);
+
     if (this.isEquipmentWithNoOptions(value)) {
-      this.ingresoIndividualForm.patchValue({
-        // sistemaOperativo: { value: undefined, disabled: true },
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.disable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.disable();
-      this.ingresoIndividualForm.get('ddllTbk')?.disable();
       this.ingresoIndividualForm.get('inventario')?.enable();
-
-
+    } else if (this.isEquipmentWithTBK(value)) {
+      this.enableControl('ddllTbk', [Validators.required]);
+    } else if (this.isEquipmentWithPrinter(value)) {
+      this.enableControl('mac');
+      this.enableControl('ip');
+      this.enableControl('inventario');
     } else if (this.isEquipmentWithAnexoOrPrintServer(value)) {
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.enable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.enable();
-      this.ingresoIndividualForm.get('ddllTbk')?.disable();
-      this.ingresoIndividualForm.get('inventario')?.enable();
-    }
-    else if (this.isEquipmentWithPrinter(value)) {
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.disable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.disable();
-      this.ingresoIndividualForm.get('ddllTbk')?.enable();
-      this.ingresoIndividualForm.get('inventario')?.disable();
-    }
-    else if (this.isEquipmentWithTBK(value)) {
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativo: undefined,
-        sistemaOperativoVersion: undefined,
-        mac: undefined,
-        nombre: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-        ip: undefined,
-        ddllTbk: undefined,
-        inventario: undefined,
-      });
-
-      this.ingresoIndividualForm.get('sistemaOperativo')?.disable();
-      this.ingresoIndividualForm.get('sistemaOperativoVersion')?.disable();
-      this.ingresoIndividualForm.get('mac')?.disable();
-      this.ingresoIndividualForm.get('nombre')?.disable();
-      this.ingresoIndividualForm.get('procesador')?.disable();
-      this.ingresoIndividualForm.get('ramGb')?.disable();
-      this.ingresoIndividualForm.get('disco')?.disable();
-      this.ingresoIndividualForm.get('ip')?.disable();
-      this.ingresoIndividualForm.get('ddllTbk')?.enable();
-      this.ingresoIndividualForm.get('inventario')?.disable();
-    }
-
-    else {
+      this.enableControl('mac', [Validators.required]);
+      this.enableControl('ip', [Validators.required]);
+      this.enableControl('inventario');
+    } else {
       this.loadSOData().then(() => {
-        this.ingresoIndividualForm.patchValue({
-          sistemaOperativo: undefined,
-          sistemaOperativoVersion: undefined,
-          mac: undefined,
-          nombre: undefined,
-          procesador: undefined,
-          ramGb: undefined,
-          disco: undefined,
-          ip: undefined,
-          ddllTbk: undefined,
-          inventario: undefined,
-        });
+        this.enableControl('nombre', [Validators.required]);
+        this.enableControl('sistemaOperativo', [Validators.required]);
+        this.enableControl('mac', [Validators.required]);
+        this.enableControl('procesador', [Validators.required]);
+        this.enableControl('ramGb', [Validators.required, Validators.min(1)]);
+        this.enableControl('disco', [Validators.required]);
+        this.enableControl('ip', [Validators.required]);
 
-        this.ingresoIndividualForm.get('sistemaOperativo')?.enable();
-        this.ingresoIndividualForm.get('sistemaOperativoVersion')?.enable();
-        this.ingresoIndividualForm.get('mac')?.enable();
-        this.ingresoIndividualForm.get('nombre')?.enable();
-        this.ingresoIndividualForm.get('procesador')?.enable();
-        this.ingresoIndividualForm.get('ramGb')?.enable();
-        this.ingresoIndividualForm.get('disco')?.enable();
-        this.ingresoIndividualForm.get('ip')?.enable();
-        this.ingresoIndividualForm.get('ddllTbk')?.disable();
-        this.ingresoIndividualForm.get('inventario')?.disable();
+        if (value !== 'Pasaje Matico') this.enableControl('inventario');
       });
     }
+  }
+
+  loadSOData = () =>
+    lastValueFrom(
+      this.soService.getSODataByType(
+        this.ingresoIndividualForm.get('tipo')?.value
+      )
+    ).then((soOptions) => {
+      this.selectorSistemasOperativos = soOptions;
+      this.selectorSistemasOperativosFiltered = soOptions;
+      this.ingresoIndividualForm.patchValue({
+        sistemaOperativoVersion: undefined,
+        procesador: undefined,
+        ramGb: undefined,
+        disco: undefined,
+      });
+    });
+
+
+    disableControl(controlName: string, removeValidators: boolean): void {
+      this.ingresoIndividualForm.get(controlName)?.disable();
+
+    if (removeValidators)
+      this.ingresoIndividualForm.get(controlName)?.clearValidators();
+
+    this.ingresoIndividualForm.get(controlName)?.updateValueAndValidity();
+  }
+
+  enableControl(controlName: string, validators?: ValidatorFn[]): void {
+    this.ingresoIndividualForm.get(controlName)?.enable();
+
+    if (validators)
+      this.ingresoIndividualForm.get(controlName)?.setValidators(validators);
+
+    this.ingresoIndividualForm.get(controlName)?.updateValueAndValidity();
   }
 
   onMacBlur(): void {
@@ -294,7 +247,6 @@ export class EditarEquipamientoComponent implements OnInit {
     if (value && value.length > 39)
       this.ingresoIndividualForm.patchValue({ ip: value.substring(0, 39) });
   }
-
 
   abrirModalExito(): void {
     this.tituloModalExito = 'Editar Equipamiento';
@@ -317,21 +269,6 @@ export class EditarEquipamientoComponent implements OnInit {
     this.mostrarModalAdvertencia = true;
   }
 
-  loadSOData = () =>
-    lastValueFrom(
-      this.soService.getSODataByType(
-        this.ingresoIndividualForm.get('tipo')?.value
-      )
-    ).then((soOptions) => {
-      this.selectorSistemasOperativos = soOptions;
-      this.selectorSistemasOperativosFiltered = soOptions;
-      this.ingresoIndividualForm.patchValue({
-        sistemaOperativoVersion: undefined,
-        procesador: undefined,
-        ramGb: undefined,
-        disco: undefined,
-      });
-    });
 
   filter(field: 'agency' | 'company' | 'sistemaOperativo', target: any) {
     switch (field) {
@@ -385,64 +322,122 @@ export class EditarEquipamientoComponent implements OnInit {
     });
   }
 
-
   onSubmit() {
     this.loading = true;
     if (this.ingresoIndividualForm.valid) {
       const equipmentData = this.ingresoIndividualForm.value;
       const equipmentId = this.route.snapshot.params['id'];
 
-      this.equipmentService.updateEquipment(equipmentId, equipmentData).subscribe(
-        (response) => {
-          this.abrirModalExito();
-          this.loading = false;
-        },
-        (error) => {
-          console.error('Error al actualizar el equipo', error);
-          const errorMessage = error.error.message || 'Se produjo un error inesperado.';
-          console.log('error: ', errorMessage);
-          this.abrirModalAdvertencia(errorMessage);
-          this.loading = false;
-        }
-      );
+      if(!equipmentData.nombre || equipmentData.nombre === '') {
+        equipmentData.nombre = 'N/A'
+      }
+
+      this.equipmentService
+        .updateEquipment(equipmentId, equipmentData)
+        .subscribe(
+          (response) => {
+            this.abrirModalExito();
+            this.loading = false;
+          },
+          (error) => {
+            console.error('Error al actualizar el equipo', error);
+            const errorMessage =
+              error.error.message || 'Se produjo un error inesperado.';
+            console.log('error: ', errorMessage);
+            this.abrirModalAdvertencia(errorMessage);
+            this.loading = false;
+          }
+        );
     } else {
       this.loading = false;
     }
   }
 
-
   goBack() {
     this.location.back();
   }
 
-  private _loadForm(equipment: any) { // Puedes reemplazar 'any' con 'Iequipment' si tienes definida esa interfaz
+  private _loadForm(equipment: any) {
     return this.fb.group({
-      fechaIngreso: [{ value: equipment.fechaIngreso ? new Date(equipment.fechaIngreso) : undefined, disabled: true }],
+      fechaIngreso: [
+        {
+          value: equipment.fechaIngreso
+            ? new Date(equipment.fechaIngreso)
+            : undefined,
+          disabled: true,
+        },
+      ],
       ordenCompra: [equipment.ordenCompra || undefined, [Validators.required]],
       rut: [equipment.rut || undefined],
-      empresa: [{ value: equipment ? equipment.agencia?.empresa?.id : undefined, disabled: equipment }],
-      agenciaId: [{ value: equipment ? equipment.agencia : undefined, disabled: equipment }],
-      agenciaMnemonic: [{ value: equipment ? equipment.agenciaMnemonic : undefined, disabled: true }],
-      agenciaDpc: [{ value: equipment ? equipment.agenciaDpc : undefined, disabled: true }],
-      inventario: [{ value: equipment.inventario || undefined, disabled: equipment.inventario }, [Validators.min(0)]],
+      empresa: [
+        {
+          value: equipment ? equipment.agencia?.empresa?.id : undefined,
+          disabled: equipment,
+        },
+      ],
+      agenciaId: [
+        {
+          value: equipment ? equipment.agencia : undefined,
+          disabled: equipment,
+        },
+      ],
+      agenciaMnemonic: [
+        {
+          value: equipment ? equipment.agenciaMnemonic : undefined,
+          disabled: true,
+        },
+      ],
+      agenciaDpc: [
+        { value: equipment ? equipment.agenciaDpc : undefined, disabled: true },
+      ],
+      inventario: [
+        {
+          value: equipment.inventario || undefined,
+          disabled: equipment.inventario,
+        },
+        [Validators.min(0)],
+      ],
       tipo: [equipment ? equipment.tipo : undefined, [Validators.required]],
       sistemaOperativo: [equipment.sistemaOperativo || undefined],
       uso: [equipment.uso || undefined, [Validators.required]],
       marca: [equipment.marca || undefined, [Validators.required]],
       modelo: [equipment.modelo || undefined, [Validators.required]],
-      mac: [{ value: equipment.mac || undefined, disabled: equipment.mac }, [Validators.pattern(MAC_PATTERN)]],
+      mac: [
+        { value: equipment.mac || undefined, disabled: equipment.mac },
+        [Validators.pattern(MAC_PATTERN)],
+      ],
       ip: [equipment.ip || undefined, [Validators.pattern(IPV4_PATTERN)]],
       nombre: [equipment.nombre || undefined, [Validators.required]],
       procesador: [equipment.procesador || undefined],
       ramGb: [equipment.ramGb || undefined, [Validators.min(1)]],
       disco: [equipment.disco || undefined],
-      ddllTbk: [{ value: equipment.ddllTbk || undefined, disabled: equipment.tipo !== "TBK" }],
-      serie: [{ value: equipment.serie || undefined, disabled: equipment.serie }],
-      encargadoAgencia: [equipment.encargadoAgencia || undefined, [Validators.required]],
+      ddllTbk: [
+        {
+          value: equipment.ddllTbk || undefined,
+          disabled: equipment.tipo !== 'TBK',
+        },
+      ],
+      serie: [
+        { value: equipment.serie || undefined, disabled: equipment.serie },
+      ],
+      encargadoAgencia: [
+        equipment.encargadoAgencia || undefined,
+        [Validators.required],
+      ],
       ubicacion: [equipment.ubicacion || undefined, [Validators.required]],
-      fechaCompra: [{ value: equipment.fechaCompra ? new Date(equipment.fechaCompra) : undefined, disabled: true }],
-      garantiaMeses: [equipment ? equipment.garantiaMeses : undefined, [Validators.required, Validators.min(0)]],
-      estado: [equipment.estado || 1], // Asegúrate de manejar el default adecuadamente
+      fechaCompra: [
+        {
+          value: equipment.fechaCompra
+            ? new Date(equipment.fechaCompra)
+            : undefined,
+          disabled: true,
+        },
+      ],
+      garantiaMeses: [
+        equipment ? equipment.garantiaMeses : undefined,
+        [Validators.required, Validators.min(0)],
+      ],
+      estado: [equipment.estado || 1],
     });
   }
 }

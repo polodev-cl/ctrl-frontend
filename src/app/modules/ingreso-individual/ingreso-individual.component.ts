@@ -268,8 +268,7 @@ export class IngresoIndividualComponent implements OnInit {
         this.enableControl('disco', [Validators.required]);
         this.enableControl('ip', [Validators.required]);
 
-        if (value !== 'Pasaje Matico')
-          this.enableControl('inventario');
+        if (value !== 'Pasaje Matico') this.enableControl('inventario');
       });
     }
   }
@@ -357,8 +356,8 @@ export class IngresoIndividualComponent implements OnInit {
       this.ingresoIndividualForm.disable();
       const values = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
 
-      if(!values.nombre || values.nombre === ''){
-        values.nombre = 'N/A'
+      if (!values.nombre || values.nombre === '') {
+        values.nombre = 'N/A';
       }
 
       const formData = {

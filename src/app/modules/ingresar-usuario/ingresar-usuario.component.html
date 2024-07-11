@@ -75,7 +75,6 @@
               pInputText
               #rut
               type="text"
-              [value]="rut.value | rutPipe"
               formControlName="rut"
               [ngModel]="usuarioForm.get('rut')?.value | rutPipe"
               (ngModelChange)="usuarioForm.get('rut')?.setValue($event)"

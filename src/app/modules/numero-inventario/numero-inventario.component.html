@@ -1,7 +1,5 @@
 <app-navbar></app-navbar>
-<app-modal-historial-equipo [equipoId]="equipoActualId" (cerrar)="cerrarModalHistorialEquipo()"
-  *ngIf="mostrarModalHistorialEquipo">
-</app-modal-historial-equipo>
+<app-modal-historial-equipo [equipoId]="equipoActualId" (cerrar)="cerrarModalHistorialEquipo()" *ngIf="mostrarModalHistorialEquipo"></app-modal-historial-equipo>
 
 <div class="container-md">
   <div class="frame mt-3" id="frame_middletop">
@@ -11,7 +9,6 @@
           <img class="" height="16" src="../../../assets/image/logo-amarillo.jpg" />
           Consulta Individual
         </h2>
-
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li *ngFor="let crumb of breadcrumbs; let last = last" [class.active]="last" class="breadcrumb-item">
@@ -21,19 +18,11 @@
           </ol>
         </nav>
       </div>
-
-      <!-- <div class="col-md-6 col-sm-12">
-        <div class="profile-details text-md-end">
-          <p class="mb-0">Juan Perez</p>
-          <p class="mb-0">10.923.948-8</p>
-          <p class="mb-0">Empresa: Starken</p>
-        </div>
-      </div> -->
     </div>
 
     <div class="row mt-4 mb-3">
       <div *ngFor="let equipment of equipments; let i = index" class="col-md-6 mb-4">
-        <div class="card border rounded card-shadow-box-datas">
+        <div *ngIf="equipment.fechaCompra && equipment.garantiaMeses" class="card border rounded card-shadow-box-datas">
           <div class="card-body">
             <div class="row">
               <div class="col">
@@ -43,10 +32,13 @@
                 <span class="badge bg-secondary tiempo-garantia">
                   Tiempo de garantía:
                   {{
-                  calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses) > 1 ?
-                  (calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses) + ' Meses') :
-                  (calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses) === 1 ? '1 Mes' :
-                  'Se ha acabado la garantía')
+                    calcularMesesYDiasGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).meses > 1
+                      ? calcularMesesYDiasGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).meses + ' Meses'
+                      : (calcularMesesYDiasGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).meses === 1
+                        ? '1 Mes'
+                        : (calcularMesesYDiasGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).dias > 0
+                          ? 'Menos de ' + calcularMesesYDiasGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).dias + ' días'
+                          : 'Se ha acabado la garantía'))
                   }}
                 </span>
               </div>
@@ -61,16 +53,10 @@
               </div>
               <div class="col">
                 <p><strong>Número CI:</strong> {{ equipment.inventario || "N/A" }}</p>
-                <p><strong>Agencia:</strong> {{ equipment.agencia?.nombre || "Agencia Eliminada" }}</p>
+                <p><strong>Agencia:</strong> {{ equipment.agencia?.nombre || "Agencia eliminada" }}</p>
                 <p><strong>DPC:</strong> {{ equipment.agenciaDpc || "N/A" }}</p>
-                <p>
-                  <strong>Nemónico:</strong> {{ equipment.agenciaMnemonic || "N/A" }}
-                </p>
-                <p>
-                  <strong>Estado:</strong>
-                  {{ equipment.estado === 0 ? "Inactivo" : equipment.estado === 1 ? "Activo" : equipment.estado === 2 ?
-                  "En Bodega" : "N/A" }}
-                </p>
+                <p><strong>Nemónico:</strong> {{ equipment.agenciaMnemonic || "N/A" }}</p>
+                <p><strong>Estado:</strong> {{ equipment.estado === 0 ? "Inactivo" : equipment.estado === 1 ? "Activo" : equipment.estado === 2 ? "En Bodega" : "N/A" }}</p>
               </div>
               <div class="col">
                 <p><strong>Rut:</strong> {{ equipment.rut || "N/A" }}</p>
@@ -81,14 +67,11 @@
             </div>
             <div class="row mt-3 d-flex justify-content-between">
               <div class="col-12 col-md-5 mb-3 pe-md-0">
-                <button (click)="abrirModalHistorialEquipo(equipment.id)" class="historial-button p-2 w-100"
-                  label="Ver Historial" pButton type="button"></button>
+                <button (click)="abrirModalHistorialEquipo(equipment.id)" class="historial-button p-2 w-100" label="Ver Historial" pButton type="button"></button>
               </div>
               <div class="col-12 col-md-5  mb-3 ps-md-0 " *ngIf="rol === RoleEnum.ADMIN || rol === RoleEnum.INGRESO">
-                <button class="equipo-button p-2 w-100 rounded-5" label="Ver Equipo" pButton type="button"
-                  [routerLink]="['/editar-equipamiento', equipment.id]"></button>
+                <button class="equipo-button p-2 w-100 rounded-5" label="Ver Equipo" pButton type="button" [routerLink]="['/editar-equipamiento', equipment.id]"></button>
               </div>
-
             </div>
           </div>
         </div>

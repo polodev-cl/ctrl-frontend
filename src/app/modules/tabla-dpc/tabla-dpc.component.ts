@@ -11,7 +11,7 @@ import { UserService } from '@app/common/user/services/user.service';
 import { RoleEnum } from '@app/common/auth/enums/role.enum';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { addMonths, differenceInMonths, parseISO } from 'date-fns';
+import { addMonths, differenceInDays, differenceInMonths, parseISO } from 'date-fns';
 import { EstatusEnum } from '@app/common/auth/enums/estatus.enum';
 
 @Component({
@@ -84,17 +84,20 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  calcularMesesGarantiaRestantes(fechaCompra: string, garantiaMeses: number): number {
-    if (!fechaCompra || !garantiaMeses) {
-      return 0;
+  calcularMesesYDiasGarantiaRestantes(fechaCompra: string, garantiaMeses: number) {
+    if (!fechaCompra) {
+      return { meses: 0, dias: 0 };
     }
-
     const fechaCompraDate = parseISO(fechaCompra);
     const fechaFinGarantia = addMonths(fechaCompraDate, garantiaMeses);
     const fechaActual = new Date();
-    const mesesRestantes = differenceInMonths(fechaFinGarantia, fechaActual);
-
-    return mesesRestantes > 0 ? mesesRestantes : 0;
+    const diasRestantes = differenceInDays(fechaFinGarantia, fechaActual);
+    const mesesRestantes = Math.floor(diasRestantes / 30);
+    const diasRestantesExactos = diasRestantes % 30;
+    return {
+      meses: mesesRestantes > 0 ? mesesRestantes : 0,
+      dias: diasRestantes > 0 ? diasRestantesExactos : 0
+    };
   }
 
   goToEdit(equipmentId: number) {

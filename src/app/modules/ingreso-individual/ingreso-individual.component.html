@@ -149,30 +149,30 @@
         </span>
       </div>
       <div class="grid-item my-3">
-        <span class="p-float-label">
-          <input
-            class="w-100 rounded"
-            formControlName="inventario"
-            id="inventario"
-            pInputText
-            type="Number"
-          />
-          <label for="inventario">N° Inventario</label>
-        </span>
-      </div>
-      <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Tipo de Equipo</mat-label>
           <mat-select
-            (selectionChange)="onTypeChange($event.value)"
-            formControlName="tipo"
+          (selectionChange)="onTypeChange($event.value)"
+          formControlName="tipo"
           >
-            @for (type of equipmentTypes; track type.value) {
+          @for (type of equipmentTypes; track type.value) {
             <mat-option [value]="type.value">{{ type.label }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="grid-item my-3">
+      <span class="p-float-label">
+        <input
+          class="w-100 rounded"
+          formControlName="inventario"
+          id="inventario"
+          pInputText
+          type="Number"
+        />
+        <label for="inventario">N° Inventario</label>
+      </span>
+    </div>
 
       <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">

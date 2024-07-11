@@ -162,6 +162,31 @@
       </mat-form-field>
     </div>
     <div class="grid-item my-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Sistema Operativo</mat-label>
+        <input
+          (focus)="filter('sistemaOperativo', $event.target)"
+          (input)="filter('sistemaOperativo', $event.target)"
+          [matAutocomplete]="autoSO"
+          aria-label="sistemaOperativo"
+          formControlName="sistemaOperativo"
+          matInput
+          placeholder="Selecciona un sistema operativo"
+        />
+        <mat-autocomplete #autoSO="matAutocomplete" requireSelection="true">
+          @for (so of selectorSistemasOperativosFiltered; track so.so) {
+          <mat-option [value]="so.so">
+            {{ so.so }}
+          </mat-option>
+          } @if (selectorSistemasOperativosFiltered.length === 0) {
+          <mat-option disabled
+            >No hay sistemas operativos disponibles</mat-option
+          >
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="grid-item my-3">
       <span class="p-float-label">
         <input
           class="w-100 rounded"
@@ -174,31 +199,6 @@
       </span>
     </div>
 
-      <div class="grid-item my-3">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Sistema Operativo</mat-label>
-          <input
-            (focus)="filter('sistemaOperativo', $event.target)"
-            (input)="filter('sistemaOperativo', $event.target)"
-            [matAutocomplete]="autoSO"
-            aria-label="sistemaOperativo"
-            formControlName="sistemaOperativo"
-            matInput
-            placeholder="Selecciona un sistema operativo"
-          />
-          <mat-autocomplete #autoSO="matAutocomplete" requireSelection="true">
-            @for (so of selectorSistemasOperativosFiltered; track so.so) {
-            <mat-option [value]="so.so">
-              {{ so.so }}
-            </mat-option>
-            } @if (selectorSistemasOperativosFiltered.length === 0) {
-            <mat-option disabled
-              >No hay sistemas operativos disponibles</mat-option
-            >
-            }
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
       <div class="grid-item my-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Uso</mat-label>

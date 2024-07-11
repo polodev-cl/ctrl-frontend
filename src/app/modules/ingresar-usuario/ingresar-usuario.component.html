@@ -77,6 +77,8 @@
               type="text"
               [value]="rut.value | rutPipe"
               formControlName="rut"
+              [ngModel]="usuarioForm.get('rut')?.value | rutPipe"
+              (ngModelChange)="usuarioForm.get('rut')?.setValue($event)"
             />
             <label for="rut">Rut (12345678-9)</label>
           </span>

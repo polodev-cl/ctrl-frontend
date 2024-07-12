@@ -80,6 +80,8 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
             console.log("error step:", errorStep)
 
             this.mostrarModalDuplicados.emit(errorMessages);
+          } else if (errorStep === "UPLOAD") {
+            this.errorOcurrido.emit(errorMessages);
           }
           return of({ completed: false, step: 'UPLOAD' } as IUpload);
         })

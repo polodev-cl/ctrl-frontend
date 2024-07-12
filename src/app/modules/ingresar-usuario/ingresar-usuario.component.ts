@@ -35,6 +35,7 @@ import {
   timeout,
 } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RutFormatterDirective } from '@app/core/directives/rut-formatter.directive';
 
 @Component({
   selector: 'app-ingresar-usuario',
@@ -58,6 +59,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatFormField,
     ReactiveFormsModule,
     RutPipe,
+    RutFormatterDirective,
     ModalAdvertenciaComponent,
   ],
 })
@@ -153,7 +155,7 @@ export class IngresarUsuarioComponent implements OnInit {
       this.loading = false;
     }
   }
-  
+
   abrirModalExito(temporaryPassword: string): void {
     this.tituloModalExito = 'Ingreso Usuario';
     this.mensajeModalExito = `Usuario ha sido ingresado con éxito. Por favor copiar los valores:<br/><br/>

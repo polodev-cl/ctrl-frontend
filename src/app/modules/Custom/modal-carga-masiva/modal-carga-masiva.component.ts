@@ -67,8 +67,8 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
           this.fileLoading = false;
           this.fileLoaded = false;
           console.log('error:', error)
-          const errorMessages = error.error.message.errors;
-          const errorStep = error.error.message.step;
+          const errorMessages = error.error.errors;
+          const errorStep = error.error.step;
           console.log('errorStep:', errorStep)
           console.log('errorMessages:', errorMessages)
 

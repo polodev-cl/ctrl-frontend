@@ -68,15 +68,15 @@
       <div class="grid-item my-3">
         <span class="p-float-label">
           <input
-            autocomplete="on"
-            class="w-100 rounded"
-            id="rut"
-            pInputText
-            #rut
-            type="text"
-            [value]="rut.value | rutPipe"
-            formControlName="rut"
-          />
+          autocomplete="on"
+          class="w-100 rounded"
+          id="rut"
+          pInputText
+          #rut
+          type="text"
+          formControlName="rut"
+          appRutFormatter
+        />
           <label for="rut">Rut (12345678-9)</label>
         </span>
       </div>

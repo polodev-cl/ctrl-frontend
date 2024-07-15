@@ -69,7 +69,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     private equipmentService: EquipmentService,
     private userService: UserService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.rol = this.obtenerRolUsuario();
@@ -118,7 +118,6 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
         this.equipmentService.getEquipment({ agenciaDpc: this.dpc })
       )
     ).map((equipment) => ({
-      Estado: this.mapEquipmentStatus(equipment.estado as number),
       Empresa: equipment.agencia?.empresa?.nombreCorto || 'N/A',
       RutUsuario: equipment.rut || 'N/A',
       AgenciaNombre: equipment.agencia?.nombre || 'N/A',
@@ -139,6 +138,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
       'DDL/TBK': equipment.ddllTbk || 'N/A',
       'Numero serie': equipment.serie || 'N/A',
       'Numero inventario': equipment.inventario || 'N/A',
+      Estado: this.mapEquipmentStatus(equipment.estado as number),
       'Encargado Agencia': equipment.encargadoAgencia || 'N/A',
       'Fecha Compra': equipment.fechaCompra || 'N/A',
       'Garantia Meses': equipment.garantiaMeses || 'N/A',
@@ -162,32 +162,32 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
   }
 
   private columns = [
-    { header: 'Estado', wch: 15 },
-    { header: 'Empresa', wch: 25 },
-    { header: 'Rut Usuario', wch: 20 },
-    { header: 'Agencia Nombre', wch: 30 },
-    { header: 'Nemonico', wch: 10 },
+    { header: 'EMPRESA', wch: 25 },
+    { header: 'RUT USUARIO', wch: 20 },
+    { header: 'AGENCIA NOMBRE', wch: 30 },
+    { header: 'NEMONICO', wch: 10 },
     { header: 'DPC', wch: 5 },
-    { header: 'Uso', wch: 15 },
-    { header: 'Ubicacion', wch: 35 },
-    { header: 'Equipo', wch: 15 },
-    { header: 'Marca', wch: 15 },
-    { header: 'Modelo', wch: 30 },
-    { header: 'Sistema Operativo', wch: 20 },
+    { header: 'USO', wch: 15 },
+    { header: 'UBICACION', wch: 35 },
+    { header: 'EQUIPO', wch: 15 },
+    { header: 'MARCA', wch: 15 },
+    { header: 'MODELO', wch: 30 },
+    { header: 'SISTEMA OPERATIVO', wch: 20 },
     { header: 'MAC', wch: 20 },
-    { header: 'Nombre de Maquina', wch: 25 },
-    { header: 'Procesador', wch: 20 },
+    { header: 'NOMBRE DE MAQUINA', wch: 25 },
+    { header: 'PROCESADOR', wch: 20 },
     { header: 'RAM', wch: 5 },
     { header: 'SSD/HDD', wch: 10 },
     { header: 'IP', wch: 20 },
     { header: 'DDLL TBK', wch: 20 },
-    { header: 'Numero serie', wch: 25 },
-    { header: 'Numero inventario', wch: 25 },
-    { header: 'Encargado Agencia', wch: 45 },
-    { header: 'Fecha Compra', wch: 15 },
-    { header: 'Garantia meses', wch: 15 },
-    { header: 'Orden de compra numero', wch: 25 },
-    { header: 'Fecha Ingreso', wch: 15 },
+    { header: 'NUMERO SERIE', wch: 25 },
+    { header: 'NUMERO INVENTARIO', wch: 25 },
+    { header: 'ESTADO', wch: 15 },
+    { header: 'ENCARGADO AGENCIA', wch: 45 },
+    { header: 'FECHA COMPRA', wch: 15 },
+    { header: 'GARANTIA MESES', wch: 15 },
+    { header: 'ORDEN DE COMPRA NUMERO', wch: 25 },
+    { header: 'FECHA INGRESO', wch: 15 },
   ];
 
   private mapEquipmentStatus(status: number) {

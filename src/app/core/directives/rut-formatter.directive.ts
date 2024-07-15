@@ -12,18 +12,31 @@ export class RutFormatterDirective {
 
   @HostListener('blur', ['$event'])
   onBlur(event: KeyboardEvent) {
-    let value = this.el.nativeElement.value;
-    value = this.rutPipe.transform(value);
-    this.el.nativeElement.value = value;
+    this.formatRut();
   }
 
   @HostListener('input', ['$event'])
   onInput(event: KeyboardEvent) {
+    this.formatRutOnInput();
+  }
+
+  @HostListener('change', ['$event'])
+  onChange(event: Event) {
+    this.formatRut();
+  }
+
+  private formatRutOnInput() {
     let value = this.el.nativeElement.value;
-    value = value.replace(/[^0-9kK]/g, '');
-    if (value.length > 9) { // 8 digits + 1 verifier character
-      value = value.substring(0, 9);
+    value = value.replace(/[^0-9kK-]/g, '');
+    if (value.length > 10) {
+      value = value.substring(0, 10);
     }
+    this.el.nativeElement.value = value;
+  }
+
+  private formatRut() {
+    let value = this.el.nativeElement.value;
+    value = this.rutPipe.transform(value);
     this.el.nativeElement.value = value;
   }
 }

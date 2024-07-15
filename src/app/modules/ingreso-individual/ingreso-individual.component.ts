@@ -353,6 +353,13 @@ export class IngresoIndividualComponent implements OnInit {
 
   onSubmit() {
     if (this.ingresoIndividualForm.valid) {
+      const rutControl = this.ingresoIndividualForm.get('rut');
+      if (rutControl) {
+        const rutPipe = new RutPipe();
+        const formattedRut = rutPipe.transform(rutControl.value);
+        rutControl.setValue(formattedRut);
+      }
+
       this.ingresoIndividualForm.disable();
       const values = cleanEmptyFields(this.ingresoIndividualForm.getRawValue());
 

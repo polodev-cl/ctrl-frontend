@@ -99,8 +99,8 @@ export class TablasComponent implements OnChanges, AfterViewInit {
     private equipmentService: EquipmentService,
     private userService: UserService,
     private router: Router
-  ) {}
-  
+  ) { }
+
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -111,7 +111,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
     this.rol = this.obtenerRolUsuario();
   }
 
-  
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && changes['data'].currentValue) {
@@ -121,7 +121,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
       }
     }
   }
-  
+
 
   goToEdit(equipmentId: number | undefined) {
     if (equipmentId) {
@@ -130,8 +130,8 @@ export class TablasComponent implements OnChanges, AfterViewInit {
       console.error("Equipment ID is undefined or not provided");
     }
   }
-  
-  
+
+
 
   obtenerRolUsuario(): RoleEnum {
     return this.userService.getUserRole();
@@ -149,7 +149,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
 
     const data = (
       await lastValueFrom(
-        this.consultaMasivaService.getMassiveQuery( this.companyId,
+        this.consultaMasivaService.getMassiveQuery(this.companyId,
           this.agencyId,
           this.tipoEquipo,
           this.sistemaOperativo,
@@ -179,24 +179,24 @@ export class TablasComponent implements OnChanges, AfterViewInit {
       Estado: this.mapEquipmentStatus(equipment.estado as number),
       "Encargado Agencia": equipment.encargadoAgencia || 'N/A',
       "Fecha Compra": equipment.fechaCompra || 'N/A',
-      "Garantia Meses" : equipment.garantiaMeses || 'N/A',
+      "Garantia Meses": equipment.garantiaMeses || 'N/A',
       "Orden Compra": equipment.ordenCompra || 'N/A',
-      "Fecha Ingreso" : equipment.fechaIngreso || 'N/A'
+      "Fecha Ingreso": equipment.fechaIngreso || 'N/A'
 
 
     }));
 
-    
+
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, [this.columns.map((col) => col.header)], {
       origin: 'A1',
-      
+
     });
 
     // Añadir los datos de la tabla al worksheet comenzando desde la fila 2 (A2)
     XLSX.utils.sheet_add_json(ws, data, { origin: 'A2', skipHeader: true });
     ws['!cols'] = this.columns.map((col) => ({ wch: col.wch }));
-    ws['!autofilter'] = {ref : 'A1:Y1'}
+    ws['!autofilter'] = { ref: 'A1:Y1' }
 
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Hoja1');
@@ -205,33 +205,34 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   }
 
   private columns = [
-    { header: 'Empresa', wch: 25 },
-    { header: 'Rut Usuario', wch: 20 },
-    { header: 'Agencia Nombre', wch: 30 },
-    { header: 'Nemonico', wch: 10 },
+    { header: 'EMPRESA', wch: 25 },
+    { header: 'RUT USUARIO', wch: 20 },
+    { header: 'AGENCIA NOMBRE', wch: 30 },
+    { header: 'NEMONICO', wch: 10 },
     { header: 'DPC', wch: 5 },
-    { header: 'Uso', wch: 15 },
-    { header: 'Ubicacion', wch: 35 },
-    { header: 'Equipo', wch: 15 },
-    { header: 'Marca', wch: 15 },
-    { header: 'Modelo', wch: 30 },
-    { header: 'Sistema Operativo', wch: 20 },
+    { header: 'USO', wch: 15 },
+    { header: 'UBICACION', wch: 35 },
+    { header: 'EQUIPO', wch: 15 },
+    { header: 'MARCA', wch: 15 },
+    { header: 'MODELO', wch: 30 },
+    { header: 'SISTEMA OPERATIVO', wch: 20 },
     { header: 'MAC', wch: 20 },
-    { header: 'Nombre de Maquina', wch: 25 },
-    { header: 'Procesador', wch: 20 },
+    { header: 'NOMBRE DE MAQUINA', wch: 25 },
+    { header: 'PROCESADOR', wch: 20 },
     { header: 'RAM', wch: 5 },
     { header: 'SSD/HDD', wch: 10 },
     { header: 'IP', wch: 20 },
     { header: 'DDLL TBK', wch: 20 },
-    { header: 'Numero serie', wch: 25 },
-    { header: 'Numero inventario', wch: 25 },
-    { header: 'Estado', wch: 15 },
-    { header: 'Encargado Agencia', wch: 45 },
-    { header: 'Fecha Compra', wch: 15 },
-    { header: 'Garantia meses', wch: 15 },
-    { header: 'Orden de compra numero', wch: 25 },
-    { header: 'Fecha Ingreso', wch: 15 },
+    { header: 'NUMERO SERIE', wch: 25 },
+    { header: 'NUMERO INVENTARIO', wch: 25 },
+    { header: 'ESTADO', wch: 15 },
+    { header: 'ENCARGADO AGENCIA', wch: 45 },
+    { header: 'FECHA COMPRA', wch: 15 },
+    { header: 'GARANTIA MESES', wch: 15 },
+    { header: 'ORDEN DE COMPRA NUMERO', wch: 25 },
+    { header: 'FECHA INGRESO', wch: 15 },
   ];
+
 
   private mapEquipmentStatus(status: number) {
     switch (status) {

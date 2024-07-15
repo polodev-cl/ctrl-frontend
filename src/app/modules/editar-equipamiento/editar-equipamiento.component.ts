@@ -216,8 +216,8 @@ export class EditarEquipamientoComponent implements OnInit {
     });
 
 
-    disableControl(controlName: string, removeValidators: boolean): void {
-      this.ingresoIndividualForm.get(controlName)?.disable();
+  disableControl(controlName: string, removeValidators: boolean): void {
+    this.ingresoIndividualForm.get(controlName)?.disable();
 
     if (removeValidators)
       this.ingresoIndividualForm.get(controlName)?.clearValidators();
@@ -325,10 +325,18 @@ export class EditarEquipamientoComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     if (this.ingresoIndividualForm.valid) {
+
+      const rutControl = this.ingresoIndividualForm.get('rut');
+      if (rutControl) {
+        const rutPipe = new RutPipe();
+        const formattedRut = rutPipe.transform(rutControl.value);
+        rutControl.setValue(formattedRut);
+      }
+
       const equipmentData = this.ingresoIndividualForm.value;
       const equipmentId = this.route.snapshot.params['id'];
 
-      if(!equipmentData.nombre || equipmentData.nombre === '') {
+      if (!equipmentData.nombre || equipmentData.nombre === '') {
         equipmentData.nombre = 'N/A'
       }
 

@@ -120,11 +120,20 @@ export class IngresarUsuarioComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     if (this.usuarioForm.valid) {
+
+      const rutControl = this.usuarioForm.get('rut');
+      if (rutControl) {
+        const rutPipe = new RutPipe();
+        const formattedRut = rutPipe.transform(rutControl.value);
+        rutControl.setValue(formattedRut);
+      }
+
       const formData = cleanEmptyFields(this.usuarioForm.getRawValue());
       formData.rolId = Number(formData.rolId);
       formData.empresaId = formData.empresa;
       delete formData.empresa;
       formData.usuarioCreacionId = this.userService.getUserId()
+
       this.userService.createUser(formData)
         .pipe(
           catchError((error) => {

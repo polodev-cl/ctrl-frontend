@@ -77,7 +77,7 @@ export class NumeroInventarioComponent implements OnInit {
   buscarPorInventario(inventario: number): void {
     this.equipmentService.getEquipmentByInventory(inventario).subscribe({
       next: (data) => {
-        this.equipments = data.filter(equipment => equipment.fechaCompra && equipment.garantiaMeses); // Filtra equipos con datos válidos
+        this.equipments = data;
       },
       error: (error) => {
         console.error('Error fetching data:', error);

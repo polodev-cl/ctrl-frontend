@@ -34,7 +34,7 @@
 
     <div class="row mt-4 mb-3">
       <div *ngFor="let equipment of equipments; let i = index" class="col-md-6 mb-4">
-        <div *ngIf="equipment.fechaCompra && equipment.garantiaMeses" class="card border rounded card-shadow-box-datas">
+        <div class="card border rounded card-shadow-box-datas">
           <div class="card-body">
             <div class="row">
               <div class="col">
@@ -42,16 +42,35 @@
               </div>
               <div class="col-auto">
                 <span class="badge bg-secondary tiempo-garantia">
-                  Tiempo de garantía:
+                  Tiempo de garantía: @if (equipment.fechaCompra &&
+                  equipment.garantiaMeses) {
                   {{
-                    calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).meses > 1
-                      ? calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).meses + ' Meses'
-                      : (calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).meses === 1
-                        ? '1 Mes'
-                        : (calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).dias > 0
-                          ? 'Menos de ' + calcularMesesGarantiaRestantes(equipment.fechaCompra, equipment.garantiaMeses).dias + ' días'
-                          : 'Se ha acabado la garantía'))
+                    calcularMesesGarantiaRestantes(
+                      equipment.fechaCompra,
+                      equipment.garantiaMeses
+                    ).meses > 1
+                      ? calcularMesesGarantiaRestantes(
+                          equipment.fechaCompra,
+                          equipment.garantiaMeses
+                        ).meses + " Meses"
+                      : calcularMesesGarantiaRestantes(
+                          equipment.fechaCompra,
+                          equipment.garantiaMeses
+                        ).meses === 1
+                      ? "1 Mes"
+                      : calcularMesesGarantiaRestantes(
+                          equipment.fechaCompra,
+                          equipment.garantiaMeses
+                        ).dias > 0
+                      ? "Menos de " +
+                      calcularMesesGarantiaRestantes(
+                          equipment.fechaCompra,
+                          equipment.garantiaMeses
+                        ).dias +
+                        " días"
+                      : "Se ha acabado la garantía"
                   }}
+                  } @else { Sin garantía }
                 </span>
               </div>
             </div>

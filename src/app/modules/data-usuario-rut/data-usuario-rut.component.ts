@@ -77,7 +77,7 @@ export class DataUsuarioRutComponent implements OnInit {
   buscarPorRut(rut: string): void {
     this.equipmentService.getEquipmentByRut(rut).subscribe({
       next: (data) => {
-        this.equipments = data.filter(equipment => equipment.fechaCompra && equipment.garantiaMeses);
+        this.equipments = data;
       },
       error: (error) => {
         console.error('Error fetching data:', error);

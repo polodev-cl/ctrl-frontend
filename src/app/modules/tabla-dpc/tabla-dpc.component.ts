@@ -186,7 +186,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     { header: 'ENCARGADO AGENCIA', wch: 45 },
     { header: 'FECHA COMPRA', wch: 15 },
     { header: 'GARANTIA MESES', wch: 15 },
-    { header: 'ORDEN DE COMPRA', wch: 25 },
+    { header: 'ORDEN COMPRA', wch: 25 },
     { header: 'FECHA INGRESO', wch: 15 },
   ];
 

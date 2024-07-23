@@ -174,7 +174,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     { header: 'MODELO', wch: 30 },
     { header: 'SISTEMA OPERATIVO', wch: 20 },
     { header: 'MAC', wch: 20 },
-    { header: 'NOMBRE DE MAQUINA', wch: 25 },
+    { header: 'NOMBRE EQUIPO', wch: 25 },
     { header: 'PROCESADOR', wch: 20 },
     { header: 'RAM', wch: 5 },
     { header: 'SSD/HDD', wch: 10 },
@@ -186,7 +186,7 @@ export class TablaDpcComponent implements AfterViewInit, OnChanges {
     { header: 'ENCARGADO AGENCIA', wch: 45 },
     { header: 'FECHA COMPRA', wch: 15 },
     { header: 'GARANTIA MESES', wch: 15 },
-    { header: 'ORDEN DE COMPRA NUMERO', wch: 25 },
+    { header: 'ORDEN DE COMPRA', wch: 25 },
     { header: 'FECHA INGRESO', wch: 15 },
   ];
 

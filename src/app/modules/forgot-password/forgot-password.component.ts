@@ -42,8 +42,6 @@ export class ForgotPasswordComponent {
       return;
     }
 
-    console.log('Sending reset code to:', this.email);
-
     try {
       await this.cognitoService.resetPassword(this.email);
       this.emailStateService.email = this.email;

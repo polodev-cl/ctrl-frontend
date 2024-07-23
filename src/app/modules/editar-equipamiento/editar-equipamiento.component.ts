@@ -370,7 +370,7 @@ export class EditarEquipamientoComponent implements OnInit {
       fechaIngreso: [
         {
           value: equipment.fechaIngreso
-            ? new Date(equipment.fechaIngreso)
+            ? this._formatDate(equipment.fechaIngreso)
             : undefined,
           disabled: true,
         },
@@ -436,7 +436,7 @@ export class EditarEquipamientoComponent implements OnInit {
       fechaCompra: [
         {
           value: equipment.fechaCompra
-            ? new Date(equipment.fechaCompra)
+            ? this._formatDate(equipment.fechaCompra)
             : undefined,
           disabled: true,
         },
@@ -447,5 +447,10 @@ export class EditarEquipamientoComponent implements OnInit {
       ],
       estado: [equipment.estado || 1],
     });
+  }
+
+  private _formatDate(date: string): Date {
+    const [year, month, day] = date.split('-');
+    return new Date(+year, +month - 1, +day);
   }
 }

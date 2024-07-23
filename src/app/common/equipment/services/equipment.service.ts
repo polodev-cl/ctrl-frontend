@@ -14,28 +14,20 @@ export class EquipmentService {
   }
 
   getEquipmentByRut(rut: string): Observable<any[]> {
-    return this.http
-      .get<any[]>(`${ this.baseUrl }?rut=${ rut }`)
-      .pipe(tap((data) => console.log('Data from API:', data)));
+    return this.http .get<any[]>(`${ this.baseUrl }?rut=${ rut }`);
   }
 
   getEquipmentByDPC(agenciaDpc: number): Observable<any[]> {
-    return this.http
-      .get<any[]>(`${ this.baseUrl }/mini?agenciaDpc=${ agenciaDpc }`)
-      .pipe(tap((data) => console.log('Data from API:', data)));
+    return this.http .get<any[]>(`${ this.baseUrl }/mini?agenciaDpc=${ agenciaDpc }`);
   }
 
   getEquipment(query: { agenciaDpc: number }) {
     const queryParams = new HttpParams({ fromObject: query || {} });
-    return this.http
-      .get<any[]>(`${ this.baseUrl }`, { params: queryParams })
-      .pipe(tap((data) => console.log('Data from API:', data)));
+    return this.http .get<any[]>(`${ this.baseUrl }`, { params: queryParams });
   }
 
   getEquipmentByInventory(inventoryNumber: number): Observable<any[]> {
-    return this.http
-      .get<any[]>(`${ this.baseUrl }?inventario=${ inventoryNumber }`)
-      .pipe(tap((data) => console.log('Data from API:', data)));
+    return this.http .get<any[]>(`${ this.baseUrl }?inventario=${ inventoryNumber }`);
   }
 
   createEquipment(equipmentData: any): Observable<any> {
@@ -43,8 +35,7 @@ export class EquipmentService {
   }
 
   updateEquipment(equipmentId: number, equipmentData: any): Observable<any> {
-    return this.http.patch(`${ this.baseUrl }/${ equipmentId }`, equipmentData)
-      .pipe(tap(data => console.log('Updated equipment:', data)));
+    return this.http.patch(`${ this.baseUrl }/${ equipmentId }`, equipmentData);
   }
 
   getEquipmentHistory(equipmentId: number): Observable<any> {
@@ -52,8 +43,6 @@ export class EquipmentService {
   }
 
   getEquipmentById(equipmentId: number): Observable<any> {
-    return this.http
-      .get<any>(`${ this.baseUrl }/${ equipmentId }`)
-      .pipe(tap(data => console.log('Equipment data:', data)));
+    return this.http .get<any>(`${ this.baseUrl }/${ equipmentId }`);
   }
 }

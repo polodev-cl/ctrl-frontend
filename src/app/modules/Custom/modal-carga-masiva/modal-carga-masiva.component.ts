@@ -66,18 +66,14 @@ export class ModalCargaMasivaComponent implements AfterViewInit {
         .catch((error) => {
           this.fileLoading = false;
           this.fileLoaded = false;
-          console.log('error:', error)
           const errorMessages = error.error.errors;
           const errorStep = error.error.step;
-          console.log('errorStep:', errorStep)
-          console.log('errorMessages:', errorMessages)
 
-          console.log(error)
+
           if (errorStep === "VALIDATING") {
 
             this.errorOcurrido.emit(errorMessages);
           } else if (errorStep === "LOOKING_FOR_DUPLICATES") {
-            console.log("error step:", errorStep)
 
             this.mostrarModalDuplicados.emit(errorMessages);
           } else if (errorStep === "UPLOADING") {

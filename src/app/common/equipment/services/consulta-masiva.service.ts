@@ -81,6 +81,5 @@ export class ConsultaMasivaService {
 
     return this.http
       .get<any[]>(this.baseUrl, { params })
-      .pipe(tap((data) => console.log('Data from API:', data)));
   }
 }

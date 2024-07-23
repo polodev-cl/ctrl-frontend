@@ -17,7 +17,6 @@ export class UploadFileService {
 
   uploadFile(file: File): Promise<IUpload> {
     return new Promise((resolve, reject) => {
-      console.log(file);
       // decode the file
       const reader = new FileReader();
       reader.onload = () => {

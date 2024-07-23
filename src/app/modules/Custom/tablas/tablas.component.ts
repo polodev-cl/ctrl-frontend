@@ -207,7 +207,7 @@ export class TablasComponent implements OnChanges, AfterViewInit {
   private columns = [
     { header: 'EMPRESA', wch: 25 },
     { header: 'RUT USUARIO', wch: 20 },
-    { header: 'AGENCIA NOMBRE', wch: 30 },
+    { header: 'AGENCIA', wch: 30 },
     { header: 'NEMONICO', wch: 10 },
     { header: 'DPC', wch: 5 },
     { header: 'USO', wch: 15 },
